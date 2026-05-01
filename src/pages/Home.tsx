@@ -21,16 +21,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const domains = [
-  { id: "education", name: "Education", sub: "Campus · Library · Labs", color: "#B5D4F4", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" },
-  { id: "manufacturing", name: "Manufacturing", sub: "Factory · Plant · Unit", color: "#C0DD97", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" },
-  { id: "healthcare", name: "Healthcare", sub: "Hospital · Clinic · Lab", color: "#F7C1C1", image: "https://images.unsplash.com/photo-1586773860418-d3b3a998ddd6?w=800&q=80" },
-  { id: "corporate", name: "Corporate", sub: "Office · HQ · Enterprise", color: "#CECBF6", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" },
-  { id: "retail", name: "Retail", sub: "Store · Mall · Chain", color: "#FAC775", image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80" },
-  { id: "logistics", name: "Logistics", sub: "Warehouse · Fleet · Hub", color: "#9FE1CB", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
-  { id: "government", name: "Government", sub: "Civic · Municipal · Public", color: "#D3D1C7", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80" },
-  { id: "residential", name: "Residential", sub: "Society · Housing · Gated", color: "#F4C0D1", image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80" },
-];
+import { domains } from "../constants/domains";
 
 const problems = [
   { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Clock, tag: "Access", color: "red" },
@@ -42,7 +33,7 @@ const problems = [
 
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
-  return domain ? domain.sub.split(' · ') : [];
+  return domain ? domain.subdomains : ["Smart", "Integrated", "Monitored"];
 };
 
 export default function Home() {
@@ -78,43 +69,17 @@ export default function Home() {
       </section>
 
       {/* ── OVERVIEW SECTION ── */}
-      <section className="relative py-24 md:py-32 bg-brand-black overflow-hidden border-b border-brand-black">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80" 
-            alt="Smart Systems Network" 
-            className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/90 to-brand-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-brand-black/20" />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto md:mx-0">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-warm-gold-beige/20 bg-warm-gold-beige/10 text-warm-gold-beige font-bold text-xs uppercase tracking-[0.2em] mb-8">
-                <span className="w-2 h-2 rounded-full bg-warm-gold-beige animate-pulse" />
-                Overview
-              </div>
-              
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white leading-[1.2] mb-8 max-w-3xl">
-                A rich portfolio of <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-gold-beige to-[#EF9F27]">empowering</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF9F27] to-[#C0DD97]">enabling</span> solutions
-              </h3>
-              
-              <div className="relative pl-6 md:pl-8 border-l-4 border-warm-gold-beige/40">
-                <p className="text-lg md:text-xl lg:text-2xl text-soft-white/80 leading-relaxed font-light">
-                  We design intelligent systems that transform modern operations across diverse environments. 
-                  From entry and attendance to security and tracking, we unify disconnected processes into 
-                  a seamless, structured workflow.
-                </p>
-              </div>
-            </motion.div>
+      <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
+              A rich portfolio of empowering and enabling solutions
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+              We design intelligent systems that transform modern operations across diverse environments. 
+              From entry and attendance to security and tracking, we unify disconnected processes into 
+              a seamless, structured workflow.
+            </p>
           </div>
         </div>
       </section>
@@ -135,70 +100,80 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
-            {domains.map((domain) => (
-              <div
+            {domains.slice(0, 7).map((domain) => (
+              <Link
                 key={domain.id}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                to={`/domains/${domain.id}`}
+                className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer h-[280px] md:h-[320px] block"
               >
-                <div className="relative h-40 md:h-44 lg:h-48 overflow-hidden">
-                  <img
-                    src={domain.image}
-                    alt={domain.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div
-                    className="absolute inset-0 mix-blend-multiply opacity-40 transition-opacity duration-300 group-hover:opacity-30"
-                    style={{ backgroundColor: domain.color }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
+                {/* Background Image */}
+                <img
+                  src={domain.image}
+                  alt={domain.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  referrerPolicy="no-referrer"
+                />
+                
+                {/* Color overlay - slightly tinted by domain color */}
+                <div
+                  className="absolute inset-0 mix-blend-multiply opacity-0 transition-opacity duration-500 group-hover:opacity-40"
+                  style={{ backgroundColor: domain.color }}
+                />
+                
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="p-4 md:p-5">
-                  <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
-                    {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs px-2 py-0.5 md:py-1 rounded-full font-medium"
-                        style={{
-                          backgroundColor: `${domain.color}30`,
-                          color: '#374151'
-                        }}
+                {/* Content */}
+                <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
+                  <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
+                    <h3 className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-md">
+                      {domain.name}
+                    </h3>
+
+                    {/* Hidden content that fades in */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col gap-4 mt-3">
+                      <div className="flex flex-wrap gap-2">
+                        {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
+                            style={{ backgroundColor: `${domain.color}30` }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div
+                        className="mt-1 w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
+                        style={{ backgroundColor: domain.color }}
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        Explore {domain.name}
+                        <ArrowRight size={16} />
+                      </div>
+                    </div>
                   </div>
-
-                  <Link
-                    to={`/domains/${domain.id}`}
-                    className="mt-2 w-full py-2 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base"
-                    style={{
-                      backgroundColor: domain.color,
-                      color: '#1f2937'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.85';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                  >
-                    {domain.name}
-                    <ArrowRight size={16} />
-                  </Link>
                 </div>
-              </div>
+              </Link>
             ))}
-          </div>
 
-          <div className="mt-8 md:mt-10 lg:mt-12 text-center">
+            {/* View All Card */}
             <Link
               to="/domains"
-              className="inline-flex items-center gap-2 px-6 md:px-8 py-2.5 md:py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all transform hover:-translate-y-1 shadow-lg text-sm md:text-base"
+              className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer h-[280px] md:h-[320px] bg-brand-black flex flex-col items-center justify-center text-center p-6 border border-gray-800 block"
             >
-              View All Domains
-              <ArrowRight size={18} />
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-80" />
+              <div className="relative z-10 flex flex-col items-center justify-center transform group-hover:scale-105 transition-transform duration-500">
+                <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-4 backdrop-blur-md border border-white/20">
+                  <ArrowRight className="text-white w-8 h-8 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+                <h3 className="text-2xl font-display font-bold text-white mb-2">
+                  View All Domains
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  Explore our solutions across {domains.length}+ industries
+                </p>
+              </div>
             </Link>
           </div>
         </div>

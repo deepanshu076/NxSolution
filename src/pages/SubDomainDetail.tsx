@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useParams, Link } from "react-router-dom";
+import { domains } from "../constants/domains";
 import { 
   Play, 
   ChevronRight, 
@@ -29,6 +30,14 @@ export default function SubDomainDetail() {
   const { domain, subdomain } = useParams();
   const [activeSol, setActiveSol] = useState(0);
 
+  const domainData = domains.find(d => d.id === domain);
+  const domainName = domainData?.name || (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Domain");
+
+  // Since subdomain is a hyphenated string, let's format it for display
+  const subdomainName = domainData?.subdomains.find(sd => 
+    sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
+  ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
+
   return (
     <div className="flex flex-col pt-20">
       {/* ── HERO ── */}
@@ -40,13 +49,13 @@ export default function SubDomainDetail() {
         <div className="container mx-auto px-6 relative z-10">
            <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass-morphism text-accent-gold font-bold text-[10px] uppercase tracking-widest mb-8">
-                 {domain} › {subdomain}
+                 {domainName} › {subdomainName}
               </div>
               <h1 className="text-4xl md:text-6xl font-display font-bold text-pure-white mb-6 leading-tight">
-                 Smart systems for <span className="text-accent-gold">{subdomain} operations</span>
+                 Smart systems for <span className="text-accent-gold">{subdomainName} operations</span>
               </h1>
               <p className="text-pure-white/50 text-lg mb-10 leading-relaxed">
-                 Enhance visibility, control, and efficiency across {subdomain} environments with intelligent automation and integrated sensors.
+                 Enhance visibility, control, and efficiency across {subdomainName} environments with intelligent automation and integrated sensors.
               </p>
               <div className="flex flex-wrap gap-4">
                  <button className="px-8 py-3.5 bg-brand-walnut text-pure-white font-bold rounded-xl transition-all hover:scale-105 shadow-2xl shadow-brand-walnut/20">Explore Solutions</button>
@@ -62,9 +71,9 @@ export default function SubDomainDetail() {
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
               <div>
                  <span className="text-[10px] font-bold text-brand-walnut tracking-[.3em] uppercase mb-4 block">Overview</span>
-                 <h2 className="text-3xl font-display font-bold text-slate-blue mb-8">{subdomain?.toUpperCase()} operations, made intelligent</h2>
+                 <h2 className="text-3xl font-display font-bold text-slate-blue mb-8">{subdomainName.toUpperCase()} operations, made intelligent</h2>
                  <p className="text-slate-blue/60 leading-relaxed text-lg mb-8">
-                    {subdomain} areas involve dynamic usage and unique compliance challenges. Our systems simplify monitoring, reducing manual effort while improving outcomes.
+                    {subdomainName} areas involve dynamic usage and unique compliance challenges. Our systems simplify monitoring, reducing manual effort while improving outcomes.
                  </p>
               </div>
               <div className="space-y-4">
