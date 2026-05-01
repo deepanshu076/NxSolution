@@ -243,7 +243,7 @@ export default function Navbar() {
 }
 
 function MobileNavLink({ to, label, active, onClick }: {
-  to: string; label: string; active: boolean; onClick: () => void;
+  to: string; label: string; active: boolean; onClick: () => void; key?: string;
 }) {
   return (
     <Link
@@ -265,3 +265,4 @@ function MobileNavLink({ to, label, active, onClick }: {
       <span className={active ? "ml-2" : ""}>{label}</span>
     </Link>
   );
+}
