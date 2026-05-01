@@ -237,7 +237,7 @@ export default function Home() {
             <div className="absolute inset-y-0 right-0 w-8 md:w-24 bg-gradient-to-l from-soft-white to-transparent z-10 pointer-events-none" />
 
             <div
-              className="flex w-max animate-marquee gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 py-3 md:py-4"
+              className="flex w-max animate-marquee gap-4 md:gap-5 lg:gap-6 px-3 md:px-4 py-3 md:py-4"
               style={{ animationPlayState: isMarqueePaused ? "paused" : "running" }}
             >
               {[
@@ -254,15 +254,15 @@ export default function Home() {
                   key={i}
                   onMouseEnter={() => setIsMarqueePaused(true)}
                   onMouseLeave={() => setIsMarqueePaused(false)}
-                  className="min-w-[240px] sm:min-w-[300px] md:min-w-[380px] lg:min-w-[440px] p-4 md:p-7 lg:p-10 rounded-2xl md:rounded-3xl bg-white border border-soft-taupe/40 flex flex-col justify-between transition-all duration-300 hover:border-brand-walnut hover:shadow-2xl hover:shadow-brand-walnut/20 hover:-translate-y-2 cursor-pointer aspect-video md:aspect-[21/9]"
+                  className="w-[280px] sm:w-[340px] md:w-[400px] lg:w-[440px] min-h-[180px] sm:min-h-[160px] md:aspect-[21/9] p-5 md:p-7 lg:p-10 rounded-2xl md:rounded-3xl bg-white border border-soft-taupe/40 flex flex-col justify-between transition-all duration-300 hover:border-brand-walnut hover:shadow-2xl hover:shadow-brand-walnut/20 hover:-translate-y-2 cursor-pointer flex-shrink-0"
                 >
-                  <div className="mb-2 md:mb-6">
-                    <div className="flex gap-0.5 mb-2 md:mb-4 text-[#EF9F27] text-xs md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
-                    <p className="text-brand-black/80 italic text-xs md:text-sm lg:text-base font-medium leading-relaxed">"{t.quote}"</p>
+                  <div className="mb-3 md:mb-4">
+                    <div className="flex gap-0.5 mb-2 md:mb-3 text-[#EF9F27] text-sm md:text-base">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
+                    <p className="text-brand-black/80 italic text-sm md:text-base font-medium leading-relaxed">"{t.quote}"</p>
                   </div>
                   <div>
-                    <div className="font-bold text-brand-black text-xs md:text-sm lg:text-base">{t.author}</div>
-                    <div className="text-[9px] md:text-[10px] text-brand-black/50 uppercase tracking-[.3em] mt-0.5 md:mt-1 font-extrabold">{t.role}</div>
+                    <div className="font-bold text-brand-black text-sm md:text-base">{t.author}</div>
+                    <div className="text-[10px] md:text-[10px] text-brand-black/50 uppercase tracking-[.2em] mt-0.5 font-extrabold">{t.role}</div>
                   </div>
                 </div>
               ))}
