@@ -16,7 +16,12 @@ import {
   CheckCircle2,
   Play,
   ArrowUpRight,
-  Monitor
+  Monitor,
+  Hourglass,
+  ClipboardList,
+  ShieldAlert,
+  Cctv,
+  BatteryWarning
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -24,11 +29,11 @@ import { useState, useEffect } from "react";
 import { domains } from "../constants/domains";
 
 const problems = [
-  { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Clock, tag: "Access", color: "red" },
-  { id: "02", title: "Attendance Gaps", desc: "Manual registers miss absentees, create audit failures, and leave no reliable trail for compliance or payroll processing.", icon: Users, tag: "Attendance", color: "orange" },
-  { id: "03", title: "Unauthorized Access", desc: "Weak perimeter controls allow unauthorized personnel into restricted zones, creating safety and compliance risks.", icon: Shield, tag: "Security", color: "red" },
-  { id: "04", title: "Weak Surveillance", desc: "Blind spots and reactive-only monitoring leave critical incidents undetected until after damage is done.", icon: Activity, tag: "Surveillance", color: "slate" },
-  { id: "05", title: "Energy Waste", desc: "Unmonitored systems consume energy 24/7 regardless of occupancy, inflating operational costs significantly.", icon: Zap, tag: "Energy", color: "orange" },
+  { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Hourglass, tag: "Access", color: "red" },
+  { id: "02", title: "Attendance Gaps", desc: "Manual registers miss absentees, create audit failures, and leave no reliable trail for compliance or payroll processing.", icon: ClipboardList, tag: "Attendance", color: "orange" },
+  { id: "03", title: "Unauthorized Access", desc: "Weak perimeter controls allow unauthorized personnel into restricted zones, creating safety and compliance risks.", icon: ShieldAlert, tag: "Security", color: "red" },
+  { id: "04", title: "Weak Surveillance", desc: "Blind spots and reactive-only monitoring leave critical incidents undetected until after damage is done.", icon: Cctv, tag: "Surveillance", color: "slate" },
+  { id: "05", title: "Energy Waste", desc: "Unmonitored systems consume energy 24/7 regardless of occupancy, inflating operational costs significantly.", icon: BatteryWarning, tag: "Energy", color: "orange" },
 ];
 
 const getTagsForDomain = (id: string) => {
@@ -190,9 +195,9 @@ export default function Home() {
             <p className="text-charcoal/60 text-base md:text-lg lg:text-xl">Common friction points we eliminate across diverse industries</p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 items-start lg:items-stretch">
+          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 items-start lg:items-stretch max-w-7xl mx-auto">
             {/* List Section */}
-            <div className="w-full lg:order-1 lg:w-[55%] overflow-x-auto lg:overflow-visible scrollbar-hide snap-x">
+            <div className="w-full lg:order-1 lg:w-[40%] overflow-x-auto lg:overflow-visible scrollbar-hide snap-x">
               <div className="flex lg:flex-col gap-3 md:gap-4 w-full px-4 lg:px-0">
                 {problems.map((prob, i) => (
                   <button
@@ -219,7 +224,7 @@ export default function Home() {
             </div>
 
             {/* Visual Section */}
-            <div className="w-full lg:order-2 lg:w-[45%] px-4 lg:px-0">
+            <div className="w-full lg:order-2 lg:w-[60%] px-4 lg:px-0">
               <div className="relative h-[280px] md:h-[380px] lg:h-[450px] w-full rounded-2xl md:rounded-[2rem] lg:rounded-[2.5rem] bg-brand-walnut/5 p-6 md:p-8 lg:p-12 border border-brand-walnut/10 shadow-inner overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
