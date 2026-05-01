@@ -116,7 +116,8 @@ export default function DomainDetail() {
                         <div className="w-6 h-6 rounded-full bg-accent-teal/10 flex items-center justify-center text-accent-teal shrink-0">
                            <CheckCircle2 size={14} strokeWidth={2.5} />
                         </div>
-                        <span className="text-sm md:text-base font-bold text-slate-blue/80">
+
+                        <span className="text-sm md:text-base font-semibold tracking-wide text-slate-blue/90 leading-relaxed">
                            {pt}
                         </span>
                      </div>
