@@ -21,16 +21,30 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const domains = [
-  { id: "education", name: "Education", sub: "Campus · Library · Labs", color: "#B5D4F4", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" },
-  { id: "manufacturing", name: "Manufacturing", sub: "Factory · Plant · Unit", color: "#C0DD97", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" },
-  { id: "healthcare", name: "Healthcare", sub: "Hospital · Clinic · Lab", color: "#F7C1C1", image: "https://images.unsplash.com/photo-1586773860418-d3b3a998ddd6?w=800&q=80" },
-  { id: "corporate", name: "Corporate", sub: "Office · HQ · Enterprise", color: "#CECBF6", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" },
-  { id: "retail", name: "Retail", sub: "Store · Mall · Chain", color: "#FAC775", image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80" },
-  { id: "logistics", name: "Logistics", sub: "Warehouse · Fleet · Hub", color: "#9FE1CB", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
-  { id: "government", name: "Government", sub: "Civic · Municipal · Public", color: "#D3D1C7", image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80" },
-  { id: "residential", name: "Residential", sub: "Society · Housing · Gated", color: "#F4C0D1", image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80" },
+const domainNames = [
+  "Colleges", "Schools", "Coaching Institutes", "Hostels", "Offices", "IT Companies", "Startups", "Banks", "Government Offices", "Apartments", "Housing Societies", "Gated Communities", "PG (Paying Guest)", "Rental Spaces", "Hotels", "Factories", "Airports"
 ];
+
+const domains = domainNames.map((name, index) => {
+  const colors = ["#B5D4F4", "#C0DD97", "#F7C1C1", "#CECBF6", "#FAC775", "#9FE1CB", "#D3D1C7", "#F4C0D1"];
+  const images = [
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80", // Education
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80", // Office
+    "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80", // Residential
+    "https://images.unsplash.com/photo-1586773860418-d3b3a998ddd6?w=800&q=80", // Healthcare
+    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", // Manufacturing
+    "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80", // Retail
+    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80", // Logistics
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80"  // Civic/Gov
+  ];
+  return {
+    id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+    name,
+    color: colors[index % colors.length],
+    image: images[index % images.length],
+    sub: "Smart · Integrated · Monitored"
+  };
+});
 
 const problems = [
   { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Clock, tag: "Access", color: "red" },
@@ -42,7 +56,7 @@ const problems = [
 
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
-  return domain ? domain.sub.split(' · ') : [];
+  return domain && domain.sub ? domain.sub.split(' · ') : ["Smart", "Integrated", "Monitored"];
 };
 
 export default function Home() {
@@ -78,39 +92,17 @@ export default function Home() {
       </section>
 
       {/* ── OVERVIEW SECTION ── */}
-      <section id="overview" className="py-20 md:py-32 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
-            <div className="md:col-span-5">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-[0.3em] mb-6">
-                  Overview
-                </h2>
-                <h3 className="text-4xl md:text-5xl font-display font-bold text-gray-900 leading-tight">
-                  A rich portfolio of empowering and enabling solutions.
-                </h3>
-              </motion.div>
-            </div>
-            
-            <div className="md:col-span-7 md:pt-12">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <p className="text-xl md:text-2xl text-gray-600 leading-relaxed font-light">
-                  We design intelligent systems that transform modern operations across diverse environments. 
-                  From entry and attendance to security and tracking, we unify disconnected processes into 
-                  a seamless, structured workflow.
-                </p>
-              </motion.div>
-            </div>
+      <section className="py-12 md:py-16 lg:py-20 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
+              A rich portfolio of empowering and enabling solutions
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+              We design intelligent systems that transform modern operations across diverse environments. 
+              From entry and attendance to security and tracking, we unify disconnected processes into 
+              a seamless, structured workflow.
+            </p>
           </div>
         </div>
       </section>
@@ -131,7 +123,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
-            {domains.map((domain) => (
+            {domains.slice(0, 7).map((domain) => (
               <Link
                 key={domain.id}
                 to={`/domains/${domain.id}`}
@@ -187,15 +179,24 @@ export default function Home() {
                 </div>
               </Link>
             ))}
-          </div>
 
-          <div className="mt-8 md:mt-10 lg:mt-12 text-center">
+            {/* View All Card */}
             <Link
               to="/domains"
-              className="inline-flex items-center gap-2 px-6 md:px-8 py-2.5 md:py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all transform hover:-translate-y-1 shadow-lg text-sm md:text-base"
+              className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer h-[280px] md:h-[320px] bg-brand-black flex flex-col items-center justify-center text-center p-6 border border-gray-800 block"
             >
-              View All Domains
-              <ArrowRight size={18} />
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-80" />
+              <div className="relative z-10 flex flex-col items-center justify-center transform group-hover:scale-105 transition-transform duration-500">
+                <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-4 backdrop-blur-md border border-white/20">
+                  <ArrowRight className="text-white w-8 h-8 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+                <h3 className="text-2xl font-display font-bold text-white mb-2">
+                  View All Domains
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  Explore our solutions across {domains.length}+ industries
+                </p>
+              </div>
             </Link>
           </div>
         </div>
