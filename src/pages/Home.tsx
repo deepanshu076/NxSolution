@@ -136,59 +136,60 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
             {domains.map((domain) => (
-              <div
+              <Link
                 key={domain.id}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                to={`/domains/${domain.id}`}
+                className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer h-[280px] md:h-[320px] block"
               >
-                <div className="relative h-40 md:h-44 lg:h-48 overflow-hidden">
-                  <img
-                    src={domain.image}
-                    alt={domain.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div
-                    className="absolute inset-0 mix-blend-multiply opacity-40 transition-opacity duration-300 group-hover:opacity-30"
-                    style={{ backgroundColor: domain.color }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
+                {/* Background Image */}
+                <img
+                  src={domain.image}
+                  alt={domain.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  referrerPolicy="no-referrer"
+                />
+                
+                {/* Color overlay - slightly tinted by domain color */}
+                <div
+                  className="absolute inset-0 mix-blend-multiply opacity-0 transition-opacity duration-500 group-hover:opacity-40"
+                  style={{ backgroundColor: domain.color }}
+                />
+                
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="p-4 md:p-5">
-                  <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
-                    {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-xs px-2 py-0.5 md:py-1 rounded-full font-medium"
-                        style={{
-                          backgroundColor: `${domain.color}30`,
-                          color: '#374151'
-                        }}
+                {/* Content */}
+                <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
+                  <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
+                    <h3 className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-md">
+                      {domain.name}
+                    </h3>
+
+                    {/* Hidden content that fades in */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col gap-4 mt-3">
+                      <div className="flex flex-wrap gap-2">
+                        {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
+                            style={{ backgroundColor: `${domain.color}30` }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div
+                        className="mt-1 w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
+                        style={{ backgroundColor: domain.color }}
                       >
-                        {tag}
-                      </span>
-                    ))}
+                        Explore {domain.name}
+                        <ArrowRight size={16} />
+                      </div>
+                    </div>
                   </div>
-
-                  <Link
-                    to={`/domains/${domain.id}`}
-                    className="mt-2 w-full py-2 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base"
-                    style={{
-                      backgroundColor: domain.color,
-                      color: '#1f2937'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.85';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                  >
-                    {domain.name}
-                    <ArrowRight size={16} />
-                  </Link>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
