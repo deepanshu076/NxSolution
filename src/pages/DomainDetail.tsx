@@ -20,6 +20,9 @@ import { domains } from "../constants/domains";
 export default function DomainDetail() {
    const { domain } = useParams();
 
+   const currentDomain = domains.find(d => d.id === domain);
+   const formattedDomain = currentDomain ? currentDomain.name : (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Enterprise");
+
    const subDomains = [
       { title: "Main Gate / Entry Area", route: "entry" },
       { title: "Admin Block", route: "admin" },
@@ -35,23 +38,47 @@ export default function DomainDetail() {
    return (
       <div className="flex flex-col pt-20">
          {/* ── HERO ── */}
-         <section className="relative h-[400px] flex items-center bg-brand-black overflow-hidden">
-            <div className="absolute inset-0 bg-[#E6F1FB] opacity-20" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-10">
-               <Building2 size={300} className="text-accent-sky" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-transparent" />
+         <section className="relative min-h-[500px] lg:min-h-[70vh] flex items-center justify-center bg-brand-black overflow-hidden pt-16 pb-20">
+            {/* ── BACKGROUND LAYER ── */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-sky/15 via-brand-black to-brand-black" />
 
-            <div className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
-               <div className="px-5 py-1.5 rounded-full border border-accent-sky/30 bg-accent-sky/10 text-accent-sky text-[10px] font-bold uppercase tracking-[.3em] mb-8">
-                  Domain · {domain?.toUpperCase()}
+            <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:48px_48px]" />
+
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none blur-sm text-accent-sky">
+               <Building2 size={400} strokeWidth={1} />
+            </div>
+
+            {/* ── CONTENT LAYER ── */}
+            <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+
+               {/* Animated Badge */}
+               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent-sky/20 bg-accent-sky/5 text-accent-sky text-[10px] font-bold uppercase tracking-[0.2em] mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(14,165,233,0.1)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-sky animate-pulse" />
+                  Domain · {domain?.toUpperCase() || "OVERVIEW"}
                </div>
-               <h1 className="text-4xl md:text-6xl font-display font-bold text-pure-white mb-6 leading-tight">
-                  Smart Systems for <br /> <span className="italic text-accent-sky">{domain?.charAt(0).toUpperCase() + domain?.slice(1)} & Campuses</span>
+
+               {/* Headline (Scaled Down) */}
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-pure-white mb-5 leading-[1.15] text-balance max-w-4xl tracking-tight">
+                  Smart Systems for <br className="hidden sm:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-sky to-blue-400">
+                     {formattedDomain} Operations
+                  </span>
                </h1>
-               <div className="flex gap-4">
-                  <button className="px-8 py-3 bg-accent-sky text-brand-black font-bold rounded-xl shadow-xl shadow-sky-500/10">Explore Sub-Domains</button>
-                  <button className="px-8 py-3 border border-pure-white/20 text-pure-white font-bold rounded-xl hover:bg-white/5 backdrop-blur-sm">Talk to Expert</button>
+
+               {/* Supporting Subheadline (Scaled Down) */}
+               <p className="text-pure-white/60 text-sm md:text-base max-w-xl mb-8 leading-relaxed text-balance">
+                  Deploy intelligent automation, real-time analytics, and secure access systems tailored specifically for your operational environment.
+               </p>
+
+               {/* CTAs (Scaled Down) */}
+               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center">
+                  <button className="px-6 py-3.5 text-sm bg-accent-sky text-brand-black font-bold rounded-xl shadow-lg shadow-sky-500/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-sky-500/25 flex items-center justify-center gap-2 group w-full sm:w-auto">
+                     Explore Sub-Domains
+                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                  <button className="px-6 py-3.5 text-sm border border-pure-white/20 text-pure-white font-bold rounded-xl hover:bg-pure-white/5 hover:border-pure-white/40 backdrop-blur-sm transition-all duration-300 w-full sm:w-auto">
+                     Talk to Expert
+                  </button>
                </div>
             </div>
 
@@ -65,40 +92,37 @@ export default function DomainDetail() {
          </section>
 
          {/* ── OVERVIEW ── */}
-         <section className="py-24 bg-light-gray">
-            <div className="container mx-auto px-6">
-               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                  <div>
-                     <div className="w-16 h-1 bg-brand-walnut mb-8" />
-                     <h2 className="text-3xl font-display font-bold text-slate-blue mb-8 leading-[1.1]">End-to-end smart infrastructure <br /> for {domain} environments</h2>
-                     <p className="text-slate-blue/60 text-lg leading-relaxed mb-8">
-                        We refine every touchpoint of your {domain} facility. From automated entry points to intelligent energy systems, our solutions create a synchronized ecosystem.
-                     </p>
-                     <div className="space-y-4">
-                        {["Integrated access solutions", "Real-time presence analytics", "Proactive facility alerts"].map((pt, i) => (
-                           <div key={i} className="flex items-center gap-3">
-                              <div className="w-5 h-5 rounded-full bg-accent-teal/10 flex items-center justify-center text-accent-teal">
-                                 <CheckCircle2 size={14} />
-                              </div>
-                              <span className="text-sm font-bold text-slate-blue/70">{pt}</span>
-                           </div>
-                        ))}
-                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                     {[
-                        { v: "13+", l: "Sub-domains" },
-                        { v: "98%", l: "Uptime Rate" },
-                        { v: "40%", l: "Efficiency Gain" },
-                        { v: "200+", l: "Deployments" }
-                     ].map((stat, i) => (
-                        <div key={i} className="bg-pure-white p-10 rounded-3xl border border-cool-gray/30 text-center walnut-glow">
-                           <div className="text-4xl font-display font-bold text-brand-walnut mb-2">{stat.v}</div>
-                           <div className="text-[10px] font-bold text-slate-blue/40 uppercase tracking-widest">{stat.l}</div>
+         <section className="py-16 md:py-24 bg-light-gray">
+            <div className="container mx-auto px-6 max-w-3xl flex flex-col items-center text-center">
+
+               {/* Centered Decorative Line */}
+               <div className="w-16 h-1 rounded-full bg-brand-walnut mb-6 md:mb-8" />
+
+               {/* Heading */}
+               <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-blue mb-6 leading-tight text-balance">
+                  End-to-end smart infrastructure <br className="hidden sm:block" />
+                  for {domain} environments
+               </h2>
+
+               {/* Paragraph */}
+               <p className="text-slate-blue/60 text-base md:text-lg leading-relaxed mb-10 text-balance">
+                  We refine every touchpoint of your {domain} facility. From automated entry points to intelligent energy systems, our solutions create a synchronized ecosystem.
+               </p>
+
+               {/* Centered Features List */}
+               <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8">
+                  {["Integrated access solutions", "Real-time presence analytics", "Proactive facility alerts"].map((pt, i) => (
+                     <div key={i} className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-accent-teal/10 flex items-center justify-center text-accent-teal shrink-0">
+                           <CheckCircle2 size={14} strokeWidth={2.5} />
                         </div>
-                     ))}
-                  </div>
+                        <span className="text-sm md:text-base font-bold text-slate-blue/80">
+                           {pt}
+                        </span>
+                     </div>
+                  ))}
                </div>
+
             </div>
          </section>
 
