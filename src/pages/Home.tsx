@@ -81,8 +81,8 @@ export default function Home() {
               A rich portfolio of empowering and enabling solutions
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              We design intelligent systems that transform modern operations across diverse environments. 
-              From entry and attendance to security and tracking, we unify disconnected processes into 
+              We design intelligent systems that transform modern operations across diverse environments.
+              From entry and attendance to security and tracking, we unify disconnected processes into
               a seamless, structured workflow.
             </p>
           </div>
@@ -118,43 +118,45 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-                
+
                 {/* Color overlay - slightly tinted by domain color */}
                 <div
                   className="absolute inset-0 mix-blend-multiply opacity-0 transition-opacity duration-500 group-hover:opacity-40"
                   style={{ backgroundColor: domain.color }}
                 />
-                
+
                 {/* Gradient overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Content */}
                 <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
-                  <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
                     <h3 className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-md">
                       {domain.name}
                     </h3>
 
-                    {/* Hidden content that fades in */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col gap-4 mt-3">
-                      <div className="flex flex-wrap gap-2">
-                        {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
-                            style={{ backgroundColor: `${domain.color}30` }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                    {/* Hidden content that expands on hover */}
+                    <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
+                      <div className="overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col gap-4">
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
+                              style={{ backgroundColor: `${domain.color}30` }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
 
-                      <div
-                        className="mt-1 w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
-                        style={{ backgroundColor: domain.color }}
-                      >
-                        Explore {domain.name}
-                        <ArrowRight size={16} />
+                        <div
+                          className="w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
+                          style={{ backgroundColor: domain.color }}
+                        >
+                          Explore {domain.name}
+                          <ArrowRight size={16} />
+                        </div>
                       </div>
                     </div>
                   </div>
