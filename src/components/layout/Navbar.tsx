@@ -41,16 +41,16 @@ export default function Navbar() {
 
             {/* ── Logo ── */}
             <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-9 h-9 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
+              <div className="relative w-10 h-10 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
                                transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl">
-                <ShieldCheck size={18} className="text-white" strokeWidth={2.5} />
+                <ShieldCheck size={20} className="text-white" strokeWidth={2.5} />
               </div>
               <div className="hidden sm:block leading-none">
-                <span className="block font-display font-extrabold text-[16px] tracking-[-0.02em] text-slate-900
+                <span className="block font-display font-extrabold text-[20px] tracking-[-0.02em] text-slate-900
                                  group-hover:text-[#EA580C] transition-colors duration-300">
                   NX-SOLUTIONS
                 </span>
-                <span className="block text-[8px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
+                <span className="block text-[10px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
                   Smart Ecosystems
                 </span>
               </div>
