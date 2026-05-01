@@ -4,14 +4,6 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/src/lib/AuthContext";
 import { motion, AnimatePresence } from "motion/react";
 
-const navLinks = [
-  { name: "Domains",   path: "/domains"   },
-  { name: "Solutions", path: "/solutions" },
-  { name: "Projects",  path: "/projects"  },
-  { name: "Products",  path: "/products"  },
-  { name: "About",     path: "/about"     },
-];
-
 export default function Navbar() {
   const [isOpen, setIsOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -49,16 +41,16 @@ export default function Navbar() {
 
             {/* ── Logo ── */}
             <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-10 h-10 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
+              <div className="relative w-9 h-9 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
                                transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl">
-                <ShieldCheck size={20} className="text-white" strokeWidth={2.5} />
+                <ShieldCheck size={18} className="text-white" strokeWidth={2.5} />
               </div>
               <div className="hidden sm:block leading-none">
-                <span className="block font-display font-extrabold text-[20px] tracking-[-0.02em] text-slate-900
+                <span className="block font-display font-extrabold text-[16px] tracking-[-0.02em] text-slate-900
                                  group-hover:text-[#EA580C] transition-colors duration-300">
                   NX-SOLUTIONS
                 </span>
-                <span className="block text-[10px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
+                <span className="block text-[8px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
                   Smart Ecosystems
                 </span>
               </div>
@@ -239,6 +231,31 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
+  );
+}
+
+function MobileNavLink({ to, label, active, onClick }: {
+  to: string; label: string; active: boolean; onClick: () => void; key?: string;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${
+        active
+          ? "text-[#EA580C] bg-[#EA580C]/10"
+          : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+      }`}
+    >
+      {active && (
+        <motion.span
+          layoutId="mobile-indicator"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-[#EA580C] rounded-full"
+          transition={{ type: "spring", stiffness: 500, damping: 35 }}
+        />
+      )}
+      <span className={active ? "ml-2" : ""}>{label}</span>
+    </Link>
   );
 }
 

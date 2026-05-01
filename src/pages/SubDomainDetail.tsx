@@ -19,11 +19,11 @@ import {
 import { useState } from "react";
 
 const solutions = [
-   { id: "S01", name: "Smart Occupancy Tracking", stats: { acc: "94%", refresh: "Live", saving: "40%", setup: "2 days" } },
-   { id: "S02", name: "Entry Monitoring System", stats: { acc: "99%", refresh: "Real-time", saving: "25%", setup: "3 days" } },
-   { id: "S03", name: "Resource Tracking", stats: { acc: "92%", refresh: "Batch", saving: "30%", setup: "5 days" } },
-   { id: "S04", name: "Silent Zone Control", stats: { acc: "96%", refresh: "Live", saving: "15%", setup: "1 day" } },
-   { id: "S05", name: "Usage Analytics", stats: { acc: "100%", refresh: "Daily", saving: "50%", setup: "Inst." } },
+   { id: "S01", name: "Smart Occupancy Tracking", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "94%", refresh: "Live", saving: "40%", setup: "2 days" } },
+   { id: "S02", name: "Entry Monitoring System", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "99%", refresh: "Real-time", saving: "25%", setup: "3 days" } },
+   { id: "S03", name: "Resource Tracking", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "92%", refresh: "Batch", saving: "30%", setup: "5 days" } },
+   { id: "S04", name: "Silent Zone Control", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "96%", refresh: "Live", saving: "15%", setup: "1 day" } },
+   { id: "S05", name: "Usage Analytics", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "100%", refresh: "Daily", saving: "50%", setup: "Inst." } },
 ];
 
 export default function SubDomainDetail() {
@@ -34,7 +34,7 @@ export default function SubDomainDetail() {
    const domainName = domainData?.name || (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Domain");
 
    // Since subdomain is a hyphenated string, let's format it for display
-   const subdomainName = domainData?.subdomains.find(sd =>
+   const subdomainName = domainData?.subdomains?.find(sd =>
       sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
    ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
 
@@ -83,29 +83,44 @@ export default function SubDomainDetail() {
          </section>
 
          {/* ── SOLUTION EXPERIENCE (Video + List) ── */}
-         <section className="py-24 bg-pure-white overflow-hidden">
+         <section className="py-10 md:py-14 bg-pure-white">
             <div className="container mx-auto px-6">
-               <div className="mb-16">
-                  <span className="text-[10px] font-bold text-brand-walnut tracking-[.3em] uppercase mb-1">Solutions</span>
-                  <h2 className="text-3xl font-display font-bold text-slate-blue mb-4">Experience our smart solutions</h2>
-                  <p className="text-slate-blue/40 text-sm">Select a solution below to see it in action.</p>
+
+               {/* Header */}
+               <div className="mb-6 md:mb-8 max-w-5xl mx-auto text-center md:text-left">
+                  <span className="text-[10px] font-bold text-brand-walnut tracking-[.3em] uppercase mb-1 block">
+                     Solutions
+                  </span>
+                  <h2 className="text-xl md:text-2xl font-display font-bold text-slate-blue mb-2 leading-tight">
+                     Experience our smart solutions
+                  </h2>
+                  <p className="text-slate-blue/50 text-xs md:text-sm">
+                     Select a solution below to see it in action.
+                  </p>
                </div>
 
                {/* Video Mockup */}
-               <div className="relative aspect-video rounded-[3rem] bg-brand-black overflow-hidden border-8 border-light-cream shadow-2xl mb-12 flex flex-col justify-end group">
+               <div className="relative w-full max-w-5xl mx-auto aspect-video rounded-2xl md:rounded-[2rem] bg-brand-black overflow-hidden border-4 md:border-[6px] border-light-cream shadow-xl mb-10 md:mb-12 flex flex-col justify-end group">
                   <div className="absolute inset-0 grid-bg opacity-10" />
+
                   <div className="absolute inset-0 flex items-center justify-center">
-                     <button className="w-20 h-20 rounded-full border-2 border-accent-gold bg-accent-gold/10 text-accent-gold flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
-                        <Play size={32} className="ml-1" />
+                     <button className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-accent-gold bg-accent-gold/10 text-accent-gold flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
+                        <Play size={24} className="ml-1 md:w-6 md:h-6" />
                      </button>
                   </div>
 
-                  <div className="relative z-10 p-10 bg-gradient-to-t from-brand-black/90 to-transparent flex flex-col md:flex-row justify-between items-end gap-6">
+                  <div className="relative z-10 p-5 md:p-8 bg-gradient-to-t from-brand-black/95 to-transparent flex flex-col sm:flex-row justify-between sm:items-end gap-3 md:gap-4">
                      <div>
-                        <h3 className="text-2xl font-display font-bold text-pure-white mb-2">{solutions[activeSol].name}</h3>
-                        <p className="text-pure-white/40 text-sm">Real-world walkthrough · Implementation scenario</p>
+                        <h3 className="text-lg md:text-xl font-display font-bold text-pure-white mb-1">
+                           {solutions[activeSol]?.name}
+                        </h3>
+                        <p className="text-pure-white/50 text-[11px] md:text-xs">
+                           Real-world walkthrough · Implementation scenario
+                        </p>
                      </div>
-                     <div className="px-6 py-2 bg-brand-walnut/70 border border-accent-gold text-accent-gold text-[10px] font-bold uppercase rounded-full">Live Demo</div>
+                     <div className="self-start sm:self-auto px-4 py-1.5 bg-brand-walnut/70 border border-accent-gold text-accent-gold text-[9px] md:text-[10px] font-bold uppercase rounded-full tracking-wider">
+                        Live Demo
+                     </div>
                   </div>
 
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
@@ -117,20 +132,50 @@ export default function SubDomainDetail() {
                   </div>
                </div>
 
-               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                  {solutions.map((sol, i) => (
-                     <button
-                        key={sol.id}
-                        onClick={() => setActiveSol(i)}
-                        className={`flex flex-col items-start gap-4 p-8 rounded-3xl min-w-[200px] border transition-all ${activeSol === i ? "bg-light-cream border-brand-walnut/40 walnut-glow" : "bg-pure-white border-cool-gray/30 hover:border-cool-gray"}`}
-                     >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeSol === i ? "bg-brand-walnut text-pure-white" : "bg-slate-blue/5 text-slate-blue/30"}`}>
-                           <Layers size={18} />
-                        </div>
-                        <span className="text-sm font-bold text-left">{sol.name}</span>
-                     </button>
-                  ))}
+               {/* Fully Visible Solution Cards Grid */}
+               <div className="max-w-5xl mx-auto">
+                  {/* Changed from flex overflow-x-auto to a responsive Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-5">
+                     {solutions.map((sol, i) => (
+                        <button
+                           key={sol.id || i}
+                           onClick={() => setActiveSol(i)}
+                           className={`relative flex flex-col items-start rounded-xl md:rounded-2xl overflow-hidden border transition-all duration-300 text-left group focus:outline-none ${activeSol === i
+                              ? "border-brand-walnut ring-2 ring-brand-walnut/20 shadow-md transform -translate-y-1"
+                              : "border-cool-gray/30 hover:border-cool-gray/60 hover:shadow-sm"
+                              }`}
+                        >
+                           {/* Image Area */}
+                           <div className="w-full h-24 sm:h-28 md:h-32 bg-slate-100 overflow-hidden relative border-b border-cool-gray/20">
+                              <img
+                                 src={sol.image || "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"}
+                                 alt={sol.name}
+                                 className={`w-full h-full object-cover transition-transform duration-700 ${activeSol === i ? "scale-105" : "group-hover:scale-110"
+                                    }`}
+                              />
+                              {/* Dark overlay on inactive cards */}
+                              {activeSol !== i && (
+                                 <div className="absolute inset-0 bg-brand-black/10 transition-colors duration-300 group-hover:bg-transparent" />
+                              )}
+                           </div>
+
+                           {/* Text Area */}
+                           <div
+                              className={`w-full p-3 md:p-4 transition-colors duration-300 flex-1 flex items-center ${activeSol === i ? "bg-light-cream" : "bg-pure-white group-hover:bg-slate-50"
+                                 }`}
+                           >
+                              <span
+                                 className={`text-xs md:text-[13px] lg:text-sm font-bold leading-tight ${activeSol === i ? "text-brand-walnut" : "text-slate-blue"
+                                    }`}
+                              >
+                                 {sol.name}
+                              </span>
+                           </div>
+                        </button>
+                     ))}
+                  </div>
                </div>
+
             </div>
          </section>
 
@@ -140,7 +185,7 @@ export default function SubDomainDetail() {
                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
                   <div>
                      <div className="inline-block px-3 py-1 bg-brand-walnut text-pure-white text-[10px] font-bold uppercase tracking-widest rounded-md mb-6">Selected Solution</div>
-                     <h3 className="text-3xl font-display font-bold text-slate-blue mb-6">{solutions[activeSol].name}</h3>
+                     <h3 className="text-3xl font-display font-bold text-slate-blue mb-6">{solutions[activeSol]?.name}</h3>
                      <p className="text-slate-blue/60 leading-relaxed text-lg mb-10">
                         Proprietary algorithms integrated with industrial hardware to provide reliable, real-time outcomes. No manual effort required.
                      </p>
@@ -162,10 +207,10 @@ export default function SubDomainDetail() {
 
                   <div className="grid grid-cols-2 gap-4">
                      {[
-                        { l: "Accuracy Rate", v: solutions[activeSol].stats.acc },
-                        { l: "Data Refresh", v: solutions[activeSol].stats.refresh },
-                        { l: "Manual Effort Saved", v: solutions[activeSol].stats.saving },
-                        { l: "Setup Time", v: solutions[activeSol].stats.setup }
+                        { l: "Accuracy Rate", v: solutions[activeSol]?.stats?.acc || "90%+" },
+                        { l: "Data Refresh", v: solutions[activeSol]?.stats?.refresh || "Live" },
+                        { l: "Manual Effort Saved", v: solutions[activeSol]?.stats?.saving || "20%+" },
+                        { l: "Setup Time", v: solutions[activeSol]?.stats?.setup || "Quick" }
                      ].map((stat, i) => (
                         <div key={i} className="bg-pure-white p-10 rounded-[2.5rem] border border-cool-gray/50 text-center shadow-sm">
                            <div className="text-3xl font-display font-bold text-brand-walnut mb-2">{stat.v}</div>
