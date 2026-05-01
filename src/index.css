@@ -1,38 +1,87 @@
 @import "tailwindcss";
 
+:root {
+  /* Primary Colors */
+  --primary: #38BDF8; /* Light Sky Blue */
+  --primary-hover: #0EA5E9;
+
+  /* Secondary */
+  --secondary: #FB923C; /* Soft Coral/Orange (Contrast) */
+  --secondary-dark: #EA580C;
+
+  /* Backgrounds */
+  --bg-main: #F8FAFC; /* Clean Slate 50 */
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+
+  /* Accent */
+  --accent: #E0F2FE; /* Sky 100 */
+  --accent-strong: #BAE6FD; /* Sky 200 */
+
+  /* Text Colors */
+  --text-dark: #0F172A; /* Slate 900 */
+  --text-body: #334155; /* Slate 700 */
+  --text-light: #64748B; /* Slate 500 */
+
+  /* Status Colors */
+  --success: #22C55E;
+  --error: #EF4444;
+
+  /* Borders & Shadows */
+  --border-light: #E2E8F0;
+  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 3px rgba(15, 23, 42, 0.02);
+}
+
 @theme {
+  /* New Palette Utilities */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+  --color-bg-main: var(--bg-main);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-card: var(--bg-card);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-text-dark: var(--text-dark);
+  --color-text-body: var(--text-body);
+  --color-text-light: var(--text-light);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-border-light: var(--border-light);
+
   /* Legacy Aliases for Seamless Theme Transition */
-  --color-slate-blue: #111111;
-  --color-pure-white: #FAF9F7;
-  --color-light-cream: #F3EEE8;
-  --color-accent-teal: #C8A97E;
+  --color-slate-blue: var(--text-dark);
+  --color-pure-white: var(--bg-card);
+  --color-light-cream: var(--bg-surface);
+  --color-accent-teal: var(--accent);
   
   /* Brand Palette - Light Theme */
-  --color-brand-walnut: #6B4F3A;
-  --color-brand-black: #111111;
-  --color-brand-cream: #F3EEE8;
+  --color-brand-walnut: var(--secondary-dark);
+  --color-brand-black: var(--text-dark);
+  --color-brand-cream: var(--bg-surface);
   
-  --color-soft-white: #FAF9F7;
-  --color-warm-cream: #F3EEE8;
-  --color-ivory-beige: #EDE5DC;
-  --color-rich-black: #111111;
-  --color-charcoal: #2D2D2D;
-  --color-walnut-brown: #6B4F3A;
-  --color-dark-coffee: #4B3527;
-  --color-warm-gold-beige: #C8A97E;
-  --color-soft-taupe: #D8CFC5;
-  --color-cool-gray: #ECECEC;
-  --color-light-gray: #F5F5F5;
+  --color-soft-white: var(--bg-main);
+  --color-warm-cream: var(--bg-surface);
+  --color-ivory-beige: var(--bg-surface);
+  --color-rich-black: var(--text-dark);
+  --color-charcoal: var(--text-body);
+  --color-walnut-brown: var(--secondary-dark);
+  --color-dark-coffee: var(--secondary-dark);
+  --color-warm-gold-beige: var(--accent);
+  --color-soft-taupe: var(--secondary);
+  --color-cool-gray: var(--border-light);
+  --color-light-gray: var(--bg-card);
 
   /* Dark Theme Palette */
-  --color-matte-black: #0D0D0D;
-  --color-dark-slate: #1A1A1A;
-  --color-dark-gray: #2A2A2A;
+  --color-matte-black: var(--text-dark);
+  --color-dark-slate: var(--text-body);
+  --color-dark-gray: var(--secondary-dark);
 
   /* Accent Colors (Legacy compatibility where needed) */
-  --color-accent-sky: #38BDF8;
-  --color-accent-gold: #C8A97E;
-  --color-accent-taupe: #D8CFC5;
+  --color-accent-sky: var(--primary);
+  --color-accent-gold: var(--accent-strong);
+  --color-accent-taupe: var(--secondary);
 
   /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -42,34 +91,51 @@
 
 @layer base {
   body {
-    @apply font-sans text-charcoal bg-soft-white;
+    background: var(--bg-main);
+    color: var(--text-body);
+    @apply font-sans;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold tracking-tight text-brand-black;
+    @apply font-display font-semibold tracking-tight;
+    color: var(--text-dark);
   }
 }
 
+.card {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--text-dark);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
 .glass-morphism {
-  @apply bg-white/10 backdrop-blur-md border border-white/20;
+  @apply bg-white/40 backdrop-blur-md border border-white/50;
 }
 
 .walnut-glow {
-  box-shadow: 0 0 20px rgba(107, 79, 58, 0.2);
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.2);
 }
 
 .brand-gradient {
-  background: linear-gradient(135deg, var(--color-brand-walnut) 0%, #4B3527 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 .dark-gradient {
-  background: linear-gradient(135deg, var(--color-deep-navy) 0%, var(--color-dark-blue) 100%);
+  background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--text-dark) 100%);
 }
 
 .grid-bg {
   background-image: 
-    linear-gradient(var(--color-cool-gray) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-cool-gray) 1px, transparent 1px);
+    linear-gradient(var(--border-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center;
 }
@@ -81,7 +147,7 @@
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-cool-gray/30 rounded-full;
+  @apply bg-secondary/30 rounded-full;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
