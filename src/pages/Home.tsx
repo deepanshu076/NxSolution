@@ -21,6 +21,7 @@ import {
   Cctv,
   BatteryWarning
 } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { domains } from "../constants/domains";
@@ -32,6 +33,8 @@ const getTagsForDomain = (id: string) => {
 };
 
 export default function Home() {
+  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
@@ -184,9 +187,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4 md:mb-6 text-balance text-white">
               Smart Industrial Solutions
             </h2>
-            <h3 className="text-xl md:text-2xl font-display font-bold mb-4 md:mb-6 text-balance text-white">
-              Smart System Solutions
-            </h3>
+
             <p className="text-soft-white/60 text-base md:text-lg lg:text-xl font-medium px-4">
               Purpose-built technology components integrated into operational ecosystems.
             </p>
@@ -194,12 +195,12 @@ export default function Home() {
 
           <div className="flex gap-4 md:gap-5 lg:gap-6 overflow-x-auto pb-8 md:pb-10 lg:pb-12 px-4 snap-x snap-mandatory scrollbar-hide">
             {[
-              { name: "Smart Access Systems", image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&q=80" },
-              { name: "Attendance Systems", image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80" },
-              { name: "Security Intelligence", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80" },
-              { name: "Surveillance Monitoring", image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&q=80" },
-              { name: "Energy Optimization", image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80" },
-              { name: "Workflow Automation", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80" }
+              { name: "Smart Access Systems", image: "/images/smart access system.jpeg" },
+              { name: "Attendance Systems", image: "/images/attendance system.jpeg" },
+              { name: "Security Intelligence", image: "/images/security intelligence.jpeg" },
+              { name: "Surveillance Monitoring", image: "/images/survillance monitoring.jpeg" },
+              { name: "Energy Optimization", image: "/images/energy optimization.jpeg" },
+              { name: "Workflow Automation", image: "/images/workflow automation.jpeg" }
             ].map((sol, i) => (
               <div
                 key={i}
@@ -238,7 +239,10 @@ export default function Home() {
             <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-soft-white to-transparent z-10 pointer-events-none" />
             <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-soft-white to-transparent z-10 pointer-events-none" />
 
-            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-5 md:gap-6 px-4">
+            <div
+              className="flex w-max animate-marquee gap-5 md:gap-6 px-4 py-4"
+              style={{ animationPlayState: isMarqueePaused ? "paused" : "running" }}
+            >
               {[
                 { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
                 { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
@@ -249,14 +253,19 @@ export default function Home() {
                 { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
                 { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" }
               ].map((t, i) => (
-                <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-warm-cream/20 border border-soft-taupe/30 flex flex-col justify-between group hover:bg-soft-white transition-all hover:shadow-lg hover:shadow-brand-black/5 aspect-video md:aspect-[21/9]">
+                <div
+                  key={i}
+                  onMouseEnter={() => setIsMarqueePaused(true)}
+                  onMouseLeave={() => setIsMarqueePaused(false)}
+                  className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-white border border-soft-taupe/40 flex flex-col justify-between transition-all duration-300 hover:border-brand-walnut hover:shadow-2xl hover:shadow-brand-walnut/20 hover:-translate-y-2 cursor-pointer aspect-video md:aspect-[21/9]"
+                >
                   <div className="mb-4 md:mb-6">
                     <div className="flex gap-0.5 md:gap-1 mb-3 md:mb-4 text-[#EF9F27] text-sm md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
                     <p className="text-brand-black/80 italic text-sm md:text-base lg:text-lg font-medium leading-relaxed">"{t.quote}"</p>
                   </div>
                   <div>
                     <div className="font-bold text-brand-black text-sm md:text-base lg:text-lg">{t.author}</div>
-                    <div className="text-[10px] text-brand-black/40 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
+                    <div className="text-[10px] text-brand-black/50 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
                   </div>
                 </div>
               ))}

@@ -230,7 +230,32 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
+  );
+}
+
+function MobileNavLink({ to, label, active, onClick }: {
+  to: string; label: string; active: boolean; onClick: () => void; key?: string;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${
+        active
+          ? "text-[#EA580C] bg-[#EA580C]/10"
+          : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+      }`}
+    >
+      {active && (
+        <motion.span
+          layoutId="mobile-indicator"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-[#EA580C] rounded-full"
+          transition={{ type: "spring", stiffness: 500, damping: 35 }}
+        />
+      )}
+      <span className={active ? "ml-2" : ""}>{label}</span>
+    </Link>
   );
 }
 
