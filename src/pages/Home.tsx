@@ -314,24 +314,34 @@ export default function Home() {
             <h3 className="text-lg md:text-xl font-bold text-brand-black/90 leading-tight mt-2 md:mt-3">Trusted by Forward-Thinking Organizations</h3>
           </div>
 
-          <div className="flex gap-5 md:gap-6 overflow-x-auto pb-8 md:pb-10 lg:pb-12 px-4 snap-x snap-mandatory scrollbar-hide">
-            {[
-              { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
-              { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
-              { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
-              { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" }
-            ].map((t, i) => (
-              <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-warm-cream/20 border border-soft-taupe/30 flex flex-col justify-between snap-center group hover:bg-soft-white transition-all hover:shadow-lg hover:shadow-brand-black/5 aspect-video md:aspect-[21/9]">
-                <div className="mb-4 md:mb-6">
-                  <div className="flex gap-0.5 md:gap-1 mb-3 md:mb-4 text-[#EF9F27] text-sm md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
-                  <p className="text-brand-black/80 italic text-sm md:text-base lg:text-lg font-medium leading-relaxed">"{t.quote}"</p>
+          <div className="relative w-full overflow-hidden pb-8 md:pb-10 lg:pb-12">
+            {/* Left and Right Fade Masks for a seamless look */}
+            <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-soft-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-soft-white to-transparent z-10 pointer-events-none" />
+
+            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-5 md:gap-6 px-4">
+              {[
+                { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
+                { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
+                { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
+                { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" },
+                { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
+                { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
+                { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
+                { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" }
+              ].map((t, i) => (
+                <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-warm-cream/20 border border-soft-taupe/30 flex flex-col justify-between group hover:bg-soft-white transition-all hover:shadow-lg hover:shadow-brand-black/5 aspect-video md:aspect-[21/9]">
+                  <div className="mb-4 md:mb-6">
+                    <div className="flex gap-0.5 md:gap-1 mb-3 md:mb-4 text-[#EF9F27] text-sm md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
+                    <p className="text-brand-black/80 italic text-sm md:text-base lg:text-lg font-medium leading-relaxed">"{t.quote}"</p>
+                  </div>
+                  <div>
+                    <div className="font-bold text-brand-black text-sm md:text-base lg:text-lg">{t.author}</div>
+                    <div className="text-[10px] text-brand-black/40 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-bold text-brand-black text-sm md:text-base lg:text-lg">{t.author}</div>
-                  <div className="text-[10px] text-brand-black/40 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
