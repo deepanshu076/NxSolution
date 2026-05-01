@@ -1,8 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  Menu, X, ShieldCheck, ChevronRight, Home,
-  LayoutDashboard, LogIn, ArrowRight
-} from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/src/lib/AuthContext";
 import { motion, AnimatePresence } from "motion/react";
@@ -18,8 +15,8 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location                = useLocation();
-  const { user }                = useAuth();
+  const location = useLocation();
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -27,249 +24,98 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setIsOpen(false), [location.pathname]);
-
-  const segments   = location.pathname.split("/").filter(Boolean);
-  const isDeepPage = segments.length > 0;
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Domains", path: "/domains" },
+    { name: "Solutions", path: "/solutions" },
+    { name: "Projects", path: "/projects" },
+    { name: "Products", path: "/products" },
+    { name: "About", path: "/about" },
+  ];
 
   return (
-    <header className="fixed top-0 inset-x-0 z-[100]">
-
-      {/* ── Top walnut accent stripe ── */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#EA580C] to-transparent opacity-70" />
-
-      {/* ════════════════════════════════════
-          MAIN NAVBAR BAR — always 64px tall
-          Logo is never disturbed here
-         ════════════════════════════════════ */}
-      <div
-        className={`transition-all duration-500 ${
-          scrolled
-            ? "bg-[#0F172A]/98 backdrop-blur-2xl shadow-[0_8px_40px_-8px_rgba(0,0,0,0.6)]"
-            : "bg-[#0F172A]/90 backdrop-blur-xl"
-        }`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-[64px]">
-
-            {/* ── Logo ── */}
-            <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-9 h-9 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
-                              transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl">
-                <ShieldCheck size={18} className="text-white" strokeWidth={2.5} />
-              </div>
-              <div className="hidden sm:block leading-none">
-                <span className="block font-display font-extrabold text-[16px] tracking-[-0.02em] text-white
-                                 group-hover:text-[#EA580C] transition-colors duration-300">
-                  NX-SOLUTIONS
-                </span>
-                <span className="block text-[8px] font-bold uppercase tracking-[0.28em] text-[#EA580C]/70 mt-[3px]">
-                  Smart Ecosystems
-                </span>
-              </div>
-            </Link>
-
-            {/* ── Center nav links ── */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => {
-                const isActive = location.pathname.startsWith(link.path);
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? "text-[#EA580C]"
-                        : "text-white/50 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-underline"
-                        className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full bg-[#EA580C]"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* ── Right CTAs ── */}
-            <div className="hidden lg:flex items-center gap-2">
-              <div className="w-px h-5 bg-white/10 mr-1" />
-              {user ? (
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-white
-                             bg-[#EA580C] shadow-lg shadow-[#EA580C]/25
-                             hover:bg-[#C2410C] hover:-translate-y-0.5 hover:shadow-[#EA580C]/40
-                             active:translate-y-0 transition-all duration-200"
-                >
-                  <LayoutDashboard size={13} />
-                  Dashboard
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em]
-                               text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200"
-                  >
-                    <LogIn size={12} />
-                    Login
-                  </Link>
-                  <Link
-                    to="/contact"
-                    className="group relative overflow-hidden flex items-center gap-1.5 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em]
-                               bg-[#EA580C] text-white shadow-lg shadow-[#EA580C]/25
-                               hover:bg-[#C2410C] hover:-translate-y-0.5 hover:shadow-[#EA580C]/40
-                               active:translate-y-0 transition-all duration-200"
-                  >
-                    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500
-                                     bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 pointer-events-none" />
-                    <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                    Get Started
-                  </Link>
-                </>
-              )}
-            </div>
-
-            {/* ── Mobile hamburger ── */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-              className="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={isOpen ? "x" : "m"}
-                  initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  {isOpen ? <X size={20} /> : <Menu size={20} />}
-                </motion.div>
-              </AnimatePresence>
-            </button>
+    <nav className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300 bg-soft-white/95 backdrop-blur-xl h-20 shadow-lg border-b border-soft-taupe/20">
+      <div className="container mx-auto px-6 h-full flex items-center justify-between">
+        <Link to="/" className="flex items-center space-x-3 group">
+          <div className="w-10 h-10 bg-brand-black rounded-xl flex items-center justify-center transition-all group-hover:bg-brand-walnut group-hover:rotate-6 shadow-xl">
+            <ShieldCheck className="text-soft-white" size={24} />
           </div>
+          <div className="flex flex-col">
+            <span className="font-display font-bold text-xl tracking-tight leading-none text-brand-black">
+              NX-SOLUTIONS
+            </span>
+            <span className="text-[8px] font-bold uppercase tracking-[.3em] mt-1 text-brand-walnut">
+              Smart Ecosystems
+            </span>
+          </div>
+        </Link>
+
+        {/* Desktop Links */}
+        <div className="hidden lg:flex items-center space-x-1">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={`px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all rounded-full ${location.pathname === link.path
+                ? "text-brand-walnut bg-warm-cream"
+                : `text-brand-black/60 hover:text-brand-walnut hover:bg-warm-cream/50`
+                }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          <div className="w-px h-6 bg-cool-gray/30 mx-4" />
+
+          {user ? (
+            <Link to="/dashboard" className="px-6 py-2.5 bg-brand-walnut text-soft-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-xl shadow-brand-walnut/20 hover:scale-105 active:scale-95 transition-all">
+              Dashboard
+            </Link>
+          ) : (
+            <div className="flex items-center space-x-3">
+              <Link to="/login" className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-brand-black hover:text-brand-walnut transition-colors">
+                Login
+              </Link>
+              <Link to="/contact" className="px-6 py-2.5 bg-brand-black text-soft-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-brand-walnut transition-all">
+                Consultation
+              </Link>
+            </div>
+          )}
         </div>
 
-        {/* Bottom separator line */}
-        <div className="h-px bg-white/[0.06]" />
+        {/* Mobile Toggle */}
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-brand-black">
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
-      {/* ════════════════════════════════════
-          BREADCRUMB PILL — slides in below
-          navbar only on deep pages.
-          Width = content only, not full bar.
-         ════════════════════════════════════ */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isDeepPage && (
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="container mx-auto px-6 pb-2"
+            initial={{ opacity: 0, y: -20, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: "auto" }}
+            exit={{ opacity: 0, y: -20, height: 0 }}
+            className="lg:hidden bg-soft-white border-b border-soft-taupe/30 p-6 absolute top-full left-0 right-0 shadow-2xl overflow-hidden"
           >
-            <div className="inline-flex items-center gap-0.5 px-3 py-1 rounded-full bg-[#0a101d]/80 backdrop-blur-md border border-white/[0.07]">
-              <Link
-                to="/"
-                className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white/30 hover:text-[#EA580C] transition-colors whitespace-nowrap"
-              >
-                <Home size={8} strokeWidth={2.5} />
-                Home
-              </Link>
-              {segments.map((seg, i) => {
-                const path  = "/" + segments.slice(0, i + 1).join("/");
-                const label = seg.replace(/-/g, " ");
-                const last  = i === segments.length - 1;
-                return (
-                  <div key={path} className="flex items-center gap-0.5">
-                    <ChevronRight size={9} strokeWidth={2.5} className="text-white/15 mx-1" />
-                    {last ? (
-                      <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#EA580C] max-w-[160px] truncate whitespace-nowrap">
-                        {label}
-                      </span>
-                    ) : (
-                      <Link
-                        to={path}
-                        className="text-[9px] font-bold uppercase tracking-[0.18em] text-white/30 hover:text-[#EA580C] transition-colors max-w-[120px] truncate whitespace-nowrap"
-                      >
-                        {label}
-                      </Link>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── Mobile drawer ── */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden bg-[#0F172A] border-t border-white/[0.06]"
-          >
-            <div className="container mx-auto px-6 py-3 flex flex-col gap-0.5">
-              <MobileNavLink to="/" label="Home" active={location.pathname === "/"} onClick={() => setIsOpen(false)} />
-              {navLinks.map((l) => (
-                <MobileNavLink key={l.name} to={l.path} label={l.name} active={location.pathname.startsWith(l.path)} onClick={() => setIsOpen(false)} />
+            <div className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className="text-sm font-bold text-brand-black p-4 hover:bg-warm-cream rounded-xl transition-colors"
+                >
+                  {link.name}
+                </Link>
               ))}
-              <div className="flex gap-3 mt-4 pt-4 border-t border-white/[0.06]">
-                <Link
-                  to="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white/60 bg-white/5 hover:bg-white/10 hover:text-white transition-colors"
-                >
-                  <LogIn size={13} /> Login
-                </Link>
-                <Link
-                  to="/contact"
-                  onClick={() => setIsOpen(false)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
-                >
-                  <ArrowRight size={13} /> Get Started
-                </Link>
-              </div>
+              <hr className="border-soft-taupe/30" />
+              <Link to="/login" className="p-4 text-sm font-bold text-brand-walnut text-center">Member Login</Link>
+              <Link to="/contact" className="bg-brand-black text-soft-white p-4 rounded-xl text-center font-bold" onClick={() => setIsOpen(false)}>Get Started</Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </header>
-  );
-}
-
-function MobileNavLink({ to, label, active, onClick }: {
-  to: string; label: string; active: boolean; onClick: () => void;
-}) {
-  return (
-    <Link
-      to={to}
-      onClick={onClick}
-      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${
-        active
-          ? "text-[#EA580C] bg-[#EA580C]/10"
-          : "text-white/50 hover:text-white hover:bg-white/5"
-      }`}
-    >
-      {active && (
-        <motion.span
-          layoutId="mobile-indicator"
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-[#EA580C] rounded-full"
-          transition={{ type: "spring", stiffness: 500, damping: 35 }}
-        />
-      )}
-      <span className={active ? "ml-2" : ""}>{label}</span>
-    </Link>
   );
 }

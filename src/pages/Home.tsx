@@ -16,7 +16,12 @@ import {
   CheckCircle2,
   Play,
   ArrowUpRight,
-  Monitor
+  Monitor,
+  Hourglass,
+  ClipboardList,
+  ShieldAlert,
+  Cctv,
+  BatteryWarning
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -24,11 +29,11 @@ import { useState, useEffect } from "react";
 import { domains } from "../constants/domains";
 
 const problems = [
-  { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Clock, tag: "Access", color: "red" },
-  { id: "02", title: "Attendance Gaps", desc: "Manual registers miss absentees, create audit failures, and leave no reliable trail for compliance or payroll processing.", icon: Users, tag: "Attendance", color: "orange" },
-  { id: "03", title: "Unauthorized Access", desc: "Weak perimeter controls allow unauthorized personnel into restricted zones, creating safety and compliance risks.", icon: Shield, tag: "Security", color: "red" },
-  { id: "04", title: "Weak Surveillance", desc: "Blind spots and reactive-only monitoring leave critical incidents undetected until after damage is done.", icon: Activity, tag: "Surveillance", color: "slate" },
-  { id: "05", title: "Energy Waste", desc: "Unmonitored systems consume energy 24/7 regardless of occupancy, inflating operational costs significantly.", icon: Zap, tag: "Energy", color: "orange" },
+  { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Hourglass, tag: "Access", color: "red" },
+  { id: "02", title: "Attendance Gaps", desc: "Manual registers miss absentees, create audit failures, and leave no reliable trail for compliance or payroll processing.", icon: ClipboardList, tag: "Attendance", color: "orange" },
+  { id: "03", title: "Unauthorized Access", desc: "Weak perimeter controls allow unauthorized personnel into restricted zones, creating safety and compliance risks.", icon: ShieldAlert, tag: "Security", color: "red" },
+  { id: "04", title: "Weak Surveillance", desc: "Blind spots and reactive-only monitoring leave critical incidents undetected until after damage is done.", icon: Cctv, tag: "Surveillance", color: "slate" },
+  { id: "05", title: "Energy Waste", desc: "Unmonitored systems consume energy 24/7 regardless of occupancy, inflating operational costs significantly.", icon: BatteryWarning, tag: "Energy", color: "orange" },
 ];
 
 const getTagsForDomain = (id: string) => {
@@ -42,7 +47,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
-      <section className="relative py-16 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-center justify-center py-16 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
         <div className="absolute inset-0 opacity-10 flex gap-px">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex-1 bg-soft-white" />
@@ -76,8 +81,8 @@ export default function Home() {
               A rich portfolio of empowering and enabling solutions
             </h2>
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-              We design intelligent systems that transform modern operations across diverse environments. 
-              From entry and attendance to security and tracking, we unify disconnected processes into 
+              We design intelligent systems that transform modern operations across diverse environments.
+              From entry and attendance to security and tracking, we unify disconnected processes into
               a seamless, structured workflow.
             </p>
           </div>
@@ -113,43 +118,45 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-                
+
                 {/* Color overlay - slightly tinted by domain color */}
                 <div
                   className="absolute inset-0 mix-blend-multiply opacity-0 transition-opacity duration-500 group-hover:opacity-40"
                   style={{ backgroundColor: domain.color }}
                 />
-                
+
                 {/* Gradient overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Content */}
                 <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
-                  <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]">
                     <h3 className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-md">
                       {domain.name}
                     </h3>
 
-                    {/* Hidden content that fades in */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex flex-col gap-4 mt-3">
-                      <div className="flex flex-wrap gap-2">
-                        {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
-                            style={{ backgroundColor: `${domain.color}30` }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                    {/* Hidden content that expands on hover */}
+                    <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
+                      <div className="overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col gap-4">
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs px-2.5 py-1 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
+                              style={{ backgroundColor: `${domain.color}30` }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
 
-                      <div
-                        className="mt-1 w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
-                        style={{ backgroundColor: domain.color }}
-                      >
-                        Explore {domain.name}
-                        <ArrowRight size={16} />
+                        <div
+                          className="w-full py-2.5 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 text-sm text-brand-black shadow-lg"
+                          style={{ backgroundColor: domain.color }}
+                        >
+                          Explore {domain.name}
+                          <ArrowRight size={16} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -190,9 +197,9 @@ export default function Home() {
             <p className="text-charcoal/60 text-base md:text-lg lg:text-xl">Common friction points we eliminate across diverse industries</p>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 items-start lg:items-stretch">
+          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 items-start lg:items-stretch max-w-7xl mx-auto">
             {/* List Section */}
-            <div className="w-full lg:order-1 lg:w-[55%] overflow-x-auto lg:overflow-visible scrollbar-hide snap-x">
+            <div className="w-full lg:order-1 lg:w-[40%] overflow-x-auto lg:overflow-visible scrollbar-hide snap-x">
               <div className="flex lg:flex-col gap-3 md:gap-4 w-full px-4 lg:px-0">
                 {problems.map((prob, i) => (
                   <button
@@ -219,7 +226,7 @@ export default function Home() {
             </div>
 
             {/* Visual Section */}
-            <div className="w-full lg:order-2 lg:w-[45%] px-4 lg:px-0">
+            <div className="w-full lg:order-2 lg:w-[60%] px-4 lg:px-0">
               <div className="relative h-[280px] md:h-[380px] lg:h-[450px] w-full rounded-2xl md:rounded-[2rem] lg:rounded-[2.5rem] bg-brand-walnut/5 p-6 md:p-8 lg:p-12 border border-brand-walnut/10 shadow-inner overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
@@ -309,24 +316,34 @@ export default function Home() {
             <h3 className="text-lg md:text-xl font-bold text-brand-black/90 leading-tight mt-2 md:mt-3">Trusted by Forward-Thinking Organizations</h3>
           </div>
 
-          <div className="flex gap-5 md:gap-6 overflow-x-auto pb-8 md:pb-10 lg:pb-12 px-4 snap-x snap-mandatory scrollbar-hide">
-            {[
-              { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
-              { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
-              { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
-              { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" }
-            ].map((t, i) => (
-              <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-warm-cream/20 border border-soft-taupe/30 flex flex-col justify-between snap-center group hover:bg-soft-white transition-all hover:shadow-lg hover:shadow-brand-black/5 aspect-video md:aspect-[21/9]">
-                <div className="mb-4 md:mb-6">
-                  <div className="flex gap-0.5 md:gap-1 mb-3 md:mb-4 text-[#EF9F27] text-sm md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
-                  <p className="text-brand-black/80 italic text-sm md:text-base lg:text-lg font-medium leading-relaxed">"{t.quote}"</p>
+          <div className="relative w-full overflow-hidden pb-8 md:pb-10 lg:pb-12">
+            {/* Left and Right Fade Masks for a seamless look */}
+            <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-soft-white to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-soft-white to-transparent z-10 pointer-events-none" />
+
+            <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-5 md:gap-6 px-4">
+              {[
+                { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
+                { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
+                { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
+                { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" },
+                { quote: "Entry queues dropped by 80% in the first month of deployment.", author: "Rajesh Kumar", role: "Principal, Delhi University" },
+                { quote: "Real-time dashboards changed how we manage the factory floor.", author: "Priya Sharma", role: "Ops Head, AutoMech Ltd" },
+                { quote: "Energy costs dropped 35% after the optimization system went live.", author: "Ankit Joshi", role: "Facility Manager, Nexus Corp" },
+                { quote: "The security integration is seamless and highly reliable.", author: "Sneha Reddy", role: "CTO, TechPark India" }
+              ].map((t, i) => (
+                <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[400px] lg:min-w-[440px] p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl bg-warm-cream/20 border border-soft-taupe/30 flex flex-col justify-between group hover:bg-soft-white transition-all hover:shadow-lg hover:shadow-brand-black/5 aspect-video md:aspect-[21/9]">
+                  <div className="mb-4 md:mb-6">
+                    <div className="flex gap-0.5 md:gap-1 mb-3 md:mb-4 text-[#EF9F27] text-sm md:text-base lg:text-lg">{"★★★★★".split("").map((s, idx) => <span key={idx}>{s}</span>)}</div>
+                    <p className="text-brand-black/80 italic text-sm md:text-base lg:text-lg font-medium leading-relaxed">"{t.quote}"</p>
+                  </div>
+                  <div>
+                    <div className="font-bold text-brand-black text-sm md:text-base lg:text-lg">{t.author}</div>
+                    <div className="text-[10px] text-brand-black/40 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-bold text-brand-black text-sm md:text-base lg:text-lg">{t.author}</div>
-                  <div className="text-[10px] text-brand-black/40 uppercase tracking-[.3em] mt-1 font-extrabold">{t.role}</div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
