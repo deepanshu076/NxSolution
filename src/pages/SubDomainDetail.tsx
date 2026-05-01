@@ -83,7 +83,7 @@ export default function SubDomainDetail() {
          </section>
 
          {/* ── SOLUTION EXPERIENCE (Video + List) ── */}
-         <section className="py-10 md:py-14 bg-pure-white">
+         <section className="py-10 md:py-14 bg-pure-white overflow-hidden">
             <div className="container mx-auto px-6">
 
                {/* Header */}
@@ -100,7 +100,7 @@ export default function SubDomainDetail() {
                </div>
 
                {/* Video Mockup */}
-               <div className="relative w-full max-w-5xl mx-auto aspect-video rounded-2xl md:rounded-[2rem] bg-brand-black overflow-hidden border-4 md:border-[6px] border-light-cream shadow-xl mb-10 md:mb-12 flex flex-col justify-end group">
+               <div className="relative w-full max-w-5xl mx-auto aspect-video rounded-2xl md:rounded-[2rem] bg-brand-black overflow-hidden border-4 md:border-[6px] border-light-cream shadow-xl mb-10 flex flex-col justify-end group">
                   <div className="absolute inset-0 grid-bg opacity-10" />
 
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -132,42 +132,37 @@ export default function SubDomainDetail() {
                   </div>
                </div>
 
-               {/* Fully Visible Solution Cards Grid */}
+               {/* Horizontal Row of Image Cards with Hover Overlay */}
                <div className="max-w-5xl mx-auto">
-                  {/* Changed from flex overflow-x-auto to a responsive Grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-5">
+                  <div className="flex gap-4 md:gap-5 overflow-x-auto pb-8 pt-2 scrollbar-hide snap-x">
                      {solutions.map((sol, i) => (
                         <button
                            key={sol.id || i}
                            onClick={() => setActiveSol(i)}
-                           className={`relative flex flex-col items-start rounded-xl md:rounded-2xl overflow-hidden border transition-all duration-300 text-left group focus:outline-none ${activeSol === i
-                              ? "border-brand-walnut ring-2 ring-brand-walnut/20 shadow-md transform -translate-y-1"
-                              : "border-cool-gray/30 hover:border-cool-gray/60 hover:shadow-sm"
+                           className={`relative flex-shrink-0 w-64 sm:w-72 md:w-80 aspect-[4/3] rounded-2xl overflow-hidden transition-all duration-300 snap-start text-left group focus:outline-none ${activeSol === i
+                              ? "ring-4 ring-brand-walnut/40 shadow-xl transform -translate-y-1"
+                              : "border border-cool-gray/30 hover:shadow-lg"
                               }`}
                         >
-                           {/* Image Area */}
-                           <div className="w-full h-24 sm:h-28 md:h-32 bg-slate-100 overflow-hidden relative border-b border-cool-gray/20">
-                              <img
-                                 src={sol.image || "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"}
-                                 alt={sol.name}
-                                 className={`w-full h-full object-cover transition-transform duration-700 ${activeSol === i ? "scale-105" : "group-hover:scale-110"
-                                    }`}
-                              />
-                              {/* Dark overlay on inactive cards */}
-                              {activeSol !== i && (
-                                 <div className="absolute inset-0 bg-brand-black/10 transition-colors duration-300 group-hover:bg-transparent" />
-                              )}
-                           </div>
+                           {/* Full-Cover Background Image */}
+                           <img
+                              src={sol.image || "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"}
+                              alt={sol.name}
+                              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${activeSol === i ? "scale-105" : "group-hover:scale-110"
+                                 }`}
+                           />
 
-                           {/* Text Area */}
+                           {/* Default subtle tint for inactive cards (so they aren't raw images) */}
+                           {activeSol !== i && (
+                              <div className="absolute inset-0 bg-brand-black/10 transition-opacity duration-300 group-hover:opacity-0 pointer-events-none" />
+                           )}
+
+                           {/* Hover Gradient & Text Overlay */}
                            <div
-                              className={`w-full p-3 md:p-4 transition-colors duration-300 flex-1 flex items-center ${activeSol === i ? "bg-light-cream" : "bg-pure-white group-hover:bg-slate-50"
+                              className={`absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/30 to-transparent transition-opacity duration-300 flex items-end p-5 md:p-6 ${activeSol === i ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                                  }`}
                            >
-                              <span
-                                 className={`text-xs md:text-[13px] lg:text-sm font-bold leading-tight ${activeSol === i ? "text-brand-walnut" : "text-slate-blue"
-                                    }`}
-                              >
+                              <span className="text-pure-white font-bold text-sm md:text-base leading-tight transform translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
                                  {sol.name}
                               </span>
                            </div>
