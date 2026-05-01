@@ -1,7 +1,5 @@
-import { motion } from "motion/react";
 import {
   ArrowRight,
-  ChevronRight,
   Cpu,
   Globe,
   Shield,
@@ -24,17 +22,9 @@ import {
   BatteryWarning
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 import { domains } from "../constants/domains";
-
-const problems = [
-  { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Hourglass, tag: "Access", color: "red" },
-  { id: "02", title: "Attendance Gaps", desc: "Manual registers miss absentees, create audit failures, and leave no reliable trail for compliance or payroll processing.", icon: ClipboardList, tag: "Attendance", color: "orange" },
-  { id: "03", title: "Unauthorized Access", desc: "Weak perimeter controls allow unauthorized personnel into restricted zones, creating safety and compliance risks.", icon: ShieldAlert, tag: "Security", color: "red" },
-  { id: "04", title: "Weak Surveillance", desc: "Blind spots and reactive-only monitoring leave critical incidents undetected until after damage is done.", icon: Cctv, tag: "Surveillance", color: "slate" },
-  { id: "05", title: "Energy Waste", desc: "Unmonitored systems consume energy 24/7 regardless of occupancy, inflating operational costs significantly.", icon: BatteryWarning, tag: "Energy", color: "orange" },
-];
+import OperationalChallenges from "../components/home/OperationalChallenges";
 
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
@@ -42,8 +32,6 @@ const getTagsForDomain = (id: string) => {
 };
 
 export default function Home() {
-  const [activeProblem, setActiveProblem] = useState(0);
-
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
@@ -187,78 +175,7 @@ export default function Home() {
       </section>
 
       {/* ── OPERATIONAL CHALLENGE SECTION ── */}
-      <section className="py-12 md:py-16 lg:py-20 bg-soft-white overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10 md:mb-12 lg:mb-16 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-brand-black mb-3 md:mb-4">Challenges faced by industries</h2>
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2 md:mb-3">
-              Operational Challenges
-            </h3>
-            <p className="text-charcoal/60 text-base md:text-lg lg:text-xl">Common friction points we eliminate across diverse industries</p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-12 items-start lg:items-stretch max-w-7xl mx-auto">
-            {/* List Section */}
-            <div className="w-full lg:order-1 lg:w-[40%] overflow-x-auto lg:overflow-visible scrollbar-hide snap-x">
-              <div className="flex lg:flex-col gap-3 md:gap-4 w-full px-4 lg:px-0">
-                {problems.map((prob, i) => (
-                  <button
-                    key={prob.id}
-                    onClick={() => setActiveProblem(i)}
-                    className={`group relative px-4 md:px-5 lg:px-6 py-4 md:py-5 rounded-2xl transition-all duration-300 border flex items-center gap-4 lg:gap-6 snap-center shrink-0 lg:shrink-0 w-[280px] sm:w-[320px] lg:w-full ${activeProblem === i
-                      ? "bg-brand-walnut border-brand-walnut text-soft-white shadow-xl lg:scale-[1.02] z-10"
-                      : "bg-warm-cream/30 border-soft-taupe/20 text-brand-black hover:bg-warm-cream/50 hover:border-brand-walnut/30"
-                      }`}
-                  >
-                    <div className="flex-1 relative z-10 text-left">
-                      <h4 className="font-bold text-sm md:text-base lg:text-lg whitespace-normal leading-snug">
-                        {prob.title}
-                      </h4>
-                    </div>
-                    <ChevronRight
-                      size={18}
-                      className={`transition-all duration-300 relative z-10 hidden lg:block ${activeProblem === i ? "translate-x-1" : "opacity-0 group-hover:opacity-100"
-                        }`}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Visual Section */}
-            <div className="w-full lg:order-2 lg:w-[60%] px-4 lg:px-0">
-              <div className="relative h-[280px] md:h-[380px] lg:h-[450px] w-full rounded-2xl md:rounded-[2rem] lg:rounded-[2.5rem] bg-brand-walnut/5 p-6 md:p-8 lg:p-12 border border-brand-walnut/10 shadow-inner overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
-
-                <motion.div
-                  key={activeProblem}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="relative z-10 w-full flex flex-col items-center text-center"
-                >
-                  <div className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl bg-brand-walnut flex items-center justify-center text-soft-white mb-4 md:mb-6 lg:mb-8 shadow-xl shadow-brand-walnut/20">
-                    {(() => {
-                      const Icon = problems[activeProblem].icon;
-                      return <Icon size={28} className="md:w-8 md:h-8 lg:w-10 lg:h-10" />;
-                    })()}
-                  </div>
-
-                  <div className="max-w-xl">
-                    <h3 className="text-lg md:text-2xl lg:text-3xl font-display font-bold text-brand-black mb-2 md:mb-3 lg:mb-4">
-                      {problems[activeProblem].title}
-                    </h3>
-                    <p className="text-charcoal/70 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                      {problems[activeProblem].desc}
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <OperationalChallenges />
 
       {/* ── SOLUTIONS SECTION ── */}
       <section className="py-12 md:py-16 lg:py-20 bg-brand-black text-soft-white">
