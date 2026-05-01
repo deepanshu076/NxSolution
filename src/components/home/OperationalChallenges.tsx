@@ -21,11 +21,11 @@ export default function OperationalChallenges() {
   const [activeProblem, setActiveProblem] = useState(0);
 
   return (
-    <section className="min-h-[110vh] flex items-center py-16 md:py-20 bg-soft-white overflow-hidden">
-      <div className="container mx-auto px-6 max-w-6xl w-full">
-         <div className="text-center mb-10 md:mb-14 max-w-2xl mx-auto">
-           <h2 className="text-3xl md:text-5xl font-display font-bold text-brand-black mb-3">Operational Challenges</h2>
-           <p className="text-charcoal/60 text-base md:text-lg">Friction points we eliminate through high-performance automation</p>
+    <section className="py-10 md:py-16 lg:py-20 bg-soft-white overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 max-w-6xl w-full">
+         <div className="text-center mb-6 md:mb-10 lg:mb-14 max-w-2xl mx-auto">
+           <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-brand-black mb-2 md:mb-3">Operational Challenges</h2>
+           <p className="text-charcoal/60 text-xs md:text-sm lg:text-lg">Friction points we eliminate through high-performance automation</p>
          </div>
 
          <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
