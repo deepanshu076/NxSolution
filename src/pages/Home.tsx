@@ -78,24 +78,43 @@ export default function Home() {
       </section>
 
       {/* ── OVERVIEW SECTION ── */}
-      <section className="py-10 md:py-12 lg:py-14 bg-soft-white border-b border-soft-taupe/30">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-brand-black text-center mb-6 md:mb-8 text-opacity-80">
-              Overview
-            </h2>
-            <div className="max-w-4xl mx-auto text-center md:text-left">
-              <h3 className="text-lg md:text-xl font-bold text-brand-black/90 leading-tight mb-3 md:mb-4">
-                A rich portfolio of empowering and enabling solutions
+      <section className="relative py-24 md:py-32 bg-brand-black overflow-hidden border-b border-brand-black">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80" 
+            alt="Smart Systems Network" 
+            className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/90 to-brand-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-brand-black/20" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto md:mx-0">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-warm-gold-beige/20 bg-warm-gold-beige/10 text-warm-gold-beige font-bold text-xs uppercase tracking-[0.2em] mb-8">
+                <span className="w-2 h-2 rounded-full bg-warm-gold-beige animate-pulse" />
+                Overview
+              </div>
+              
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white leading-[1.2] mb-8 max-w-3xl">
+                A rich portfolio of <span className="text-transparent bg-clip-text bg-gradient-to-r from-warm-gold-beige to-[#EF9F27]">empowering</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF9F27] to-[#C0DD97]">enabling</span> solutions
               </h3>
-              <div className="grid grid-cols-1 gap-4 text-charcoal/70 text-sm md:text-base leading-relaxed">
-                <p>
-                  We design intelligent systems that transform modern operations across diverse environments.
-                  From entry and attendance to security and tracking, we unify disconnected processes into
+              
+              <div className="relative pl-6 md:pl-8 border-l-4 border-warm-gold-beige/40">
+                <p className="text-lg md:text-xl lg:text-2xl text-soft-white/80 leading-relaxed font-light">
+                  We design intelligent systems that transform modern operations across diverse environments. 
+                  From entry and attendance to security and tracking, we unify disconnected processes into 
                   a seamless, structured workflow.
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
