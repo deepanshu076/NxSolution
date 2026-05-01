@@ -25,8 +25,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Simulate checking session
-    const saved = localStorage.getItem("nx_user");
-    if (saved) setUser(JSON.parse(saved));
+    try {
+      const saved = localStorage.getItem("nx_user");
+      if (saved) setUser(JSON.parse(saved));
+    } catch (e) {
+      console.error("Auth session corrupted:", e);
+      localStorage.removeItem("nx_user");
+    }
     setIsLoading(false);
   }, []);
 

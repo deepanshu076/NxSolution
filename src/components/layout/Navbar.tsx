@@ -4,14 +4,6 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/src/lib/AuthContext";
 import { motion, AnimatePresence } from "motion/react";
 
-const navLinks = [
-  { name: "Domains",   path: "/domains"   },
-  { name: "Solutions", path: "/solutions" },
-  { name: "Projects",  path: "/projects"  },
-  { name: "Products",  path: "/products"  },
-  { name: "About",     path: "/about"     },
-];
-
 export default function Navbar() {
   const [isOpen, setIsOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
