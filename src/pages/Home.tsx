@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
-      <section className="relative py-16 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-center justify-center py-16 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
         <div className="absolute inset-0 opacity-10 flex gap-px">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex-1 bg-soft-white" />
