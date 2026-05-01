@@ -14,11 +14,18 @@ import {
   Clock,
   ArrowUpRight
 } from "lucide-react";
+import { domains } from "../constants/domains";
 
 export default function DomainDetail() {
   const { domain } = useParams();
   
-  const subDomains = [
+  const domainData = domains.find(d => d.id === domain);
+  const domainName = domainData?.name || (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Domain");
+
+  const subDomains = domainData?.subdomains.map(sd => ({
+    title: sd,
+    route: sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  })) || [
     { title: "Main Gate / Entry Area", route: "entry" },
     { title: "Admin Block", route: "admin" },
     { title: "Classrooms", route: "classrooms" },
@@ -29,7 +36,6 @@ export default function DomainDetail() {
     { title: "Parking Area", route: "parking" },
     { title: "Hostel Block", route: "hostel" },
   ];
-
   return (
     <div className="flex flex-col pt-20">
       {/* ── HERO ── */}
@@ -42,10 +48,10 @@ export default function DomainDetail() {
         
         <div className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
            <div className="px-5 py-1.5 rounded-full border border-accent-sky/30 bg-accent-sky/10 text-accent-sky text-[10px] font-bold uppercase tracking-[.3em] mb-8">
-              Domain · {domain?.toUpperCase()}
+              Domain · {domainName.toUpperCase()}
            </div>
            <h1 className="text-4xl md:text-6xl font-display font-bold text-pure-white mb-6 leading-tight">
-              Smart Systems for <br /> <span className="italic text-accent-sky">{domain?.charAt(0).toUpperCase() + domain?.slice(1)} & Campuses</span>
+              Smart Systems for <br /> <span className="italic text-accent-sky">{domainName}</span>
            </h1>
            <div className="flex gap-4">
               <button className="px-8 py-3 bg-accent-sky text-brand-black font-bold rounded-xl shadow-xl shadow-sky-500/10">Explore Sub-Domains</button>
@@ -65,9 +71,9 @@ export default function DomainDetail() {
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
               <div>
                  <div className="w-16 h-1 bg-brand-walnut mb-8" />
-                 <h2 className="text-3xl font-display font-bold text-slate-blue mb-8 leading-[1.1]">End-to-end smart infrastructure <br /> for {domain} environments</h2>
+                 <h2 className="text-3xl font-display font-bold text-slate-blue mb-8 leading-[1.1]">End-to-end smart infrastructure <br /> for {domainName} environments</h2>
                  <p className="text-slate-blue/60 text-lg leading-relaxed mb-8">
-                    We refine every touchpoint of your {domain} facility. From automated entry points to intelligent energy systems, our solutions create a synchronized ecosystem.
+                    We refine every touchpoint of your {domainName} facility. From automated entry points to intelligent energy systems, our solutions create a synchronized ecosystem.
                  </p>
                  <div className="space-y-4">
                     {["Integrated access solutions", "Real-time presence analytics", "Proactive facility alerts"].map((pt, i) => (
@@ -140,7 +146,7 @@ export default function DomainDetail() {
         <div className="container mx-auto px-6">
            <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
               <span className="text-xs font-bold text-brand-walnut uppercase tracking-[.2em] mb-4 block">Ecosystem</span>
-              <h2 className="text-3xl font-display font-bold text-slate-blue mb-16">Smart Systems for {domain?.toUpperCase()}</h2>
+              <h2 className="text-3xl font-display font-bold text-slate-blue mb-16">Smart Systems for {domainName.toUpperCase()}</h2>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
                  {[
@@ -168,7 +174,7 @@ export default function DomainDetail() {
       {/* ── CTA ── */}
       <section className="py-24 bg-brand-black relative">
         <div className="container mx-auto px-6 text-center z-10 relative">
-           <h2 className="text-3xl md:text-5xl font-display font-bold text-pure-white mb-8">Start Your {domain?.toUpperCase()} Transformation</h2>
+           <h2 className="text-3xl md:text-5xl font-display font-bold text-pure-white mb-8">Start Your {domainName.toUpperCase()} Transformation</h2>
            <div className="flex flex-wrap justify-center gap-6">
               <Link to="/consultation" className="px-10 py-5 bg-brand-walnut text-pure-white font-bold rounded-2xl transition-all hover:scale-105">Get Free Consultation</Link>
               <Link to="/contact" className="px-10 py-5 border border-pure-white/20 text-pure-white font-bold rounded-2xl transition-all hover:bg-white/5">Contact Support</Link>

@@ -21,30 +21,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const domainNames = [
-  "Colleges", "Schools", "Coaching Institutes", "Hostels", "Offices", "IT Companies", "Startups", "Banks", "Government Offices", "Apartments", "Housing Societies", "Gated Communities", "PG (Paying Guest)", "Rental Spaces", "Hotels", "Factories", "Airports"
-];
-
-const domains = domainNames.map((name, index) => {
-  const colors = ["#B5D4F4", "#C0DD97", "#F7C1C1", "#CECBF6", "#FAC775", "#9FE1CB", "#D3D1C7", "#F4C0D1"];
-  const images = [
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80", // Education
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80", // Office
-    "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80", // Residential
-    "https://images.unsplash.com/photo-1586773860418-d3b3a998ddd6?w=800&q=80", // Healthcare
-    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", // Manufacturing
-    "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=800&q=80", // Retail
-    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80", // Logistics
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80"  // Civic/Gov
-  ];
-  return {
-    id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-    name,
-    color: colors[index % colors.length],
-    image: images[index % images.length],
-    sub: "Smart · Integrated · Monitored"
-  };
-});
+import { domains } from "../constants/domains";
 
 const problems = [
   { id: "01", title: "Entry & Exit Delays", desc: "Long queues and manual gate checks slow down throughput, causing frustration and time loss across shifts, classes, and visitor flows.", icon: Clock, tag: "Access", color: "red" },
@@ -56,7 +33,7 @@ const problems = [
 
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
-  return domain && domain.sub ? domain.sub.split(' · ') : ["Smart", "Integrated", "Monitored"];
+  return domain ? domain.subdomains : ["Smart", "Integrated", "Monitored"];
 };
 
 export default function Home() {
