@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
+import { Settings, Eye, Activity, Shield, Zap } from "lucide-react";
 
 import OperationalChallenges from "../components/home/OperationalChallenges";
 import DomainSection from "../components/home/DomainSection";
@@ -37,6 +39,44 @@ const solutions = [
   }
 ];
 
+// Added the missing steps array
+const steps = [
+  {
+    title: "Integration",
+    desc: "Seamlessly connect IoT sensors and hardware to your existing infrastructure.",
+    color: "bg-blue-50",
+    text: "text-blue-600",
+    icon: Settings
+  },
+  {
+    title: "Monitoring",
+    desc: "24/7 real-time tracking of assets, personnel, and environmental metrics.",
+    color: "bg-emerald-50",
+    text: "text-emerald-600",
+    icon: Eye
+  },
+  {
+    title: "Analysis",
+    desc: "AI-driven analytics process the raw data to identify anomalies and trends.",
+    color: "bg-purple-50",
+    text: "text-purple-600",
+    icon: Activity
+  },
+  {
+    title: "Security",
+    desc: "Automated protocols trigger instantly to secure restricted zones.",
+    color: "bg-red-50",
+    text: "text-red-600",
+    icon: Shield
+  },
+  {
+    title: "Optimization",
+    desc: "Continuous machine learning improves operational system efficiency.",
+    color: "bg-amber-50",
+    text: "text-amber-600",
+    icon: Zap
+  }
+];
 
 export default function Home() {
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
@@ -69,25 +109,6 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto px-4 sm:px-0">
             <Link to="/solutions" className="px-5 md:px-8 py-2.5 md:py-3 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-sm md:text-base">Get Started</Link>
             <button className="px-5 md:px-8 py-2.5 md:py-3 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-sm md:text-base">Learn More</button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── OVERVIEW SECTION ── */}
-      <section className="py-8 md:py-16 lg:py-20" style={{background:"linear-gradient(135deg,#fffdf7 0%,#fef8ec 55%,#fdf3dc 100%)"}}>
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-6 leading-tight">
-              OVERVIEW
-            </h2>
-            <h2 className="text-gray-600 text-sm md:text-lg lg:text-xl mb-3 md:mb-6 ">
-              A rich portfolio of empowering and enabling solutions
-            </h2>
-            <p className="text-sm md:text-lg lg:text-xl text-gray-600 leading-relaxed">
-              We design intelligent systems that transform modern operations across diverse environments.
-              From entry and attendance to security and tracking, we unify disconnected processes into
-              a seamless, structured workflow.
-            </p>
           </div>
         </div>
       </section>
@@ -168,6 +189,64 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── WORKING ARCHITECTURE (REFINED CHAIN) ── */}
+      <section className="py-32 bg-[#FAFAFA] relative overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl text-center mb-24 relative z-10">
+          <h4 className="text-[#2563EB] font-bold text-sm tracking-[0.3em] uppercase mb-4 opacity-70">Strategic Flow</h4>
+          <h2 className="text-4xl md:text-5xl font-display font-black text-[#111827]">Working Architecture</h2>
+        </div>
+
+        <div className="container mx-auto px-6 max-w-7xl relative">
+          {/* SVG Connecting Path - Sophisticated Spline Curve */}
+          <div className="absolute top-[50%] left-0 w-full -translate-y-1/2 hidden lg:block pointer-events-none px-16">
+            <svg viewBox="0 0 1000 240" className="w-full h-auto opacity-30" fill="none" stroke="#94A3B8" strokeWidth="1" strokeDasharray="10 6">
+              <path d="M20 120 C 120 120, 120 200, 220 200 C 320 200, 320 40, 420 40 C 520 40, 520 180, 620 180 C 720 180, 720 60, 820 60 C 920 60, 920 120, 980 120" />
+            </svg>
+          </div>
+
+          <div className="flex overflow-x-auto pb-12 gap-8 lg:gap-4 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0 scrollbar-hide snap-x scroll-px-6">
+            {steps.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className={`flex flex-col items-center group relative shrink-0 w-[280px] md:w-[320px] lg:w-auto snap-center ${i % 2 === 0 ? "lg:mb-32 translate-y-4 lg:translate-y-10" : "lg:mt-32 -translate-y-4 lg:-translate-y-10"
+                  }`}
+              >
+                {/* Step Pill Header */}
+                <div className={`${item.color} pl-8 pr-6 py-4 rounded-[2rem] border border-white shadow-xl flex items-center justify-center gap-4 mb-8 transition-all duration-500 group-hover:shadow-2xl group-hover:scale-105 relative z-20`}>
+                  <span className={`font-display font-black text-lg md:text-xl ${item.text} tracking-tight`}>
+                    {item.title}
+                  </span>
+                  <div className={`${item.text} bg-white/40 p-2 rounded-full`}>
+                    <item.icon size={20} />
+                  </div>
+
+                  {/* Connection Dots (Horizontal) */}
+                  <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 border border-white hidden lg:block" />
+                  <div className="absolute right-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 border border-white hidden lg:block" />
+                </div>
+
+                {/* Optimized Description Card */}
+                <div className="max-w-[220px] text-center px-4">
+                  <p className="text-gray-500 font-bold text-sm leading-relaxed mb-4 group-hover:text-gray-800 transition-colors">
+                    {item.desc}
+                  </p>
+                  <div className="w-12 h-0.5 bg-gray-200 mx-auto rounded-full group-hover:bg-blue-400 group-hover:w-16 transition-all" />
+                </div>
+
+                {/* Badge for Step Number */}
+                <div className="absolute -top-4 -right-2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100 group-hover:text-blue-500 transition-colors z-30">
+                  0{i + 1}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── TESTIMONIALS SECTION ── */}
       <section className="py-8 md:py-16 lg:py-20 bg-soft-white overflow-hidden">
         <div className="container mx-auto px-4 md:px-6">
@@ -211,18 +290,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NEXT-STEP CTA ── */}
-      <section className="py-10 md:py-16 lg:py-20 bg-warm-cream relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-brand-black mb-3 md:mb-6">Ready to Smarten Your Space?</h2>
-          <p className="text-charcoal/50 text-sm md:text-base lg:text-xl max-w-xl mx-auto mb-6 md:mb-10 lg:mb-12">Join 250+ organizations leveraging NX-Solutions to drive operational excellence.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-6">
-            <Link to="/contact" className="px-6 md:px-10 py-3 md:py-5 bg-brand-walnut text-soft-white font-bold rounded-xl md:rounded-2xl transition-all hover:scale-105 shadow-xl shadow-brand-walnut/20 text-center text-sm md:text-base">Get Started Today</Link>
-            <Link to="/enquiry" className="px-6 md:px-10 py-3 md:py-5 bg-soft-white border border-soft-taupe text-brand-black font-bold rounded-xl md:rounded-2xl transition-all hover:bg-brand-walnut hover:text-soft-white hover:border-brand-walnut hover:scale-105 text-center text-sm md:text-base">Request a Quote</Link>
           </div>
         </div>
       </section>
