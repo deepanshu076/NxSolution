@@ -5,8 +5,10 @@ import { useAuth } from "@/src/lib/AuthContext";
 import { motion, AnimatePresence } from "motion/react";
 
 const navLinks = [
+  { name: "Home",      path: "/"          },
   { name: "Solutions", path: "/solutions" },
   { name: "Domains",   path: "/domains"   },
+  { name: "Projects",  path: "/projects"  },
   { name: "About",     path: "/about"     },
   { name: "Contact",   path: "/contact"   },
 ];
@@ -66,7 +68,9 @@ export default function Navbar() {
             {/* ── Center nav links ── */}
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => {
-                const isActive = location.pathname.startsWith(link.path);
+                const isActive = link.path === "/" 
+                  ? location.pathname === "/" 
+                  : location.pathname.startsWith(link.path);
                 return (
                   <Link
                     key={link.name}
@@ -213,10 +217,14 @@ export default function Navbar() {
             className="lg:hidden overflow-hidden bg-white border-t border-slate-200"
           >
             <div className="container mx-auto px-6 py-3 flex flex-col gap-0.5">
-              <MobileNavLink to="/" label="Home" active={location.pathname === "/"} onClick={() => setIsOpen(false)} />
-              {navLinks.map((l) => (
-                <MobileNavLink key={l.name} to={l.path} label={l.name} active={location.pathname.startsWith(l.path)} onClick={() => setIsOpen(false)} />
-              ))}
+              {navLinks.map((l) => {
+                const isActive = l.path === "/" 
+                  ? location.pathname === "/" 
+                  : location.pathname.startsWith(l.path);
+                return (
+                  <MobileNavLink key={l.name} to={l.path} label={l.name} active={isActive} onClick={() => setIsOpen(false)} />
+                );
+              })}
               <div className="flex gap-3 mt-4 pt-4 border-t border-slate-100">
                 <Link
                   to="/login"
