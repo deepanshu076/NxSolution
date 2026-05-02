@@ -57,8 +57,11 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-3 md:px-6 py-1 md:py-2 rounded-full border border-warm-gold-beige/20 bg-warm-gold-beige/5 text-warm-gold-beige font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 md:mb-8">
             Smart Integrated Solutions
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-3 md:mb-6 max-w-2xl leading-tight">
-            We Transform Traditional Operations to <br className="hidden sm:block" /> <span className="text-warm-gold-beige">Smart Automated Ecosystems</span>
+          <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-4 md:mb-8 leading-tight">
+            We Transform Traditional Operations&nbsp;to
+            <span className="block mt-3 md:mt-5 lg:mt-6 text-warm-gold-beige">
+              Smart Automated Ecosystems
+            </span>
           </h1>
           <p className="text-soft-white/50 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-6 md:mb-10 leading-relaxed px-2">
             NX-Solutions transforms hidden daily operational challenges that go unnoticed but create major disruption across industries.
@@ -71,7 +74,7 @@ export default function Home() {
       </section>
 
       {/* ── OVERVIEW SECTION ── */}
-      <section className="py-8 md:py-16 lg:py-20 bg-gray-50">
+      <section className="py-8 md:py-16 lg:py-20" style={{background:"linear-gradient(135deg,#fffdf7 0%,#fef8ec 55%,#fdf3dc 100%)"}}>
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-6 leading-tight">

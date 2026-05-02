@@ -100,7 +100,7 @@ export default function OperationalChallenges() {
    }, []);
 
    return (
-      <section className="py-10 md:py-16 lg:py-20 bg-soft-white overflow-hidden">
+      <section className="py-10 md:py-16 lg:py-20 overflow-hidden" style={{background:"linear-gradient(150deg,#fffcf5 0%,#fef8e8 45%,#fdf3d8 100%)"}}>
          <div className="container mx-auto px-4 md:px-6 max-w-6xl w-full">
             <div className="text-center mb-6 md:mb-10 lg:mb-14 max-w-2xl mx-auto">
                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-brand-black mb-2 md:mb-3">Operational Challenges</h2>
