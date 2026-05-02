@@ -5,16 +5,17 @@ import { useAuth } from "@/src/lib/AuthContext";
 import { motion, AnimatePresence } from "motion/react";
 
 const navLinks = [
-  { name: "Home",      path: "/"          },
+  { name: "Home", path: "/" },
+  { name: "Domains", path: "/domains" },
   { name: "Solutions", path: "/solutions" },
-  { name: "Domains",   path: "/domains"   },
-  { name: "Projects",  path: "/projects"  },
-  { name: "About",     path: "/about"     },
-  { name: "Contact",   path: "/contact"   },
+  { name: "Projects", path: "/projects" },
+  { name: "Products", path: "/products" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen]     = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { user } = useAuth();
@@ -27,7 +28,7 @@ export default function Navbar() {
 
   useEffect(() => setIsOpen(false), [location.pathname]);
 
-  const segments   = location.pathname.split("/").filter(Boolean);
+  const segments = location.pathname.split("/").filter(Boolean);
   const isDeepPage = segments.length > 0;
 
   return (
@@ -39,11 +40,10 @@ export default function Navbar() {
       <div className="h-[2px] bg-gradient-to-r from-transparent via-[#EA580C] to-transparent opacity-70" />
       {/* ════ MAIN NAVBAR BAR ════ */}
       <div
-        className={`transition-all duration-500 border-b border-slate-200/50 ${
-          scrolled
+        className={`transition-all duration-500 border-b border-slate-200/50 ${scrolled
             ? "bg-white/98 backdrop-blur-2xl shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
             : "bg-white/90 backdrop-blur-xl"
-        }`}
+          }`}
       >
         <div className="container mx-auto px-6" style={{ paddingTop: 0, paddingBottom: 0 }}>
           <div className="flex items-center justify-between h-[64px]">
@@ -68,18 +68,17 @@ export default function Navbar() {
             {/* ── Center nav links ── */}
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => {
-                const isActive = link.path === "/" 
-                  ? location.pathname === "/" 
+                const isActive = link.path === "/"
+                  ? location.pathname === "/"
                   : location.pathname.startsWith(link.path);
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${
-                      isActive
+                    className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${isActive
                         ? "text-[#EA580C]"
                         : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                    }`}
+                      }`}
                   >
                     {isActive && (
                       <motion.span
@@ -177,9 +176,9 @@ export default function Navbar() {
             </Link>
 
             {segments.map((seg, i) => {
-              const path  = "/" + segments.slice(0, i + 1).join("/");
+              const path = "/" + segments.slice(0, i + 1).join("/");
               const label = seg.replace(/-/g, " ");
-              const last  = i === segments.length - 1;
+              const last = i === segments.length - 1;
               return (
                 <div key={path} className="flex items-center gap-0">
                   {/* Separator slash */}
@@ -218,8 +217,8 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-6 py-3 flex flex-col gap-0.5">
               {navLinks.map((l) => {
-                const isActive = l.path === "/" 
-                  ? location.pathname === "/" 
+                const isActive = l.path === "/"
+                  ? location.pathname === "/"
                   : location.pathname.startsWith(l.path);
                 return (
                   <MobileNavLink key={l.name} to={l.path} label={l.name} active={isActive} onClick={() => setIsOpen(false)} />
@@ -256,11 +255,10 @@ function MobileNavLink({ to, label, active, onClick }: {
     <Link
       to={to}
       onClick={onClick}
-      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${
-        active
+      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${active
           ? "text-[#EA580C] bg-[#EA580C]/10"
           : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-      }`}
+        }`}
     >
       {active && (
         <motion.span

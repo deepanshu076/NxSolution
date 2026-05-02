@@ -62,23 +62,19 @@ const solutionsData: Record<string, any[]> = {
     { name: "Hygiene Automation", desc: "Automated washroom and sanitation monitoring.", icon: Droplets, image: "/images/hygiene-automation.png" },
     { name: "Energy Optimization", desc: "Intelligent lighting and HVAC control for labs.", icon: Zap, image: "/images/energy optimization.jpeg" }
   ],
+  logistics: [
+    { name: "Fleet Tracking", desc: "Real-time GPS monitoring of delivery vehicles.", icon: Truck, image: "/images/fleet-tracking.png" },
+    { name: "Warehouse Management", desc: "Smart inventory and storage optimization.", icon: Database, image: "/images/warehouse-management.png" },
+    { name: "Route Optimization", desc: "AI-powered delivery route planning.", icon: Network, image: "/images/route-optimization.png" },
+    { name: "Cold Chain Monitoring", desc: "Temperature tracking for sensitive goods.", icon: Droplets, image: "/images/cold-chain.png" },
+    { name: "Last Mile Delivery", desc: "Real-time tracking and proof of delivery.", icon: Activity, image: "/images/last-mile.png" },
+    { name: "Security Systems", desc: "Cargo and facility monitoring solutions.", icon: Shield, image: "/images/logistics-security.png" }
+  ],
 };
 
 export default function Solutions() {
   const [activeDomain, setActiveDomain] = useState("education");
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveDomain((prev) => {
-        const currentIndex = domainList.findIndex(d => d.id === prev);
-        const nextIndex = (currentIndex + 1) % domainList.length;
-        return domainList[nextIndex].id;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -93,7 +89,7 @@ export default function Solutions() {
     }
   }, [activeDomain]);
 
-  const activeSolutions = solutionsData[activeDomain] || solutionsData.education;
+  const activeSolutions = solutionsData[activeDomain as keyof typeof solutionsData] || solutionsData.education;
 
   return (
     <div className="min-h-screen bg-white">
@@ -101,7 +97,7 @@ export default function Solutions() {
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-brand-black overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none" />
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-brand-black via-transparent to-brand-black opacity-80" />
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
@@ -135,7 +131,7 @@ export default function Solutions() {
           </div>
 
           <div className="relative mb-16 group/slider">
-            <div 
+            <div
               ref={scrollRef}
               className="flex gap-5 overflow-x-auto pb-10 px-2 -mx-2 scrollbar-hide snap-x snap-mandatory scroll-smooth"
             >
@@ -195,67 +191,75 @@ export default function Solutions() {
               </p>
             </div>
 
-            <div className="relative group/sol-slider">
-              <div className="flex flex-nowrap gap-8 md:gap-10 overflow-x-auto pb-12 px-2 -mx-2 scrollbar-hide snap-x snap-mandatory scroll-smooth">
-                <AnimatePresence mode="popLayout">
-                  {activeSolutions.map((sol, i) => (
-                    <motion.div
-                      key={`${activeDomain}-${i}`}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.4 }}
-                      className="relative min-w-[320px] md:min-w-[440px] h-[450px] md:h-[520px] rounded-[3.5rem] overflow-hidden border border-gray-100 group transition-all duration-500 hover:shadow-[0_40px_80px_rgba(0,0,0,0.25)] hover:border-brand-walnut hover:-translate-y-3 snap-center"
-                    >
-                      {/* Background Image */}
-                      <div className="absolute inset-0 z-0">
-                        {sol.image ? (
-                          <img 
-                            src={sol.image} 
-                            alt={sol.name} 
-                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gray-50 flex items-center justify-center">
-                            <sol.icon size={64} className="text-gray-200" />
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-colors duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+              <AnimatePresence mode="wait">
+                {activeSolutions.map((sol, i) => (
+                  <motion.div
+                    key={`${activeDomain}-${i}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -30 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className="relative h-[340px] md:h-[400px] rounded-[2.5rem] overflow-hidden border border-gray-100 group transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:border-brand-walnut hover:-translate-y-2"
+                  >
+                    {/* Background Image */}
+                    <div className="absolute inset-0 z-0">
+                      {sol.image ? (
+                        <img
+                          src={sol.image}
+                          alt={sol.name}
+                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-50 flex items-center justify-center">
+                          <sol.icon size={48} className="text-gray-200" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-colors duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                    </div>
+
+                    {/* Content Area */}
+                    <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl text-white group-hover:bg-brand-walnut transition-colors">
+                          <sol.icon size={20} />
+                        </div>
+                        <h4 className="font-display font-bold text-xl text-white group-hover:text-warm-gold-beige transition-colors">
+                          {sol.name}
+                        </h4>
                       </div>
 
-                      {/* Content Area */}
-                      <div className="absolute inset-0 p-12 flex flex-col justify-end z-10">
-                        <div className="flex items-center gap-6 mb-8">
-                           <div className="p-5 bg-white/10 backdrop-blur-md rounded-2xl text-white group-hover:bg-brand-walnut transition-colors">
-                              <sol.icon size={28} />
-                           </div>
-                           <h4 className="font-display font-bold text-3xl text-white group-hover:text-warm-gold-beige transition-colors">
-                             {sol.name}
-                           </h4>
-                        </div>
-
-                        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
-                          <div className="overflow-hidden">
-                            <p className="text-white/70 text-lg leading-relaxed pt-2">
-                              {sol.desc}
-                            </p>
-                            <div className="mt-10 flex items-center gap-4 text-warm-gold-beige font-bold text-base uppercase tracking-[0.2em]">
-                              Explore Solution <ArrowRight size={20} />
-                            </div>
+                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
+                        <div className="overflow-hidden">
+                          <p className="text-white/70 text-sm leading-relaxed pt-2">
+                            {sol.desc}
+                          </p>
+                          <div className="mt-6 flex items-center gap-2 text-warm-gold-beige font-bold text-xs uppercase tracking-[0.2em]">
+                            Explore Solution <ArrowRight size={14} />
                           </div>
                         </div>
                       </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
-
           </div>
         </div>
-      </section>
-
     </div>
+      </section >
+
+    {/* ── CTA SECTION ── */ }
+    < section className = "py-24 bg-brand-walnut relative overflow-hidden" >
+        <div className="absolute inset-0 opacity-10 grid-bg" />
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <h2 className="text-3xl md:text-6xl font-display font-bold text-soft-white mb-8 max-w-3xl mx-auto leading-tight">Ready to optimize your operations?</h2>
+          <p className="text-soft-white/60 text-lg md:text-xl mb-12 max-w-xl mx-auto leading-relaxed">Let's design a smart ecosystem tailored to your unique environment.</p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link to="/contact" className="px-12 py-5 bg-white text-brand-walnut font-bold rounded-2xl transition-all hover:scale-105 shadow-2xl">Get Started Now</Link>
+          </div>
+        </div>
+      </section >
+    </div >
   );
 }
