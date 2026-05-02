@@ -33,6 +33,9 @@ export default function DomainDetail() {
       { title: "Canteen / Cafeteria", route: "canteen" },
       { title: "Parking Area", route: "parking" },
       { title: "Hostel Block", route: "hostel" },
+      { title: "Reception / Help Desk", route: "help" },
+      { title: "Faculty Cabins / Staff Room", route: "staff" },
+      { title: "Accounts Office", route: "account" },
    ];
 
    return (
