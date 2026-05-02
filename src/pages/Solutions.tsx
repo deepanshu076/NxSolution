@@ -39,28 +39,28 @@ const domainList = [
 
 const solutionsData = {
   education: [
-    { name: "Smart Access Systems", desc: "Automated entry and verification control for campuses.", icon: Shield },
-    { name: "Attendance Systems", desc: "Real-time presence tracking and reporting.", icon: Users },
-    { name: "Surveillance Systems", desc: "24/7 monitoring with intelligent safety alerts.", icon: Activity },
+    { name: "Smart Access Systems", desc: "Automated entry and verification control for campuses.", icon: Shield, image: "/images/smart access system.jpeg" },
+    { name: "Attendance Systems", desc: "Real-time presence tracking and reporting.", icon: Users, image: "/images/attendance system.jpeg" },
+    { name: "Surveillance Systems", desc: "24/7 monitoring with intelligent safety alerts.", icon: Activity, image: "/images/survillance monitoring.jpeg" },
     { name: "Library Management", desc: "Automated lending and digital asset tracking.", icon: Database },
     { name: "Transport Tracking", desc: "Campus fleet and vehicle location monitoring.", icon: Truck },
     { name: "Facility Management", desc: "Maintenance upkeep and space utilization analytics.", icon: Settings }
   ],
   manufacturing: [
     { name: "Movement Tracking", desc: "Real-time tracking of assets and floor personnel.", icon: Users },
-    { name: "Energy Optimization", desc: "Smart consumption and predictive load management.", icon: Zap },
+    { name: "Energy Optimization", desc: "Smart consumption and predictive load management.", icon: Zap, image: "/images/energy optimization.jpeg" },
     { name: "Water Management", desc: "Usage monitoring and leakage detection systems.", icon: Droplets },
-    { name: "Security Intelligence", desc: "Advanced threat detection for industrial sites.", icon: Activity },
-    { name: "Workflow Automation", desc: "Process digitization and task routing systems.", icon: Settings },
+    { name: "Security Intelligence", desc: "Advanced threat detection for industrial sites.", icon: Activity, image: "/images/security intelligence.jpeg" },
+    { name: "Workflow Automation", desc: "Process digitization and task routing systems.", icon: Settings, image: "/images/workflow automation.jpeg" },
     { name: "Inventory Management", desc: "Smart tracking of raw materials and finished goods.", icon: Database }
   ],
   healthcare: [
     { name: "Secure Zone Control", desc: "Role-based access for restricted medical areas.", icon: Shield },
     { name: "Patient Monitoring", desc: "Integrated smart sensors for real-time awareness.", icon: Activity },
-    { name: "Staff Attendance", desc: "Contactless presence tracking for varied shifts.", icon: Users },
+    { name: "Staff Attendance", desc: "Contactless presence tracking for varied shifts.", icon: Users, image: "/images/attendance system.jpeg" },
     { name: "Asset Management", desc: "Tracking critical equipment and samples.", icon: Database },
     { name: "Hygience Automation", desc: "Automated washroom and sanitation monitoring.", icon: Droplets },
-    { name: "Energy Optimization", desc: "Intelligent lighting and HVAC control for labs.", icon: Zap }
+    { name: "Energy Optimization", desc: "Intelligent lighting and HVAC control for labs.", icon: Zap, image: "/images/energy optimization.jpeg" }
   ],
   // Fallback for others to keep code small for demo
 };
@@ -122,17 +122,28 @@ export default function Solutions() {
               <h2 className="text-[clamp(28px,4vw,48px)] font-display font-bold text-brand-black leading-tight">Integrated Smart Solutions</h2>
            </div>
 
-           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-10 overflow-x-auto pb-4 scrollbar-hide">
-              {domainList.map((dom) => (
-                <button
-                  key={dom.id}
-                  onClick={() => setActiveDomain(dom.id)}
-                  className={`flex flex-col items-center justify-center gap-3 p-5 md:p-6 rounded-2xl border transition-all min-w-[120px] md:min-w-0 ${activeDomain === dom.id ? "bg-soft-white border-brand-walnut walnut-glow scale-105" : "bg-warm-cream border-soft-taupe/50 text-brand-black/40 hover:bg-soft-white"}`}
-                >
-                   <dom.icon size={24} className={activeDomain === dom.id ? "text-brand-walnut" : ""} />
-                   <span className={`text-[9px] font-bold uppercase tracking-widest ${activeDomain === dom.id ? "text-brand-black" : ""}`}>{dom.name}</span>
-                </button>
-              ))}
+           <div className="flex gap-4 md:grid md:grid-cols-4 lg:grid-cols-8 mb-12 overflow-x-auto pb-6 scrollbar-hide px-2">
+              {domainList.map((dom) => {
+                const isActive = activeDomain === dom.id;
+                return (
+                  <button
+                    key={dom.id}
+                    onClick={() => setActiveDomain(dom.id)}
+                    className={`relative flex flex-col items-center justify-center gap-4 p-6 rounded-2xl transition-all duration-300 min-w-[140px] md:min-w-0 outline-none
+                      ${isActive 
+                        ? "bg-gradient-to-br from-[#EA580C] to-[#C2410C] border-transparent shadow-[0_12px_30px_-10px_rgba(234,88,12,0.6)] scale-105 z-10" 
+                        : "bg-white border border-slate-200/60 shadow-sm hover:border-[#EA580C]/40 hover:shadow-xl hover:shadow-slate-200 hover:-translate-y-1 text-slate-500 hover:text-slate-900"
+                      }`}
+                  >
+                     <div className={`p-3 rounded-xl transition-colors duration-300 ${isActive ? 'bg-white/20 text-white' : 'bg-slate-50 text-slate-400 group-hover:text-[#EA580C]'}`}>
+                       <dom.icon size={28} className={isActive ? "text-white" : ""} strokeWidth={isActive ? 2 : 1.5} />
+                     </div>
+                     <span className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-colors duration-300 ${isActive ? "text-white" : ""}`}>
+                       {dom.name}
+                     </span>
+                  </button>
+                );
+              })}
            </div>
 
            <div className="bg-soft-white rounded-[2.5rem] border border-soft-taupe/50 overflow-hidden shadow-2xl p-8 md:p-12">
@@ -150,10 +161,35 @@ export default function Solutions() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.3 }}
-                        className="bg-soft-white rounded-[2rem] p-8 md:p-10 border border-soft-taupe/30 hover:border-brand-walnut transition-all group flex flex-col justify-center text-center min-h-[180px] shadow-sm hover:shadow-md"
+                        className="bg-white rounded-3xl overflow-hidden border border-slate-200/60 hover:border-[#EA580C]/40 transition-all duration-300 group flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1"
                       >
-                         <h4 className="font-bold text-brand-black text-lg md:text-xl mb-4 group-hover:text-brand-walnut transition-colors">{sol.name}</h4>
-                         <p className="text-charcoal/50 text-xs md:text-sm leading-relaxed">{sol.desc}</p>
+                         {/* Card Image Area */}
+                         {sol.image ? (
+                           <div className="w-full h-48 sm:h-56 overflow-hidden bg-slate-100 relative">
+                             <img 
+                               src={sol.image} 
+                               alt={sol.name} 
+                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                             />
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                           </div>
+                         ) : (
+                           <div className="w-full h-40 bg-slate-50 flex items-center justify-center border-b border-slate-100">
+                             <div className="p-4 bg-white rounded-2xl shadow-sm">
+                               <sol.icon size={32} className="text-slate-400 group-hover:text-[#EA580C] transition-colors" />
+                             </div>
+                           </div>
+                         )}
+
+                         {/* Card Content Area */}
+                         <div className="p-6 md:p-8 flex-1 flex flex-col bg-white z-10 relative">
+                           <h4 className="font-bold text-slate-900 text-lg md:text-xl mb-3 group-hover:text-[#EA580C] transition-colors">
+                             {sol.name}
+                           </h4>
+                           <p className="text-slate-500 text-sm leading-relaxed">
+                             {sol.desc}
+                           </p>
+                         </div>
                       </motion.div>
                     ))}
                  </AnimatePresence>
