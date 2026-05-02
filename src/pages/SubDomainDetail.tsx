@@ -174,6 +174,7 @@ export default function SubDomainDetail() {
             </div>
          </section>
 
+
          {/* ── SOLUTION DETAILS & STATS ── */}
          <section className="py-24 bg-light-gray border-y border-cool-gray/30">
             <div className="container mx-auto px-6">
@@ -269,33 +270,6 @@ export default function SubDomainDetail() {
             </div>
          </section>
 
-         {/* ── PROJECT CTA ── */}
-         <section className="py-24 bg-light-cream border-t border-cool-gray/30">
-            <div className="container mx-auto px-6 text-center">
-               <h2 className="text-3xl font-display font-bold text-slate-blue mb-4">See this solution in action</h2>
-               <p className="text-slate-blue/40 text-sm max-w-lg mx-auto mb-16 italic">Explore real implementations or walk through a custom demo scenario.</p>
-
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                  {[
-                     { l: "Real Project", t: "Delhi Public Library", route: "/domains/education/library/delhi-lib", icon: Database },
-                     { l: "Demo Scenario", t: "University Hub Setup", route: "/domains/education/library/uni-demo", icon: Monitor }
-                  ].map((proj, i) => (
-                     <Link
-                        key={i}
-                        to={proj.route}
-                        className="bg-pure-white p-10 rounded-[2.5rem] border border-cool-gray/30 hover:border-brand-walnut transition-all text-left flex items-center justify-between group"
-                     >
-                        <div>
-                           <span className="text-[10px] font-bold text-accent-gold uppercase tracking-[.2em] mb-2 block">{proj.l}</span>
-                           <h4 className="text-xl font-bold text-slate-blue">{proj.t}</h4>
-                           <p className="text-[9px] text-slate-blue/20 uppercase tracking-widest mt-2">{proj.route}</p>
-                        </div>
-                        <ArrowRightCircle size={32} className="text-slate-blue/10 group-hover:text-brand-walnut transition-all transform group-hover:translate-x-2" />
-                     </Link>
-                  ))}
-               </div>
-            </div>
-         </section>
       </div>
    );
 }

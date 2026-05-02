@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
    Building2,
@@ -19,6 +20,20 @@ import { domains } from "../constants/domains";
 
 export default function DomainDetail() {
    const { domain } = useParams();
+   const [activeTab, setActiveTab] = useState<"real" | "demo">("real");
+   const [carouselIdx, setCarouselIdx] = useState(0);
+
+   const realProjects = [
+      { id: "r1", title: "Smart Campus Integration", label: "University of Excellence", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80" },
+      { id: "r2", title: "Delhi Public Library System", label: "Government Initiative", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80" },
+      { id: "r3", title: "Automated Attendance Network", label: "Corporate Campus", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" },
+   ];
+
+   const demoProjects = [
+      { id: "d1", title: "University Hub Setup", label: "Demo Environment", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=800&q=80" },
+      { id: "d2", title: "Smart Warehouse Blueprint", label: "Logistics Demo", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
+      { id: "d3", title: "Healthcare Monitoring Plan", label: "Hospital Demo", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" },
+   ];
 
    const currentDomain = domains.find(d => d.id === domain);
    const formattedDomain = currentDomain ? currentDomain.name : (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Enterprise");
@@ -94,7 +109,101 @@ export default function DomainDetail() {
             </div>
          </section>
 
-         {/* ── OVERVIEW ── */}
+         {/* ── PROJECTS SHOWCASE (Tabbed Carousel) ── */}
+         <section className="py-16 md:py-24 bg-light-cream border-t border-cool-gray/30">
+            <div className="container mx-auto px-6">
+
+               {/* Tabs */}
+               <div className="flex justify-center mb-10 md:mb-14">
+                  <div className="inline-flex bg-pure-white rounded-full p-1.5 border border-cool-gray/30 shadow-sm">
+                     <button
+                        onClick={() => { setActiveTab("real"); setCarouselIdx(0); }}
+                        className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${activeTab === "real"
+                           ? "bg-brand-walnut text-pure-white shadow-md"
+                           : "text-slate-blue/50 hover:text-slate-blue"
+                           }`}
+                     >
+                        <CheckCircle2 size={14} /> Real Projects
+                     </button>
+                     <button
+                        onClick={() => { setActiveTab("demo"); setCarouselIdx(0); }}
+                        className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${activeTab === "demo"
+                           ? "bg-brand-walnut text-pure-white shadow-md"
+                           : "text-slate-blue/50 hover:text-slate-blue"
+                           }`}
+                     >
+                        <Zap size={14} /> Demo Projects
+                     </button>
+                  </div>
+               </div>
+
+               {/* Carousel */}
+               <div className="relative max-w-5xl mx-auto">
+                  {/* Left Arrow */}
+                  <button
+                     onClick={() => setCarouselIdx(Math.max(0, carouselIdx - 1))}
+                     className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-pure-white border border-cool-gray/30 shadow-lg flex items-center justify-center text-slate-blue/40 hover:text-brand-walnut hover:border-brand-walnut/30 transition-all"
+                  >
+                     <ChevronRight size={20} className="rotate-180" />
+                  </button>
+
+                  {/* Right Arrow */}
+                  <button
+                     onClick={() => setCarouselIdx(Math.min((activeTab === "real" ? realProjects : demoProjects).length - 1, carouselIdx + 1))}
+                     className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-pure-white border border-cool-gray/30 shadow-lg flex items-center justify-center text-slate-blue/40 hover:text-brand-walnut hover:border-brand-walnut/30 transition-all"
+                  >
+                     <ChevronRight size={20} />
+                  </button>
+
+                  {/* Cards Row */}
+                  <div className="overflow-hidden rounded-3xl">
+                     <motion.div
+                        className="flex gap-6"
+                        animate={{ x: `-${carouselIdx * 52}%` }}
+                        transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                     >
+                        {(activeTab === "real" ? realProjects : demoProjects).map((proj) => (
+                           <Link
+                              key={proj.id}
+                              to={proj.route}
+                              className="flex-shrink-0 w-[48%] md:w-[48%] group"
+                           >
+                              <div className="relative h-56 md:h-72 rounded-2xl overflow-hidden bg-brand-black border border-cool-gray/20 shadow-lg">
+                                 <img
+                                    src={proj.image}
+                                    alt={proj.title}
+                                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                 />
+                                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/30 to-transparent" />
+                                 <div className="absolute bottom-0 left-0 right-0 p-6">
+                                    <h3 className="text-lg md:text-xl font-display font-bold text-pure-white mb-1 group-hover:text-accent-gold transition-colors">
+                                       {proj.title}
+                                    </h3>
+                                    <span className="text-[10px] font-bold text-pure-white/40 uppercase tracking-[.2em]">
+                                       {proj.label}
+                                    </span>
+                                 </div>
+                              </div>
+                           </Link>
+                        ))}
+                     </motion.div>
+                  </div>
+
+                  {/* Dots */}
+                  <div className="flex justify-center gap-2 mt-6">
+                     {(activeTab === "real" ? realProjects : demoProjects).map((_, i) => (
+                        <button
+                           key={i}
+                           onClick={() => setCarouselIdx(i)}
+                           className={`w-2 h-2 rounded-full transition-all duration-300 ${carouselIdx === i ? "bg-brand-walnut w-6" : "bg-cool-gray/30 hover:bg-cool-gray/60"}`}
+                        />
+                      ))}
+                   </div>
+                </div>
+             </div>
+          </section>
+
+          {/* ── OVERVIEW ── */}
          <section className="py-16 md:py-24 bg-light-gray">
             <div className="container mx-auto px-6 max-w-3xl flex flex-col items-center text-center">
 
