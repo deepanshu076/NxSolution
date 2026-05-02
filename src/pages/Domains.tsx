@@ -59,7 +59,7 @@ const solutions = [
   },
   {
     name: "Analytics Dashboard",
-    image: "images/Analytics Dashboard.png",
+    image: "/images/Analytics Dashboard.png",
     description: "Centralized data hub providing actionable insights into every aspect of your operations.",
     features: ["Live Stats", "Report Engine", "API Access"],
     icon: <BarChart3 size={32} strokeWidth={1.5} />
