@@ -32,6 +32,20 @@ export default function OperationalChallenges() {
       let isInteracting = false;
       let exactScrollX = el.scrollLeft; // Track exact decimal value to prevent rounding bugs
 
+      const updateActiveImage = (currentScroll) => {
+         if (window.innerWidth >= 1024) return;
+         const maxScroll = el.scrollWidth - el.clientWidth;
+         if (maxScroll <= 0) return;
+
+         // Calculate how far we've scrolled as a fraction (0 to 1)
+         const scrollFraction = Math.max(0, Math.min(1, currentScroll / maxScroll));
+         
+         // Map fraction to a problem index
+         const newIndex = Math.round(scrollFraction * (problems.length - 1));
+         
+         setActiveProblem(prev => prev !== newIndex ? newIndex : prev);
+      };
+
       const handleInteractStart = () => (isInteracting = true);
 
       const handleInteractEnd = () => {
@@ -40,26 +54,35 @@ export default function OperationalChallenges() {
          exactScrollX = el.scrollLeft;
       };
 
+      const handleScroll = () => {
+         if (isInteracting) {
+            exactScrollX = el.scrollLeft;
+            updateActiveImage(exactScrollX);
+         }
+      };
+
       el.addEventListener("touchstart", handleInteractStart, { passive: true });
       el.addEventListener("touchend", handleInteractEnd);
       el.addEventListener("mouseenter", handleInteractStart);
       el.addEventListener("mouseleave", handleInteractEnd);
-      // Also pause on actual scroll events triggered by touch/mouse drag
-      el.addEventListener("scroll", () => {
-         if (isInteracting) exactScrollX = el.scrollLeft;
-      }, { passive: true });
+      el.addEventListener("scroll", handleScroll, { passive: true });
 
       const autoScroll = () => {
          if (window.innerWidth < 1024 && !isInteracting) {
             exactScrollX += speed * direction;
-            el.scrollLeft = exactScrollX;
-
+            
             // Bounce back when reaching bounds
+            const maxScroll = el.scrollWidth - el.clientWidth;
             if (exactScrollX <= 0) {
+               exactScrollX = 0;
                direction = 1;
-            } else if (exactScrollX >= el.scrollWidth - el.clientWidth - 1) {
+            } else if (exactScrollX >= maxScroll) {
+               exactScrollX = maxScroll;
                direction = -1;
             }
+
+            el.scrollLeft = exactScrollX;
+            updateActiveImage(exactScrollX);
          }
          animationFrameId = requestAnimationFrame(autoScroll);
       };
@@ -72,6 +95,7 @@ export default function OperationalChallenges() {
          el.removeEventListener("touchend", handleInteractEnd);
          el.removeEventListener("mouseenter", handleInteractStart);
          el.removeEventListener("mouseleave", handleInteractEnd);
+         el.removeEventListener("scroll", handleScroll);
       };
    }, []);
 
