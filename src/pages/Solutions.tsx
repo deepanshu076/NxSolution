@@ -181,61 +181,62 @@ export default function Solutions() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-              <AnimatePresence mode="wait">
-                {activeSolutions.map((sol, i) => (
-                  <motion.div
-                    key={`${activeDomain}-${i}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.4, delay: i * 0.05 }}
-                    className="relative h-[260px] md:h-[300px] rounded-[1.5rem] overflow-hidden border border-gray-100 group transition-all duration-500 hover:shadow-[0_15px_40px_rgba(0,0,0,0.12)] hover:border-brand-walnut hover:-translate-y-1.5"
-                  >
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                      {sol.image ? (
-                        <img
-                          src={sol.image}
-                          alt={sol.name}
-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-50 flex items-center justify-center">
-                          <sol.icon size={36} className="text-gray-200" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-colors duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end z-10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2 bg-white/10 backdrop-blur-md rounded-xl text-white group-hover:bg-brand-walnut transition-colors">
-                          <sol.icon size={18} />
-                        </div>
-                        <h4 className="font-display font-bold text-lg text-white group-hover:text-warm-gold-beige transition-colors">
-                          {sol.name}
-                        </h4>
+            <div className="relative group/sol-slider mt-6">
+              <div className="flex flex-nowrap gap-8 md:gap-10 overflow-x-auto pb-12 px-2 -mx-2 scrollbar-hide snap-x snap-mandatory scroll-smooth">
+                <AnimatePresence mode="popLayout">
+                  {activeSolutions.map((sol, i) => (
+                    <motion.div
+                      key={`${activeDomain}-${i}`}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4 }}
+                      className="relative min-w-[320px] md:min-w-[420px] h-[400px] md:h-[480px] rounded-[3rem] overflow-hidden border border-gray-100 group transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.2)] hover:border-brand-walnut hover:-translate-y-2 snap-center"
+                    >
+                      {/* Background Image */}
+                      <div className="absolute inset-0 z-0">
+                        {sol.image ? (
+                          <img 
+                            src={sol.image} 
+                            alt={sol.name} 
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-50 flex items-center justify-center">
+                            <sol.icon size={48} className="text-gray-200" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-colors duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                       </div>
 
-                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
-                        <div className="overflow-hidden">
-                          <p className="text-white/70 text-xs leading-relaxed pt-2">
-                            {sol.desc}
-                          </p>
-                          <div className="mt-4 flex items-center gap-2 text-warm-gold-beige font-bold text-[10px] uppercase tracking-[0.2em]">
-                            Explore Solution <ArrowRight size={12} />
+                      {/* Content Area */}
+                      <div className="absolute inset-0 p-10 flex flex-col justify-end z-10">
+                        <div className="flex items-center gap-5 mb-6">
+                           <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl text-white group-hover:bg-brand-walnut transition-colors">
+                              <sol.icon size={24} />
+                           </div>
+                           <h4 className="font-display font-bold text-2xl text-white group-hover:text-warm-gold-beige transition-colors">
+                             {sol.name}
+                           </h4>
+                        </div>
+
+                        <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
+                          <div className="overflow-hidden">
+                            <p className="text-white/70 text-base leading-relaxed pt-2">
+                              {sol.desc}
+                            </p>
+                            <div className="mt-8 flex items-center gap-3 text-warm-gold-beige font-bold text-sm uppercase tracking-[0.2em]">
+                              Explore Solution <ArrowRight size={18} />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
             </div>
-
           </div>
         </div>
       </section>
