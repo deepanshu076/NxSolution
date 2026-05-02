@@ -54,12 +54,12 @@ export default function Navbar() {
                                transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl">
                 <ShieldCheck size={20} className="text-white" strokeWidth={2.5} />
               </div>
-              <div className="hidden sm:block leading-none">
-                <span className="block font-display font-extrabold text-[20px] tracking-[-0.02em] text-slate-900
+              <div className="block leading-none">
+                <span className="block font-display font-extrabold text-[16px] sm:text-[20px] tracking-[-0.02em] text-slate-900
                                  group-hover:text-[#EA580C] transition-colors duration-300">
                   NX-SOLUTIONS
                 </span>
-                <span className="block text-[10px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
+                <span className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
                   Smart Ecosystems
                 </span>
               </div>
