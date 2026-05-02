@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { domains } from "../../constants/domains";
 
-const CARD_WIDTH = 200; // px (width of each mobile card)
-const CARD_GAP = 12;    // px (gap between cards)
-const ITEM_STRIDE = CARD_WIDTH + CARD_GAP;
-
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
   return domain ? domain.subdomains : ["Smart", "Integrated", "Monitored"];
@@ -14,71 +10,49 @@ const getTagsForDomain = (id: string) => {
 
 export default function DomainSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
-  const scrollXRef = useRef(0);
   const dirRef = useRef(1);
-  const isInteractingRef = useRef(false);
 
-  // Mobile auto-scroll with active image sync
+  // Mobile: auto-cycle through domains every 2.5s
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    if (window.innerWidth >= 768) return;
 
-    const updateActive = (scrollLeft: number) => {
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (maxScroll <= 0) return;
-      const fraction = Math.max(0, Math.min(1, scrollLeft / maxScroll));
-      const idx = Math.round(fraction * (domains.length - 1));
-      setActiveIndex(prev => prev !== idx ? idx : prev);
-    };
-
-    const onInteractStart = () => { isInteractingRef.current = true; };
-    const onInteractEnd = () => {
-      isInteractingRef.current = false;
-      scrollXRef.current = el.scrollLeft;
-    };
-    const onScroll = () => {
-      if (isInteractingRef.current) {
-        scrollXRef.current = el.scrollLeft;
-        updateActive(el.scrollLeft);
-      }
-    };
-
-    el.addEventListener("touchstart", onInteractStart, { passive: true });
-    el.addEventListener("touchend", onInteractEnd);
-    el.addEventListener("mousedown", onInteractStart);
-    el.addEventListener("mouseup", onInteractEnd);
-    el.addEventListener("scroll", onScroll, { passive: true });
+    let step = 0;
+    const SPEED = 0.4; // fraction per frame
+    let fraction = 0;
 
     const tick = () => {
-      if (window.innerWidth < 768 && !isInteractingRef.current) {
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        scrollXRef.current += 0.6 * dirRef.current;
-
-        if (scrollXRef.current <= 0) {
-          scrollXRef.current = 0;
-          dirRef.current = 1;
-        } else if (scrollXRef.current >= maxScroll) {
-          scrollXRef.current = maxScroll;
-          dirRef.current = -1;
-        }
-
-        el.scrollLeft = scrollXRef.current;
-        updateActive(scrollXRef.current);
+      fraction += SPEED / 100;
+      if (fraction >= 1) {
+        fraction = 0;
+        dirRef.current === 1
+          ? setActiveIndex(prev => {
+              const next = prev + 1;
+              if (next >= domains.length) { dirRef.current = -1; return prev - 1; }
+              return next;
+            })
+          : setActiveIndex(prev => {
+              const next = prev - 1;
+              if (next < 0) { dirRef.current = 1; return prev + 1; }
+              return next;
+            });
       }
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    rafRef.current = requestAnimationFrame(tick);
+    // Simple interval-based cycling is cleaner for just changing the image
+    const interval = setInterval(() => {
+      setActiveIndex(prev => {
+        const next = prev + dirRef.current;
+        if (next >= domains.length) { dirRef.current = -1; return prev - 1; }
+        if (next < 0) { dirRef.current = 1; return prev + 1; }
+        return next;
+      });
+    }, 2000);
 
     return () => {
+      clearInterval(interval);
       cancelAnimationFrame(rafRef.current);
-      el.removeEventListener("touchstart", onInteractStart);
-      el.removeEventListener("touchend", onInteractEnd);
-      el.removeEventListener("mousedown", onInteractStart);
-      el.removeEventListener("mouseup", onInteractEnd);
-      el.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -98,103 +72,70 @@ export default function DomainSection() {
           </p>
         </div>
 
-        {/* ── MOBILE: Featured image + horizontal slider ── */}
+        {/* ── MOBILE: Single auto-changing hero card ── */}
         <div className="block md:hidden">
-          {/* Active domain hero image */}
-          <div className="relative w-full h-[220px] rounded-2xl overflow-hidden mb-4 shadow-xl">
-            {domains.map((domain, i) => (
-              <div
-                key={domain.id}
-                className="absolute inset-0 transition-opacity duration-500"
-                style={{ opacity: activeIndex === i ? 1 : 0 }}
-              >
-                <img
-                  src={domain.image}
-                  alt={domain.name}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-xl font-display font-bold text-white drop-shadow-md">
-                    {domain.name}
-                  </h3>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[9px] px-2 py-0.5 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
-                        style={{ backgroundColor: `${domain.color}40` }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
+          <Link to={`/domains/${domains[activeIndex].id}`} className="block">
+            <div className="relative w-full h-[280px] rounded-2xl overflow-hidden shadow-xl">
+              {domains.map((domain, i) => (
+                <div
+                  key={domain.id}
+                  className="absolute inset-0 transition-opacity duration-700"
+                  style={{ opacity: activeIndex === i ? 1 : 0 }}
+                >
+                  <img
+                    src={domain.image}
+                    alt={domain.name}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/30 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5">
+                    <h3 className="text-2xl font-display font-bold text-white drop-shadow-md mb-2">
+                      {domain.name}
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5">
+                      {getTagsForDomain(domain.id).slice(0, 3).map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[9px] px-2 py-0.5 rounded-full font-medium text-white/90 border border-white/20 backdrop-blur-md"
+                          style={{ backgroundColor: `${domain.color}40` }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-
-            {/* Dot indicators */}
-            <div className="absolute top-3 right-3 flex gap-1">
-              {domains.map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-full transition-all duration-300"
-                  style={{
-                    width: activeIndex === i ? 16 : 6,
-                    height: 6,
-                    backgroundColor: activeIndex === i ? "#EA580C" : "rgba(255,255,255,0.4)"
-                  }}
-                />
               ))}
+
+              {/* Dot indicators */}
+              <div className="absolute top-3 right-3 flex gap-1">
+                {domains.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.preventDefault(); setActiveIndex(i); }}
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      width: activeIndex === i ? 16 : 6,
+                      height: 6,
+                      backgroundColor: activeIndex === i ? "#EA580C" : "rgba(255,255,255,0.4)"
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* View All overlay button */}
+              <div className="absolute top-3 left-3">
+                <Link
+                  to="/domains"
+                  onClick={e => e.stopPropagation()}
+                  className="text-[10px] font-bold text-white bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 flex items-center gap-1"
+                >
+                  View All <ArrowRight size={10} />
+                </Link>
+              </div>
             </div>
-          </div>
-
-          {/* Horizontal scrolling card strip */}
-          <div
-            ref={scrollRef}
-            className="flex gap-3 overflow-x-auto scrollbar-hide pb-2"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {domains.map((domain, i) => (
-              <Link
-                key={domain.id}
-                to={`/domains/${domain.id}`}
-                onClick={() => setActiveIndex(i)}
-                className="flex-shrink-0 rounded-xl overflow-hidden relative shadow-md"
-                style={{ width: CARD_WIDTH, height: 110 }}
-              >
-                <img
-                  src={domain.image}
-                  alt={domain.name}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 to-transparent" />
-                {/* Active border highlight */}
-                <div
-                  className="absolute inset-0 rounded-xl border-2 transition-all duration-300"
-                  style={{ borderColor: activeIndex === i ? "#EA580C" : "transparent" }}
-                />
-                <div className="absolute bottom-0 left-0 right-0 p-2">
-                  <p className="text-white text-[11px] font-bold leading-tight line-clamp-2">
-                    {domain.name}
-                  </p>
-                </div>
-              </Link>
-            ))}
-
-            {/* View All card */}
-            <Link
-              to="/domains"
-              className="flex-shrink-0 rounded-xl overflow-hidden relative shadow-md bg-brand-black border border-gray-700 flex flex-col items-center justify-center"
-              style={{ width: CARD_WIDTH, height: 110 }}
-            >
-              <ArrowRight className="text-white mb-1" size={20} />
-              <p className="text-white text-[11px] font-bold text-center px-2">View All</p>
-              <p className="text-gray-400 text-[9px] text-center mt-0.5">{domains.length}+ industries</p>
-            </Link>
-          </div>
+          </Link>
         </div>
 
         {/* ── DESKTOP: Original grid ── */}
