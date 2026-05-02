@@ -248,17 +248,6 @@ export default function Solutions() {
         </div>
       </section>
 
-      {/* ── CTA SECTION ── */}
-      <section className="py-24 bg-brand-walnut relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 grid-bg" />
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-3xl md:text-6xl font-display font-bold text-soft-white mb-8 max-w-3xl mx-auto leading-tight">Ready to optimize your operations?</h2>
-          <p className="text-soft-white/60 text-lg md:text-xl mb-12 max-w-xl mx-auto leading-relaxed">Let's design a smart ecosystem tailored to your unique environment.</p>
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link to="/contact" className="px-12 py-5 bg-white text-brand-walnut font-bold rounded-2xl transition-all hover:scale-105 shadow-2xl">Get Started Now</Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
