@@ -23,7 +23,7 @@ import {
   HardHat,
   Network
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const domainList = [
@@ -66,6 +66,32 @@ const solutionsData = {
 
 export default function Solutions() {
   const [activeDomain, setActiveDomain] = useState("education");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveDomain((prev) => {
+        const currentIndex = domainList.findIndex(d => d.id === prev);
+        const nextIndex = (currentIndex + 1) % domainList.length;
+        return domainList[nextIndex].id;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      const activeElement = scrollRef.current.querySelector(`[data-domain="${activeDomain}"]`);
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+  }, [activeDomain]);
 
   const activeSolutions = solutionsData[activeDomain as keyof typeof solutionsData] || solutionsData.education;
 
@@ -96,6 +122,7 @@ export default function Solutions() {
 
           <div className="relative mb-16 group/slider">
             <div 
+              ref={scrollRef}
               className="flex gap-5 overflow-x-auto pb-10 px-2 -mx-2 scrollbar-hide snap-x snap-mandatory scroll-smooth"
             >
               {domainList.map((dom) => {
@@ -103,6 +130,7 @@ export default function Solutions() {
                 return (
                   <button
                     key={dom.id}
+                    data-domain={dom.id}
                     onClick={() => setActiveDomain(dom.id)}
                     className={`relative flex flex-col items-start justify-end p-6 rounded-[2rem] transition-all duration-500 min-w-[280px] md:min-w-[320px] h-48 overflow-hidden group outline-none snap-start
                       ${isActive 
