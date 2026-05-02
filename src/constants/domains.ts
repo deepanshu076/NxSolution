@@ -43,6 +43,48 @@ export const subdomainsMap: Record<string, string[]> = {
     "Waiting Area (Public)", "Public Service Counters", "Officer Cabins / Departments", "Admin Office",
     "Records / Document Storage Room", "Meeting / Conference Room", "Control Room / Security Room",
     "Corridors / Common Areas", "Parking Area"
+  ],
+  "Airports": [
+    "Entry Gate / Terminal Entry", "Security Check Area", "Check-in Counters", "Waiting Lounge",
+    "Boarding Gates", "Baggage Handling Area", "Arrival Area", "Departure Area", "Control Room",
+    "Restricted Zones", "Staff Operations Area", "Parking / Transport Area"
+  ],
+  "Factories": [
+    "Entry Gate / Security Gate", "Worker Entry & Checkpoint", "Production Floor", "Assembly Line Area",
+    "Storage / Inventory Area", "Raw Material Area", "Dispatch / Loading Area", "Supervisor Cabin",
+    "Control Room", "Safety / Compliance Area", "Utility / Maintenance Area", "Parking / Vehicle Area"
+  ],
+  "Hotels": [
+    "Main Entrance / Drop-off Area", "Reception / Front Desk", "Lobby Area", "Guest Rooms", "Corridors",
+    "Dining Area / Restaurant", "Kitchen", "Banquet / Event Hall", "Housekeeping / Service Area",
+    "Security Room / Control Room", "Parking / Valet Area", "Back Office / Admin"
+  ],
+  "Rental Spaces": [
+    "Entry Gate", "Reception / Entry Desk", "Rental Units / Rooms", "Common Areas", "Corridors",
+    "Lift Lobby", "Parking Area", "Security Room", "Utility Area", "Maintenance Room",
+    "Visitor Waiting Area", "Service Access Area"
+  ],
+  "PG (Paying Guest)": [
+    "Entry Gate", "Reception / Check-in Desk", "Rooms / Living Units", "Common Area / Lounge",
+    "Dining Area", "Kitchen", "Washrooms / Bathrooms", "Laundry Area", "Warden Room",
+    "Visitor Area", "Corridors / Staircase", "Parking Area"
+  ],
+  "Gated Communities": [
+    "Main Gate / Security Gate", "Visitor Verification Area", "Internal Roads / Movement Area",
+    "Villa / House Entry", "Parking Area", "Clubhouse", "Gym / Fitness Area", "Swimming Pool Area",
+    "Garden / Open Space", "Security Control Room", "Maintenance / Utility Area", "Perimeter / Boundary Area"
+  ],
+  "Housing Societies": [
+    "Main Gate / Entry Gate", "Visitor Entry & Security Check", "Security Cabin / Guard Room",
+    "Building Entry / Tower Entry", "Lift Lobby", "Parking Area", "Resident Units / Flats",
+    "Community Hall", "Garden / Open Area", "Children Play Area", "Maintenance Office",
+    "Utility / Service Area"
+  ],
+  "Apartments": [
+    "Main Gate / Entry Gate", "Visitor Entry & Security Checkpoint", "Reception / Security Desk",
+    "Tower / Building Entry", "Lift Lobby", "Parking Area", "Resident Flats / Units",
+    "Clubhouse / Community Hall", "Gym / Fitness Area", "Garden / Outdoor Area",
+    "Security Room / Control Room", "Maintenance / Utility Area"
   ]
 };
 

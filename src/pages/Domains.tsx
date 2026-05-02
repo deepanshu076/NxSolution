@@ -19,6 +19,7 @@ import {
   Briefcase
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { domains } from "../constants/domains";
 
 const industries = [
   { id: "education", name: "Education & Campuses", img: "https://images.unsplash.com/photo-1523050853023-8c2d27443ef8?w=800&q=80", sub: "Campus · Library · Labs", icon: Building2, color: "blue", stat: "14+ Projects", emoji: "🏫" },
@@ -100,7 +101,7 @@ export default function Domains() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 gap-y-8 md:gap-y-10">
-            {industries.map((dom) => (
+            {domains.map((dom) => (
               <Link
                 key={dom.id}
                 to={`/domains/${dom.id}`}
@@ -108,7 +109,7 @@ export default function Domains() {
               >
                 <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-warm-cream mb-3 border border-soft-taupe/10 transition-shadow group-hover:shadow-md relative">
                   <img
-                    src={dom.img}
+                    src={dom.image}
                     alt={dom.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     referrerPolicy="no-referrer"
