@@ -1,26 +1,3 @@
-import {
-  ArrowRight,
-  Cpu,
-  Globe,
-  Shield,
-  Zap,
-  BarChart3,
-  Users,
-  Settings,
-  AlertCircle,
-  Clock,
-  TrendingDown,
-  Activity,
-  CheckCircle2,
-  Play,
-  ArrowUpRight,
-  Monitor,
-  Hourglass,
-  ClipboardList,
-  ShieldAlert,
-  Cctv,
-  BatteryWarning
-} from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
