@@ -105,8 +105,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
-      {/* Changed min-h-screen to min-h-[75vh] for mobile, restoring to min-h-screen at md breakpoint */}
-      <section className="relative min-h-[75vh] sm:min-h-[80vh] md:min-h-screen flex flex-col items-center justify-center py-12 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
+      <section className="relative min-h-[75vh] sm:min-h-[80vh] md:min-h-screen flex flex-col items-center justify-center py-16 sm:py-12 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 opacity-10 flex gap-px" aria-hidden="true">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -116,30 +115,27 @@ export default function Home() {
         <div className="absolute -top-12 -right-12 w-48 h-48 bg-brand-walnut opacity-10 rounded-xl rotate-45" aria-hidden="true" />
         <div className="absolute -bottom-16 -left-8 w-32 h-32 bg-warm-gold-beige opacity-5 rounded-xl rotate-45" aria-hidden="true" />
 
-        <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-3 md:px-6 py-1 md:py-2 rounded-full border border-warm-gold-beige/20 bg-warm-gold-beige/5 text-warm-gold-beige font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 md:mb-8">
-            Smart Integrated Solutions
-          </div>
+        <div className="container mx-auto px-5 md:px-6 relative z-10 flex flex-col items-center">
 
-          <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-4 md:mb-8 leading-tight">
+          <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-5 md:mb-8 leading-tight">
             We Transform Traditional Operations&nbsp;to
             <span className="block mt-3 md:mt-5 lg:mt-6 text-warm-gold-beige">
               Smart Automated Ecosystems
             </span>
           </h1>
 
-          <p className="text-soft-white/50 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-6 md:mb-10 leading-relaxed px-2">
+          <p className="text-soft-white/50 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed px-2">
             NX-Solutions transforms hidden daily operational challenges that go unnoticed but create major disruption across industries.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto px-4 sm:px-0">
+          <div className="flex flex-row justify-center gap-2 sm:gap-3 md:gap-4 w-full sm:w-auto px-1 sm:px-0">
             <Link
               to="/solutions"
-              className="px-5 md:px-8 py-2.5 md:py-3 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-sm md:text-base"
+              className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2.5 md:py-3 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-[13px] sm:text-sm md:text-base whitespace-nowrap"
             >
               Get Started
             </Link>
-            <button className="px-5 md:px-8 py-2.5 md:py-3 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-sm md:text-base transition-colors">
+            <button className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2.5 md:py-3 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-center text-[13px] sm:text-sm md:text-base transition-colors whitespace-nowrap">
               Learn More
             </button>
           </div>
