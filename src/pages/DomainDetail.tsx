@@ -197,13 +197,13 @@ export default function DomainDetail() {
                            onClick={() => setCarouselIdx(i)}
                            className={`w-2 h-2 rounded-full transition-all duration-300 ${carouselIdx === i ? "bg-brand-walnut w-6" : "bg-cool-gray/30 hover:bg-cool-gray/60"}`}
                         />
-                      ))}
-                   </div>
-                </div>
-             </div>
-          </section>
+                     ))}
+                  </div>
+               </div>
+            </div>
+         </section>
 
- 
+
 
          {/* ── SUB-DOMAINS GRID ── */}
          <section className="py-24 bg-pure-white">
