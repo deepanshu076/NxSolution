@@ -14,262 +14,337 @@ import {
    XCircle,
    Clock,
    ArrowRightCircle,
-   Database
+   Database,
+   Zap,
+   Lock,
+   Users,
+   Thermometer,
+   ShieldAlert,
+   Package,
+   BarChart3,
+   Cpu,
+   Wifi
 } from "lucide-react";
-import { useState } from "react";
 
 const solutions = [
-   { id: "S01", name: "Smart Occupancy Tracking", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "94%", refresh: "Live", saving: "40%", setup: "2 days" } },
-   { id: "S02", name: "Entry Monitoring System", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "99%", refresh: "Real-time", saving: "25%", setup: "3 days" } },
-   { id: "S03", name: "Resource Tracking", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "92%", refresh: "Batch", saving: "30%", setup: "5 days" } },
-   { id: "S04", name: "Silent Zone Control", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "96%", refresh: "Live", saving: "15%", setup: "1 day" } },
-   { id: "S05", name: "Usage Analytics", image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80", stats: { acc: "100%", refresh: "Daily", saving: "50%", setup: "Inst." } },
+   { 
+      id: "S01", 
+      name: "Smart Access Control", 
+      desc: "Automated entry with real-time logging.", 
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400" 
+   },
+   { 
+      id: "S02", 
+      name: "Presence Analytics", 
+      desc: "Know exactly who is in which zone.", 
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=400" 
+   },
+   { 
+      id: "S03", 
+      name: "Environmental Control", 
+      desc: "Smart lighting and climate management.", 
+      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400" 
+   },
+   { 
+      id: "S04", 
+      name: "Safety Protocol Hub", 
+      desc: "Emergency alerts and compliance tracking.", 
+      image: "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?auto=format&fit=crop&q=80&w=400" 
+   },
+   { 
+      id: "S05", 
+      name: "Resource Tracking", 
+      desc: "Track equipment and facility usage instantly.", 
+      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=400" 
+   },
 ];
 
 export default function SubDomainDetail() {
    const { domain, subdomain } = useParams();
-   const [activeSol, setActiveSol] = useState(0);
 
    const domainData = domains.find(d => d.id === domain);
    const domainName = domainData?.name || (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Domain");
 
-   // Since subdomain is a hyphenated string, let's format it for display
    const subdomainName = domainData?.subdomains?.find(sd =>
       sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
    ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
 
+   const getImageForSubdomain = (title: string) => {
+      const t = title.toLowerCase();
+      // Added better handling for college/hostel and generic fallbacks
+      if (t.includes('hostel') || t.includes('dormitory') || t.includes('resident')) return "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&q=80";
+      if (t.includes('college') || t.includes('university') || t.includes('campus')) return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80";
+      
+      if (t.includes('gate') || t.includes('entry') || t.includes('entrance') || t.includes('access')) return "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80";
+      if (t.includes('reception') || t.includes('help desk') || t.includes('front desk') || t.includes('lobby') || t.includes('waiting')) return "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80";
+      if (t.includes('admin') || t.includes('office') || t.includes('management') || t.includes('hr') || t.includes('cabin')) return "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80";
+      if (t.includes('class') || t.includes('lecture')) return "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1200&q=80";
+      if (t.includes('lab') || t.includes('computer')) return "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80";
+      if (t.includes('library') || t.includes('study')) return "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80";
+      if (t.includes('auditorium') || t.includes('seminar') || t.includes('conference') || t.includes('meeting') || t.includes('hall')) return "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80";
+      if (t.includes('canteen') || t.includes('cafeteria') || t.includes('dining') || t.includes('pantry') || t.includes('kitchen') || t.includes('break')) return "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80";
+      if (t.includes('parking') || t.includes('transport') || t.includes('vehicle')) return "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200&q=80";
+      if (t.includes('workstation') || t.includes('pod') || t.includes('collaboration') || t.includes('team') || t.includes('open work')) return "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80";
+      if (t.includes('server') || t.includes('it room') || t.includes('network') || t.includes('control') || t.includes('security') || t.includes('guard')) return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80";
+      if (t.includes('gym') || t.includes('fitness') || t.includes('pool') || t.includes('club') || t.includes('activity')) return "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
+      if (t.includes('garden') || t.includes('open space') || t.includes('play') || t.includes('perimeter')) return "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?w=1200&q=80";
+      if (t.includes('corridor') || t.includes('stair') || t.includes('lift') || t.includes('common')) return "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80";
+      if (t.includes('storage') || t.includes('inventory') || t.includes('material') || t.includes('utility') || t.includes('maintenance')) return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80";
+      
+      // Default premium building image
+      return "https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=1200&q=80";
+   };
+
+   const getSmartTitle = (title: string) => {
+      let t = title;
+      if (t.includes('/')) {
+         const parts = t.split('/').map(p => p.trim());
+         const singleWordPart = parts.find(p => !p.includes(' '));
+         t = singleWordPart || parts[1] || parts[0];
+      }
+      const boringWords = /\b(Area|Room|Block|Office|Desk|Hall|Cabins|Cabin|Cell|Zone|Center|Space|Hub|Unit|Units|Flats|Lounge|Floor)\b/gi;
+      t = t.replace(boringWords, '').trim();
+      const words = t.split(' ').filter(w => w.length > 0);
+      if (words.length > 1) {
+         if (t.toLowerCase().includes('entry') || t.toLowerCase().includes('gate')) return 'ENTRY';
+         if (t.toLowerCase().includes('admin')) return 'ADMIN';
+         if (t.toLowerCase().includes('staff') || t.toLowerCase().includes('faculty')) return 'STAFF';
+         if (t.toLowerCase().includes('computer') || t.toLowerCase().includes('lab')) return 'LABS';
+         if (t.toLowerCase().includes('meeting') || t.toLowerCase().includes('conference')) return 'MEETINGS';
+         if (t.toLowerCase().includes('parking') || t.toLowerCase().includes('transport')) return 'PARKING';
+         return words.reduce((a, b) => a.length > b.length ? a : b);
+      }
+      return words[0] || t;
+   };
+
+   const heroImage = getImageForSubdomain(subdomainName);
+   const smartTitle = getSmartTitle(subdomainName);
+
    return (
       <div className="flex flex-col pt-20">
          {/* ── HERO ── */}
-         <section className="relative py-12 md:py-20 bg-brand-black overflow-hidden flex items-center justify-center">
-            {/* Background Stripes */}
-            <div className="absolute inset-0 opacity-[0.03] flex gap-px pointer-events-none">
-               {Array.from({ length: 10 }).map((_, i) => (
-                  <div key={i} className="flex-1 bg-pure-white" />
-               ))}
+         <section className="relative min-h-[400px] md:min-h-[500px] bg-brand-black overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0">
+               <img 
+                  src={heroImage} 
+                  alt={smartTitle} 
+                  className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+               />
+               <div className="absolute inset-0 bg-gradient-to-b from-brand-black/90 via-brand-black/80 to-brand-black" />
+               <div className="absolute inset-0 bg-gradient-to-r from-accent-sky/10 to-transparent mix-blend-overlay" />
             </div>
 
-            <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-               <div className="max-w-2xl flex flex-col items-center">
-
-                  {/* Minimalist Breadcrumb Badge (Scaled Down) */}
-                  <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full text-accent-gold font-medium text-[10px] md:text-xs tracking-wider mb-5 border border-accent-gold/10 bg-accent-gold/5 backdrop-blur-md">
-                     {domainName} <span className="opacity-50">›</span> {subdomainName}
-                  </div>
-
-                  {/* Balanced Headline (Scaled Down) */}
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-medium text-pure-white mb-4 leading-tight text-balance tracking-tight">
-                     Smart systems for <br className="hidden sm:block" />
-                     <span className="text-accent-gold">{subdomainName} operations</span>
+            <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center py-12">
+               <div className="max-w-3xl flex flex-col items-center">
+                  <span className="text-[10px] md:text-xs font-bold text-accent-sky tracking-[.3em] uppercase mb-4 block">
+                     Sub-Domain Excellence
+                  </span>
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-pure-white mb-6 uppercase tracking-tight text-balance">
+                     {smartTitle}
                   </h1>
-
-                  {/* Clean Paragraph (Scaled Down) */}
-                  <p className="text-pure-white/70 text-sm md:text-base font-normal mb-8 leading-relaxed text-balance max-w-xl">
-                     Enhance visibility, control, and efficiency across {subdomainName} environments with intelligent automation and integrated sensors.
+                  <p className="text-pure-white/70 text-sm md:text-lg font-normal mb-8 leading-relaxed text-balance max-w-2xl">
+                     Empowering the <span className="text-white font-medium">{subdomainName}</span> ecosystem with intelligent, responsive digital layers for superior operations.
                   </p>
-
-                  {/* Refined Buttons (Scaled Down) */}
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-3 w-full sm:w-auto">
-                     <button className="w-full sm:w-auto px-6 py-3 bg-brand-walnut text-pure-white text-sm font-medium rounded-xl transition-all duration-300 hover:bg-brand-walnut/90 shadow-md shadow-brand-walnut/10 hover:-translate-y-0.5">
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
+                     <button className="w-full sm:w-auto px-8 py-3.5 bg-brand-walnut text-pure-white text-sm font-bold rounded-xl transition-all duration-300 hover:bg-brand-walnut/90 shadow-lg shadow-brand-walnut/20 hover:-translate-y-0.5">
                         Explore Solutions
                      </button>
-                     <button className="w-full sm:w-auto px-6 py-3 border border-pure-white/20 text-pure-white text-sm font-medium rounded-xl transition-all duration-300 hover:bg-white/5 hover:border-pure-white/40 backdrop-blur-sm">
+                     <button className="w-full sm:w-auto px-8 py-3.5 border border-pure-white/20 text-pure-white text-sm font-bold rounded-xl transition-all duration-300 hover:bg-white/5 hover:border-pure-white/40 backdrop-blur-sm">
                         View Live Demo
                      </button>
                   </div>
-
                </div>
             </div>
          </section>
 
-         {/* ── SOLUTION EXPERIENCE (Video + List) ── */}
-         <section className="py-10 md:py-14 bg-pure-white overflow-hidden">
-            <div className="container mx-auto px-6">
-
-               {/* Header */}
-               <div className="mb-6 md:mb-8 max-w-5xl mx-auto text-center md:text-left">
-                  <span className="text-[10px] font-bold text-brand-walnut tracking-[.3em] uppercase mb-1 block">
-                     Solutions
-                  </span>
-                  <h2 className="text-xl md:text-2xl font-display font-bold text-slate-blue mb-2 leading-tight">
-                     Experience our smart solutions
+         {/* ── TARGETED SOLUTIONS ── */}
+         <section className="py-24 bg-pure-white">
+            <div className="w-full max-w-[90rem] mx-auto px-6 lg:px-12">
+               <div className="mb-16 text-center flex flex-col items-center">
+                  <h2 className="text-xl md:text-2xl font-display font-black text-brand-black uppercase tracking-wider mb-3 bg-gradient-to-b from-brand-black to-brand-black/60 bg-clip-text text-transparent">
+                     Targeted Solutions
                   </h2>
-                  <p className="text-slate-blue/50 text-xs md:text-sm">
-                     Select a solution below to see it in action.
+                  <div className="w-8 h-0.5 bg-accent-sky" />
+               </div>
+               <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
+                  {solutions.map((sol, i) => (
+                     <div
+                        key={sol.id || i}
+                        className="relative flex-shrink-0 w-72 md:w-80 bg-pure-white rounded-[1.5rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.03)] border border-slate-100 snap-start transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:border-slate-200 hover:-translate-y-1 overflow-hidden"
+                     >
+                        <div className="w-full h-32 rounded-xl bg-slate-100 mb-6 overflow-hidden">
+                           <img 
+                              src={sol.image} 
+                              alt={sol.name}
+                              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                           />
+                        </div>
+                        <h3 className="text-lg font-black text-brand-black mb-2">{sol.name}</h3>
+                        <p className="text-sm text-brand-black/60 leading-relaxed">
+                           {sol.desc}
+                        </p>
+                     </div>
+                  ))}
+               </div>
+            </div>
+         </section>
+
+         {/* ── VIDEO PROOF OF CONCEPT ── */}
+         <section className="pb-24 bg-pure-white flex flex-col items-center">
+            <div className="w-full max-w-4xl mx-auto px-6">
+               <div className="relative w-full aspect-video bg-brand-black rounded-[2rem] shadow-2xl overflow-hidden flex flex-col justify-end group border-[6px] border-pure-white shadow-[0_20px_60px_rgb(0,0,0,0.15)]">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                     <button className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30">
+                        <Play size={28} className="ml-1 fill-white" />
+                     </button>
+                  </div>
+                  <div className="relative z-10 p-6 md:p-8">
+                     <h3 className="text-white font-black text-xl mb-1">Zone Visualization</h3>
+                     <p className="text-blue-500 font-bold text-[10px] uppercase tracking-widest">Interactive Proof of Concept</p>
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         {/* ── THE CHALLENGES (MEDIUM GREY GRADIENT) ── */}
+         <section className="py-20 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:32px_32px]" />
+            <div className="w-full max-w-5xl mx-auto px-8 md:px-12 relative z-10">
+               <div className="flex flex-col items-center text-center mb-14">
+                  <h2 className="text-2xl md:text-3xl font-display font-black uppercase tracking-[0.1em] mb-3 text-brand-black drop-shadow-sm">
+                     The Challenges
+                  </h2>
+                  <p className="text-slate-600 text-sm md:text-base font-semibold tracking-wide">
+                     What happens without smart ecosystems?
+                  </p>
+               </div>
+               
+               {/* Sorted, aligned grid with better padding */}
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 items-stretch px-4 md:px-8">
+                  {[
+                     { 
+                        title: "Invisibility", 
+                        desc: "No real-time data on zone utilization leads to undetected bottlenecks.",
+                        icon: TrendingDown 
+                     },
+                     { 
+                        title: "Safety Gaps", 
+                        desc: "Delayed incident reporting and uncoordinated evacuation responses.",
+                        icon: ShieldCheck 
+                     },
+                     { 
+                        title: "Resource Waste", 
+                        desc: "Utility and asset usage continues unchecked in unoccupied zones.",
+                        icon: XCircle 
+                     },
+                     { 
+                        title: "Manual Errors", 
+                        desc: "Human-dependent logging leads to highly inaccurate audit trails.",
+                        icon: Clock 
+                     }
+                  ].map((challenge, i) => (
+                     <div key={i} className="bg-white/90 backdrop-blur-md px-8 py-8 md:px-10 md:py-10 rounded-3xl border border-white/60 flex flex-col justify-center hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all h-full group">
+                        <div className="flex items-center gap-4 mb-3">
+                           <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                              <challenge.icon size={18} className="text-slate-500 group-hover:text-blue-600" />
+                           </div>
+                           <h4 className="font-black text-lg text-brand-black tracking-tight group-hover:text-blue-600 transition-colors">
+                              {challenge.title}
+                           </h4>
+                        </div>
+                        <p className="text-sm text-slate-600 font-medium leading-relaxed pl-14">
+                           {challenge.desc}
+                        </p>
+                     </div>
+                  ))}
+               </div>
+            </div>
+         </section>
+
+         {/* ── OUR SOLUTION LAYER (COMPACT DEEP BLUE) ── */}
+         <section className="py-20 bg-gradient-to-br from-[#0B1221] to-[#1E293B] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[80px] pointer-events-none" />
+            
+            <div className="relative w-full max-w-3xl mx-auto px-6">
+               <div className="flex flex-col items-center text-center mb-12">
+                  <div className="w-12 h-12 rounded-xl bg-accent-sky/10 flex items-center justify-center mb-5 border border-accent-sky/20 shadow-sm">
+                     <Layers size={24} className="text-accent-sky" />
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-display font-black uppercase tracking-[0.2em] mb-3 text-pure-white">
+                     Our Solution Layer
+                  </h2>
+                  <p className="text-pure-white/40 text-xs md:text-sm font-medium max-w-md">
+                     Restructuring operations through intelligent connectivity.
                   </p>
                </div>
 
-               {/* Video Mockup */}
-               <div className="relative w-full max-w-5xl mx-auto aspect-video rounded-2xl md:rounded-[2rem] bg-brand-black overflow-hidden border-4 md:border-[6px] border-light-cream shadow-xl mb-10 flex flex-col justify-end group">
-                  <div className="absolute inset-0 grid-bg opacity-10" />
-
-                  <div className="absolute inset-0 flex items-center justify-center">
-                     <button className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-accent-gold bg-accent-gold/10 text-accent-gold flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
-                        <Play size={24} className="ml-1 md:w-6 md:h-6" />
-                     </button>
-                  </div>
-
-                  <div className="relative z-10 p-5 md:p-8 bg-gradient-to-t from-brand-black/95 to-transparent flex flex-col sm:flex-row justify-between sm:items-end gap-3 md:gap-4">
-                     <div>
-                        <h3 className="text-lg md:text-xl font-display font-bold text-pure-white mb-1">
-                           {solutions[activeSol]?.name}
-                        </h3>
-                        <p className="text-pure-white/50 text-[11px] md:text-xs">
-                           Real-world walkthrough · Implementation scenario
-                        </p>
-                     </div>
-                     <div className="self-start sm:self-auto px-4 py-1.5 bg-brand-walnut/70 border border-accent-gold text-accent-gold text-[9px] md:text-[10px] font-bold uppercase rounded-full tracking-wider">
-                        Live Demo
-                     </div>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
-                     <motion.div
-                        layoutId="track"
-                        className="h-full bg-accent-gold"
-                        style={{ width: "35%" }}
-                     />
-                  </div>
-               </div>
-
-               {/* Horizontal Row of Image Cards with Hover Overlay */}
-               <div className="max-w-5xl mx-auto">
-                  <div className="flex gap-4 md:gap-5 overflow-x-auto pb-8 pt-2 scrollbar-hide snap-x">
-                     {solutions.map((sol, i) => (
-                        <button
-                           key={sol.id || i}
-                           onClick={() => setActiveSol(i)}
-                           className={`relative flex-shrink-0 w-64 sm:w-72 md:w-80 aspect-[4/3] rounded-2xl overflow-hidden transition-all duration-300 snap-start text-left group focus:outline-none ${activeSol === i
-                              ? "ring-4 ring-brand-walnut/40 shadow-xl transform -translate-y-1"
-                              : "border border-cool-gray/30 hover:shadow-lg"
-                              }`}
-                        >
-                           {/* Full-Cover Background Image */}
-                           <img
-                              src={sol.image || "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80"}
-                              alt={sol.name}
-                              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${activeSol === i ? "scale-105" : "group-hover:scale-110"
-                                 }`}
-                           />
-
-                           {/* Default subtle tint for inactive cards (so they aren't raw images) */}
-                           {activeSol !== i && (
-                              <div className="absolute inset-0 bg-brand-black/10 transition-opacity duration-300 group-hover:opacity-0 pointer-events-none" />
-                           )}
-
-                           {/* Hover Gradient & Text Overlay */}
-                           <div
-                              className={`absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/30 to-transparent transition-opacity duration-300 flex items-end p-5 md:p-6 ${activeSol === i ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                                 }`}
-                           >
-                              <span className="text-pure-white font-bold text-sm md:text-base leading-tight transform translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
-                                 {sol.name}
-                              </span>
-                           </div>
-                        </button>
-                     ))}
-                  </div>
-               </div>
-
-            </div>
-         </section>
-
-
-         {/* ── SOLUTION DETAILS & STATS ── */}
-         <section className="py-24 bg-light-gray border-y border-cool-gray/30">
-            <div className="container mx-auto px-6">
-               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                  <div>
-                     <div className="inline-block px-3 py-1 bg-brand-walnut text-pure-white text-[10px] font-bold uppercase tracking-widest rounded-md mb-6">Selected Solution</div>
-                     <h3 className="text-3xl font-display font-bold text-slate-blue mb-6">{solutions[activeSol]?.name}</h3>
-                     <p className="text-slate-blue/60 leading-relaxed text-lg mb-10">
-                        Proprietary algorithms integrated with industrial hardware to provide reliable, real-time outcomes. No manual effort required.
-                     </p>
-
-                     <div className="space-y-4">
-                        {[
-                           "End-to-end automation",
-                           "Cloud-integrated reporting",
-                           "Fail-safe architecture",
-                           "Scalable infrastructure"
-                        ].map(f => (
-                           <div key={f} className="flex items-center gap-3">
-                              <CheckCircle2 size={18} className="text-[#22c55e]" />
-                              <span className="text-slate-blue text-sm font-medium">{f}</span>
-                           </div>
-                        ))}
-                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                     {[
-                        { l: "Accuracy Rate", v: solutions[activeSol]?.stats?.acc || "90%+" },
-                        { l: "Data Refresh", v: solutions[activeSol]?.stats?.refresh || "Live" },
-                        { l: "Manual Effort Saved", v: solutions[activeSol]?.stats?.saving || "20%+" },
-                        { l: "Setup Time", v: solutions[activeSol]?.stats?.setup || "Quick" }
-                     ].map((stat, i) => (
-                        <div key={i} className="bg-pure-white p-10 rounded-[2.5rem] border border-cool-gray/50 text-center shadow-sm">
-                           <div className="text-3xl font-display font-bold text-brand-walnut mb-2">{stat.v}</div>
-                           <div className="text-[10px] font-bold text-slate-blue/40 uppercase tracking-widest">{stat.l}</div>
+               <div className="space-y-4">
+                  {[
+                     { title: "Autonomous Monitoring", desc: "Continuous sensor-based data stream for total site visibility.", icon: Activity },
+                     { title: "Smart Response Engine", desc: "Automated triggers for lighting, HVAC, and emergency protocols.", icon: Zap },
+                     { title: "Unified Analytics Platform", desc: "Consolidated dashboard for predictive maintenance and reporting.", icon: BarChart3 }
+                  ].map((layer, i) => (
+                     <div 
+                        key={i} 
+                        className="group relative bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-7 rounded-[1.5rem] flex items-center gap-5 md:gap-7 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 overflow-hidden"
+                     >
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent-sky flex items-center justify-center shrink-0 shadow-lg shadow-accent-sky/20 transition-all duration-500 group-hover:scale-110">
+                           <layer.icon size={20} className="text-brand-black" />
                         </div>
-                     ))}
-                  </div>
+                        <div className="relative z-10">
+                           <h4 className="text-lg md:text-xl font-bold text-pure-white mb-1 group-hover:text-accent-sky transition-colors">{layer.title}</h4>
+                           <p className="text-xs md:text-sm text-pure-white/50 leading-relaxed max-w-lg group-hover:text-pure-white/70 transition-colors">
+                              {layer.desc}
+                           </p>
+                        </div>
+                     </div>
+                  ))}
                </div>
             </div>
          </section>
-
-         {/* ── BEFORE / AFTER ── */}
-         <section className="py-24 bg-pure-white">
-            <div className="container mx-auto px-6">
-               <div className="mb-12 text-center">
-                  <span className="text-[10px] font-bold text-brand-walnut tracking-[.3em] uppercase mb-1">Impact</span>
-                  <h2 className="text-3xl font-display font-bold text-slate-blue">The operational difference</h2>
+ 
+         {/* ── TECH STACK (COMPACT MATTE BROWN) ── */}
+         <section className="py-20 bg-[#F5F2EE]">
+            <div className="w-full max-w-6xl mx-auto px-6 lg:px-12">
+               <div className="flex flex-col items-center text-center mb-12">
+                  <span className="text-[9px] md:text-xs font-black text-[#8D6E63] uppercase tracking-[0.3em] mb-3">
+                     Tech Stack
+                  </span>
+                  <h2 className="text-xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight">
+                     Core Hardware & Software
+                  </h2>
                </div>
 
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                  <div className="bg-light-gray/50 border border-cool-gray/30 p-10 rounded-[3rem] relative">
-                     <div className="flex items-center gap-4 mb-10">
-                        <span className="text-[10px] font-bold text-slate-blue/30 uppercase tracking-[.2em]">Before</span>
-                        <div className="h-px bg-cool-gray/30 flex-grow" />
+               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
+                  {[
+                     { name: "Node-S Sensors", icon: Cpu },
+                     { name: "IQ Dashboard", icon: Monitor },
+                     { name: "Hub-Z Controller", icon: Layers },
+                     { name: "Comms-X Gateway", icon: Wifi }
+                  ].map((tech, i) => (
+                     <div 
+                        key={i} 
+                        className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:shadow-[#8D6E63]/5 hover:-translate-y-1"
+                     >
+                        <div className="w-12 h-12 rounded-full bg-[#F9F7F5] shadow-sm flex items-center justify-center mb-6 border border-[#E0Dcd5]">
+                           <tech.icon size={22} className="text-[#8D6E63]/60" />
+                        </div>
+                        <h4 className="text-sm md:text-base font-black text-brand-black mb-1">{tech.name}</h4>
+                        <span className="text-[8px] font-black text-[#8D6E63] uppercase tracking-widest">
+                           Enterprise
+                        </span>
                      </div>
-                     <div className="space-y-6">
-                        {[
-                           "Manual data logging causing delays",
-                           "Reactive-only problem detection",
-                           "Operational blind spots on campus",
-                           "No longitudinal usage analytics"
-                        ].map(t => (
-                           <div key={t} className="flex gap-4">
-                              <XCircle size={18} className="text-red-400 mt-1 shrink-0" />
-                              <p className="text-sm text-slate-blue/60 leading-tight">{t}</p>
-                           </div>
-                        ))}
-                     </div>
-                  </div>
+                  ))}
+               </div>
 
-                  <div className="bg-brand-black border border-white/5 p-10 rounded-[3rem] relative text-pure-white">
-                     <div className="flex items-center gap-4 mb-10">
-                        <span className="text-[10px] font-bold text-white/20 uppercase tracking-[.2em]">After</span>
-                        <div className="h-px bg-white/10 flex-grow" />
-                     </div>
-                     <div className="space-y-6">
-                        {[
-                           "Fully automated live dashboards",
-                           "Intelligent predictive alerts",
-                           "100% visibility of all zones",
-                           "Data-driven space optimization"
-                        ].map(t => (
-                           <div key={t} className="flex gap-4">
-                              <ShieldCheck size={18} className="text-accent-gold mt-1 shrink-0" />
-                              <p className="text-sm text-white/70 leading-tight">{t}</p>
-                           </div>
-                        ))}
-                     </div>
-                  </div>
+               <div className="flex justify-center">
+                  <button className="bg-brand-black text-white px-8 py-4 rounded-xl text-sm font-bold flex items-center gap-2.5 transition-all hover:bg-slate-800 hover:shadow-2xl hover:shadow-black/20 group">
+                     Consult with Solutions Architect
+                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </button>
                </div>
             </div>
          </section>
-
       </div>
    );
 }

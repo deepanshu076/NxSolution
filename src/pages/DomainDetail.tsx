@@ -1,57 +1,100 @@
 import { motion } from "motion/react";
-import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
    Building2,
-   ChevronRight,
    ArrowRight,
-   Shield,
-   Users,
-   Activity,
-   Zap,
-   Monitor,
-   Settings,
-   CheckCircle2,
-   Clock,
    ArrowUpRight,
-   Truck
 } from "lucide-react";
 import { domains } from "../constants/domains";
 
 export default function DomainDetail() {
    const { domain } = useParams();
-   const [activeTab, setActiveTab] = useState<"real" | "demo">("real");
-   const [carouselIdx, setCarouselIdx] = useState(0);
-
-   const realProjects = [
-      { id: "r1", title: "Smart Campus Integration", label: "University of Excellence", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1562774053-701939374585?w=800&q=80" },
-      { id: "r2", title: "Delhi Public Library System", label: "Government Initiative", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80" },
-      { id: "r3", title: "Automated Attendance Network", label: "Corporate Campus", route: "/domains/education/library/delhi-lib", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" },
-   ];
-
-   const demoProjects = [
-      { id: "d1", title: "University Hub Setup", label: "Demo Environment", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=800&q=80" },
-      { id: "d2", title: "Smart Warehouse Blueprint", label: "Logistics Demo", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" },
-      { id: "d3", title: "Healthcare Monitoring Plan", label: "Hospital Demo", route: "/domains/education/library/uni-demo", image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" },
-   ];
 
    const currentDomain = domains.find(d => d.id === domain);
    const formattedDomain = currentDomain ? currentDomain.name : (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Enterprise");
 
-   const subDomains = [
-      { title: "Main Gate / Entry Area", route: "entry" },
-      { title: "Admin Block", route: "admin" },
-      { title: "Classrooms", route: "classrooms" },
-      { title: "Laboratories", route: "labs" },
-      { title: "Library", route: "library" },
-      { title: "Auditorium", route: "auditorium" },
-      { title: "Canteen / Cafeteria", route: "canteen" },
-      { title: "Parking Area", route: "parking" },
-      { title: "Hostel Block", route: "hostel" },
-      { title: "Reception / Help Desk", route: "help" },
-      { title: "Faculty Cabins / Staff Room", route: "staff" },
-      { title: "Accounts Office", route: "account" },
-   ];
+   const getImageForSubdomain = (title: string, index: number) => {
+      const t = title.toLowerCase();
+      // Entry / Gate
+      if (t.includes('gate') || t.includes('entry') || t.includes('entrance') || t.includes('access')) {
+         return "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"; // Modern building entrance
+      }
+      // Reception / Lobby
+      if (t.includes('reception') || t.includes('help desk') || t.includes('front desk') || t.includes('lobby') || t.includes('waiting')) {
+         return "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80";
+      }
+      // Admin / Office / Cabins
+      if (t.includes('admin') || t.includes('office') || t.includes('management') || t.includes('hr') || t.includes('cabin')) {
+         return "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80";
+      }
+      // Classrooms
+      if (t.includes('class') || t.includes('lecture')) {
+         return "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&q=80";
+      }
+      // Labs
+      if (t.includes('lab') || t.includes('computer')) {
+         return "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80";
+      }
+      // Library
+      if (t.includes('library') || t.includes('study')) {
+         return "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80";
+      }
+      // Auditorium / Conference / Meeting
+      if (t.includes('auditorium') || t.includes('seminar') || t.includes('conference') || t.includes('meeting') || t.includes('hall')) {
+         return "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&q=80";
+      }
+      // Cafeteria / Dining / Kitchen
+      if (t.includes('canteen') || t.includes('cafeteria') || t.includes('dining') || t.includes('pantry') || t.includes('kitchen') || t.includes('break')) {
+         return "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80";
+      }
+      // Parking / Transport
+      if (t.includes('parking') || t.includes('transport') || t.includes('vehicle')) {
+         return "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800&q=80";
+      }
+      // Accommodations / Rooms
+      if (t.includes('hostel') || t.includes('room') || t.includes('flat') || t.includes('unit') || t.includes('resident')) {
+         return "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&q=80";
+      }
+      // IT / Open Workspaces / Collaboration
+      if (t.includes('workstation') || t.includes('pod') || t.includes('collaboration') || t.includes('team') || t.includes('open work')) {
+         return "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80";
+      }
+      // Server / Control / Security
+      if (t.includes('server') || t.includes('it room') || t.includes('network') || t.includes('control') || t.includes('security') || t.includes('guard')) {
+         return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80";
+      }
+      // Recreation / Gym
+      if (t.includes('gym') || t.includes('fitness') || t.includes('pool') || t.includes('club') || t.includes('activity')) {
+         return "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80";
+      }
+      // Outdoors / Garden
+      if (t.includes('garden') || t.includes('open space') || t.includes('play') || t.includes('perimeter')) {
+         return "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?w=800&q=80";
+      }
+      // Corridors / Stairs / Lifts
+      if (t.includes('corridor') || t.includes('stair') || t.includes('lift') || t.includes('common')) {
+         return "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80";
+      }
+      // Storage / Maintenance / Logistics
+      if (t.includes('storage') || t.includes('inventory') || t.includes('material') || t.includes('utility') || t.includes('maintenance')) {
+         return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80";
+      }
+      
+      // Fallback pattern
+      const fallbackImages = [
+         "https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=800&q=80",
+         "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=80",
+         "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
+      ];
+      return fallbackImages[index % fallbackImages.length];
+   };
+
+   const dynamicSubDomains = currentDomain?.subdomains || ["General Operations", "Control Room", "Security Area", "Staff Management"];
+   const subDomains = dynamicSubDomains.map((sd, i) => ({
+      title: sd,
+      route: sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      image: getImageForSubdomain(sd, i)
+   }));
 
    return (
       <div className="flex flex-col pt-20">
@@ -69,16 +112,10 @@ export default function DomainDetail() {
             {/* ── CONTENT LAYER ── */}
             <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
 
-               {/* Animated Badge */}
-               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent-sky/20 bg-accent-sky/5 text-accent-sky text-[10px] font-bold uppercase tracking-[0.2em] mb-6 backdrop-blur-md shadow-[0_0_15px_rgba(14,165,233,0.1)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent-sky animate-pulse" />
-                  Domain · {domain?.toUpperCase() || "OVERVIEW"}
-               </div>
-
                {/* Headline (Scaled Down) */}
-               <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-pure-white mb-5 leading-[1.15] text-balance max-w-4xl tracking-tight">
+               <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-pure-white mb-4 md:mb-8 leading-tight text-balance max-w-4xl tracking-tight">
                   Smart Systems for <br className="hidden sm:block" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-sky to-blue-400">
+                  <span className="block mt-2 md:mt-4 text-transparent bg-clip-text bg-gradient-to-r from-accent-sky to-blue-400">
                      {formattedDomain} Operations
                   </span>
                </h1>
@@ -109,133 +146,51 @@ export default function DomainDetail() {
             </div>
          </section>
 
-         {/* ── PROJECTS SHOWCASE (Tabbed Carousel) ── */}
-         <section className="py-16 md:py-24 bg-light-cream border-t border-cool-gray/30">
-            <div className="container mx-auto px-6">
-
-               {/* Tabs */}
-               <div className="flex justify-center mb-10 md:mb-14">
-                  <div className="inline-flex bg-pure-white rounded-full p-1.5 border border-cool-gray/30 shadow-sm">
-                     <button
-                        onClick={() => { setActiveTab("real"); setCarouselIdx(0); }}
-                        className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${activeTab === "real"
-                           ? "bg-brand-walnut text-pure-white shadow-md"
-                           : "text-slate-blue/50 hover:text-slate-blue"
-                           }`}
-                     >
-                        <CheckCircle2 size={14} /> Real Projects
-                     </button>
-                     <button
-                        onClick={() => { setActiveTab("demo"); setCarouselIdx(0); }}
-                        className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${activeTab === "demo"
-                           ? "bg-brand-walnut text-pure-white shadow-md"
-                           : "text-slate-blue/50 hover:text-slate-blue"
-                           }`}
-                     >
-                        <Zap size={14} /> Demo Projects
-                     </button>
-                  </div>
-               </div>
-
-               {/* Carousel */}
-               <div className="relative max-w-5xl mx-auto">
-                  {/* Left Arrow */}
-                  <button
-                     onClick={() => setCarouselIdx(Math.max(0, carouselIdx - 1))}
-                     className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-pure-white border border-cool-gray/30 shadow-lg flex items-center justify-center text-slate-blue/40 hover:text-brand-walnut hover:border-brand-walnut/30 transition-all"
-                  >
-                     <ChevronRight size={20} className="rotate-180" />
-                  </button>
-
-                  {/* Right Arrow */}
-                  <button
-                     onClick={() => setCarouselIdx(Math.min((activeTab === "real" ? realProjects : demoProjects).length - 1, carouselIdx + 1))}
-                     className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full bg-pure-white border border-cool-gray/30 shadow-lg flex items-center justify-center text-slate-blue/40 hover:text-brand-walnut hover:border-brand-walnut/30 transition-all"
-                  >
-                     <ChevronRight size={20} />
-                  </button>
-
-                  {/* Cards Row */}
-                  <div className="overflow-hidden rounded-3xl">
-                     <motion.div
-                        className="flex gap-6"
-                        animate={{ x: `-${carouselIdx * 52}%` }}
-                        transition={{ type: "spring", stiffness: 200, damping: 30 }}
-                     >
-                        {(activeTab === "real" ? realProjects : demoProjects).map((proj) => (
-                           <Link
-                              key={proj.id}
-                              to={proj.route}
-                              className="flex-shrink-0 w-[48%] md:w-[48%] group"
-                           >
-                              <div className="relative h-56 md:h-72 rounded-2xl overflow-hidden bg-brand-black border border-cool-gray/20 shadow-lg">
-                                 <img
-                                    src={proj.image}
-                                    alt={proj.title}
-                                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                                 />
-                                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/30 to-transparent" />
-                                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                                    <h3 className="text-lg md:text-xl font-display font-bold text-pure-white mb-1 group-hover:text-accent-gold transition-colors">
-                                       {proj.title}
-                                    </h3>
-                                    <span className="text-[10px] font-bold text-pure-white/40 uppercase tracking-[.2em]">
-                                       {proj.label}
-                                    </span>
-                                 </div>
-                              </div>
-                           </Link>
-                        ))}
-                     </motion.div>
-                  </div>
-
-                  {/* Dots */}
-                  <div className="flex justify-center gap-2 mt-6">
-                     {(activeTab === "real" ? realProjects : demoProjects).map((_, i) => (
-                        <button
-                           key={i}
-                           onClick={() => setCarouselIdx(i)}
-                           className={`w-2 h-2 rounded-full transition-all duration-300 ${carouselIdx === i ? "bg-brand-walnut w-6" : "bg-cool-gray/30 hover:bg-cool-gray/60"}`}
-                        />
-                     ))}
-                  </div>
-               </div>
-            </div>
-         </section>
-
-
 
          {/* ── SUB-DOMAINS GRID ── */}
          <section className="py-24 bg-pure-white">
-            <div className="container mx-auto px-6">
+            <div className="w-full max-w-[90rem] mx-auto px-6 lg:px-12">
                <div className="text-center mb-16 px-4">
                   <span className="text-xs font-bold text-brand-walnut uppercase tracking-[.2em] mb-4 block">Areas of Implementation</span>
-                  <h2 className="text-3xl font-display font-bold text-slate-blue mb-4">Specific Sub-Domains</h2>
-                  <div className="w-20 h-1 bg-slate-blue/10 mx-auto" />
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-brand-black mb-4">Specific Sub-Domains</h2>
+                  <div className="w-16 h-1 bg-brand-walnut mx-auto rounded-full" />
                </div>
 
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                   {subDomains.map((sd, i) => (
                      <Link
                         key={i}
                         to={`/domains/${domain}/${sd.route}`}
-                        className="group relative h-48 rounded-[2.5rem] overflow-hidden bg-light-cream border border-cool-gray/30 p-8 flex flex-col justify-between transition-all hover:scale-[1.02] hover:shadow-2xl"
+                        className="group relative h-48 sm:h-56 md:h-64 rounded-2xl overflow-hidden bg-brand-black border border-cool-gray/30 flex flex-col justify-end transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-brand-walnut/50"
                      >
-                        <div className="absolute inset-0 grid-bg opacity-10" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-light-cream via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                        <div className="relative z-10 flex justify-between items-start w-full">
-                           <div className="w-10 h-10 rounded-xl bg-slate-blue/5 flex items-center justify-center text-slate-blue/40 group-hover:bg-brand-walnut group-hover:text-pure-white transition-all">
-                              <Monitor size={20} />
-                           </div>
-                           <div className="w-8 h-8 rounded-full bg-pure-white border border-cool-gray/30 flex items-center justify-center text-slate-blue/20 group-hover:text-brand-walnut transition-colors">
-                              <ArrowUpRight size={18} />
-                           </div>
+                        {/* Background Image */}
+                        <div className="absolute inset-0">
+                           <img
+                              src={sd.image}
+                              alt={sd.title}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              referrerPolicy="no-referrer"
+                           />
+                           {/* Overlays */}
+                           <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-brand-black/40 transition-colors duration-500" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
                         </div>
 
-                        <div className="relative z-10">
-                           <h4 className="text-lg font-bold text-slate-blue">{sd.title}</h4>
-                           <p className="text-[10px] font-bold text-slate-blue/30 uppercase tracking-widest mt-1">/domains/{domain}/{sd.route}</p>
+                        {/* Content */}
+                        <div className="relative z-10 p-4 sm:p-5 w-full flex justify-between items-end">
+                           <div className="flex-1 pr-3">
+                              <h4 className="text-sm md:text-base font-bold text-pure-white leading-tight mb-1 md:mb-1.5 group-hover:text-warm-gold-beige transition-colors">
+                                 {sd.title}
+                              </h4>
+                              <p className="text-[8px] md:text-[9px] font-bold text-pure-white/60 uppercase tracking-widest line-clamp-1">
+                                 IMPLEMENTATION ZONE
+                              </p>
+                           </div>
+                           
+                           {/* Square Button Icon */}
+                           <div className="w-8 h-8 rounded-lg bg-pure-white/10 backdrop-blur-sm border border-pure-white/20 flex items-center justify-center text-pure-white shrink-0 group-hover:bg-brand-walnut group-hover:border-brand-walnut transition-all duration-300">
+                              <ArrowUpRight size={16} />
+                           </div>
                         </div>
                      </Link>
                   ))}

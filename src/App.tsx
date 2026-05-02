@@ -77,6 +77,7 @@ export default function App() {
                     {/* Phase 3 Routes */}
                     <Route path="/solutions" element={<Solutions />} />
                     <Route path="/projects" element={<Projects />} />
+                    <Route path="/projects/:slug" element={<ProjectDetail />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/domains/:domain/:subdomain/:project" element={<ProjectDetail />} />
                     
