@@ -203,41 +203,7 @@ export default function DomainDetail() {
              </div>
           </section>
 
-          {/* ── OVERVIEW ── */}
-         <section className="py-16 md:py-24 bg-light-gray">
-            <div className="container mx-auto px-6 max-w-3xl flex flex-col items-center text-center">
-
-               {/* Centered Decorative Line */}
-               <div className="w-16 h-1 rounded-full bg-brand-walnut mb-6 md:mb-8" />
-
-               {/* Heading */}
-               <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-blue mb-6 leading-tight text-balance">
-                  End-to-end smart infrastructure <br className="hidden sm:block" />
-                  for {domain} environments
-               </h2>
-
-               {/* Paragraph */}
-               <p className="text-slate-blue/60 text-base md:text-lg leading-relaxed mb-10 text-balance">
-                  We refine every touchpoint of your {domain} facility. From automated entry points to intelligent energy systems, our solutions create a synchronized ecosystem.
-               </p>
-
-               {/* Centered Features List */}
-               <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8">
-                  {["Integrated access solutions", "Real-time presence analytics", "Proactive facility alerts"].map((pt, i) => (
-                     <div key={i} className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-accent-teal/10 flex items-center justify-center text-accent-teal shrink-0">
-                           <CheckCircle2 size={14} strokeWidth={2.5} />
-                        </div>
-
-                        <span className="text-sm md:text-base font-semibold tracking-wide text-slate-blue/90 leading-relaxed">
-                           {pt}
-                        </span>
-                     </div>
-                  ))}
-               </div>
-
-            </div>
-         </section>
+ 
 
          {/* ── SUB-DOMAINS GRID ── */}
          <section className="py-24 bg-pure-white">
@@ -277,58 +243,7 @@ export default function DomainDetail() {
             </div>
          </section>
 
-         {/* ── SOLUTIONS SECTION ── */}
-         <section className="bg-light-gray overflow-hidden">
-            <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
-               <div className="flex flex-col items-center text-center w-full max-w-6xl mx-auto">
-                  <span className="text-[10px] font-bold text-brand-walnut uppercase tracking-[.2em] mb-3 block">
-                     Ecosystem
-                  </span>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-bold text-slate-blue mb-10 md:mb-12">
-                     Smart Systems for {domain?.toUpperCase()}
-                  </h2>
 
-                  {/* Grid: Tighter gaps and fixed column count for mobile to prevent massive cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full">
-                     {[
-                        { t: "Smart Access", image: "/images/smart access system.jpeg" },
-                        { t: "Attendance", image: "/images/attendance system.jpeg" },
-                        { t: "Surveillance", image: "/images/survillance monitoring.jpeg" },
-                        { t: "Intelligence", image: "/images/security intelligence.jpeg" },
-                        { t: "Tracking", image: "/images/tracking system.jpeg" },
-                        { t: "Facility", image: "/images/facility management.jpeg" },
-                        { t: "Energy", image: "/images/energy optimization.jpeg" },
-                        { t: "Analytics", image: "/images/analytics system.jpeg" }
-                     ].map((s, i) => (
-                        <div
-                           key={i}
-                           className="relative aspect-[4/3] sm:aspect-[4/3] bg-pure-white rounded-2xl overflow-hidden group shadow-sm hover:shadow-lg transition-all duration-300"
-                        >
-                           {/* Background Image Container */}
-                           <div className="absolute inset-0">
-                              <img
-                                 src={s.image}
-                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                 alt={s.t}
-                              />
-                              {/* Overlays for depth and readability */}
-                              <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-brand-black/10 transition-colors" />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                           </div>
-
-                           {/* Content: Title overlaid on image */}
-                           <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-col justify-end">
-                              <h4 className="font-bold text-soft-white text-[10px] md:text-xs lg:text-sm uppercase tracking-wider text-balance group-hover:text-warm-gold-beige transition-colors">
-                                 {s.t}
-                              </h4>
-                           </div>
-
-                        </div>
-                     ))}
-                  </div>
-               </div>
-            </div>
-         </section>
 
          {/* ── CTA ── */}
          <section className="py-24 bg-brand-black relative">
