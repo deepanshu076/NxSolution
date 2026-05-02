@@ -94,47 +94,54 @@ export default function Solutions() {
             <h2 className="text-3xl md:text-5xl font-display font-bold text-brand-black leading-tight">Integrated Smart Solutions</h2>
           </div>
 
-          <div className="flex gap-4 md:grid md:grid-cols-2 lg:grid-cols-4 mb-16 overflow-x-auto pb-6 scrollbar-hide px-2 -mx-2">
-            {domainList.map((dom) => {
-              const isActive = activeDomain === dom.id;
-              return (
-                <button
-                  key={dom.id}
-                  onMouseEnter={() => setActiveDomain(dom.id)}
-                  className={`relative flex flex-col items-start justify-end p-6 rounded-3xl transition-all duration-500 min-w-[260px] lg:min-w-0 h-44 overflow-hidden group outline-none
-                      ${isActive
-                      ? "shadow-2xl shadow-brand-walnut/20 scale-[1.02] border-2 border-brand-walnut"
-                      : "bg-white border border-gray-200 hover:border-brand-walnut/30 hover:shadow-xl hover:-translate-y-1"
-                    }`}
-                >
-                  {/* Background Image with Overlays */}
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src={dom.image}
-                      alt={dom.name}
-                      className={`w-full h-full object-cover transition-transform duration-1000 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}
-                    />
-                    <div className={`absolute inset-0 transition-colors duration-500 ${isActive ? 'bg-brand-walnut/40' : 'bg-black/20 group-hover:bg-black/40'}`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative z-10 flex items-center gap-4">
-                    <div className={`p-2.5 rounded-xl transition-all duration-500 ${isActive ? 'bg-white text-brand-walnut shadow-lg' : 'bg-white/10 text-white backdrop-blur-md'}`}>
-                      <dom.icon size={20} strokeWidth={2.5} />
+          <div className="relative mb-16 group/slider">
+            <div 
+              className="flex gap-5 overflow-x-auto pb-10 px-2 -mx-2 scrollbar-hide snap-x snap-mandatory scroll-smooth"
+            >
+              {domainList.map((dom) => {
+                const isActive = activeDomain === dom.id;
+                return (
+                  <button
+                    key={dom.id}
+                    onClick={() => setActiveDomain(dom.id)}
+                    className={`relative flex flex-col items-start justify-end p-6 rounded-[2rem] transition-all duration-500 min-w-[280px] md:min-w-[320px] h-48 overflow-hidden group outline-none snap-start
+                      ${isActive 
+                        ? "shadow-2xl shadow-brand-walnut/30 scale-[1.02] border-2 border-brand-walnut" 
+                        : "bg-white border border-gray-200 hover:border-brand-walnut/30 hover:shadow-xl"
+                      }`}
+                  >
+                    {/* Background Image with Overlays */}
+                    <div className="absolute inset-0 z-0">
+                      <img 
+                        src={dom.image} 
+                        alt={dom.name}
+                        className={`w-full h-full object-cover transition-transform duration-1000 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}
+                      />
+                      <div className={`absolute inset-0 transition-colors duration-500 ${isActive ? 'bg-brand-walnut/40' : 'bg-black/20 group-hover:bg-black/40'}`} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                     </div>
-                    <span className="text-sm font-bold uppercase tracking-[0.15em] text-white">
-                      {dom.name}
-                    </span>
-                  </div>
 
-                  {/* Active Indicator Pin */}
-                  {isActive && (
-                    <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_white]" />
-                  )}
-                </button>
-              );
-            })}
+                    {/* Content */}
+                    <div className="relative z-10 flex items-center gap-4">
+                       <div className={`p-3 rounded-2xl transition-all duration-500 ${isActive ? 'bg-white text-brand-walnut shadow-lg' : 'bg-white/10 text-white backdrop-blur-md'}`}>
+                         <dom.icon size={22} strokeWidth={2.5} />
+                       </div>
+                       <div className="flex flex-col items-start">
+                         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/60 mb-1">Domain</span>
+                         <span className="text-lg font-display font-bold text-white tracking-wide">
+                           {dom.name}
+                         </span>
+                       </div>
+                    </div>
+
+                    {/* Active Indicator Pin */}
+                    {isActive && (
+                      <div className="absolute top-6 right-6 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_white] animate-pulse" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Solutions Grid */}
