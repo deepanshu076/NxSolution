@@ -27,6 +27,39 @@ import { Link } from "react-router-dom";
 import { domains } from "../constants/domains";
 import OperationalChallenges from "../components/home/OperationalChallenges";
 
+const solutions = [
+  {
+    name: "Smart Access Systems",
+    description: "Multi-layered entry control using AI facial recognition and secure encrypted RFID systems for total facility security.",
+    image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=80",
+    features: ["Biometric", "RFID", "Cloud Control"]
+  },
+  {
+    name: "AI Attendance Engine",
+    description: "Automated presence tracking that eliminates proxy attendance and manual logging across campuses and factories.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+    features: ["Real-time", "Anti-proxy", "Insights"]
+  },
+  {
+    name: "Movement Intelligence",
+    description: "Track personnel and asset flow across large zones to optimize operational efficiency and security response times.",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=80",
+    features: ["Zone Tracking", "Heatmaps", "Flow Analytics"]
+  },
+  {
+    name: "Energy Optimization",
+    description: "Intelligent HVAC and lighting control systems that reduce utility costs by automatically adjusting to real-time occupancy.",
+    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80",
+    features: ["Eco-smart", "Cost Control", "Auto-adjust"]
+  },
+  {
+    name: "Security Intelligence",
+    description: "24/7 proactive monitoring that uses computer vision to detect anomalies and trigger instant security protocols.",
+    image: "https://images.unsplash.com/photo-1557597774-9d2739f05a76?w=800&q=80",
+    features: ["Proactive", "AI Vision", "Instant Alert"]
+  }
+];
+
 const getTagsForDomain = (id: string) => {
   const domain = domains.find(d => d.id === id);
   return domain ? domain.subdomains : ["Smart", "Integrated", "Monitored"];
@@ -69,6 +102,9 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-6 leading-tight">
+              OVERVIEW
+            </h2>
+            <h2 className="text-gray-600 text-sm md:text-lg lg:text-xl mb-3 md:mb-6 ">
               A rich portfolio of empowering and enabling solutions
             </h2>
             <p className="text-sm md:text-lg lg:text-xl text-gray-600 leading-relaxed">
@@ -182,6 +218,8 @@ export default function Home() {
       {/* ── SOLUTIONS SECTION ── */}
       <section className="py-8 md:py-16 lg:py-20 bg-brand-black text-soft-white">
         <div className="container mx-auto px-4 md:px-6">
+
+          {/* Section Header */}
           <div className="text-center mb-6 md:mb-12 lg:mb-16 max-w-4xl mx-auto">
             <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold mb-2 md:mb-6 text-balance text-white">
               Smart Industrial Solutions
@@ -191,36 +229,59 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Scrollable Cards Container */}
           <div className="flex gap-3 md:gap-5 lg:gap-6 overflow-x-auto pb-4 md:pb-10 lg:pb-12 px-2 md:px-4 snap-x snap-mandatory scrollbar-hide">
-            {[
-              { name: "Smart Access Systems", image: "/images/smart access system.jpeg" },
-              { name: "Attendance Systems", image: "/images/attendance system.jpeg" },
-              { name: "Security Intelligence", image: "/images/security intelligence.jpeg" },
-              { name: "Surveillance Monitoring", image: "/images/survillance monitoring.jpeg" },
-              { name: "Energy Optimization", image: "/images/energy optimization.jpeg" },
-              { name: "Workflow Automation", image: "/images/workflow automation.jpeg" }
-            ].map((sol, i) => (
+            {solutions.map((sol, i) => (
               <div
                 key={i}
-                className="min-w-[180px] sm:min-w-[220px] md:min-w-[260px] lg:min-w-[280px] xl:min-w-[300px] h-[220px] sm:h-[260px] md:h-[300px] lg:h-[320px] xl:h-[340px] relative rounded-xl md:rounded-2xl overflow-hidden border border-soft-white/10 group transition-all hover:border-brand-walnut snap-center shadow-xl flex-shrink-0"
+                className="min-w-[220px] sm:min-w-[260px] md:min-w-[300px] lg:min-w-[320px] h-[280px] sm:h-[320px] md:h-[360px] lg:h-[400px] relative rounded-xl md:rounded-2xl overflow-hidden border border-soft-white/10 group transition-all duration-300 hover:border-brand-walnut snap-center shadow-xl flex-shrink-0 cursor-pointer"
               >
+                {/* Background & Images */}
                 <div className="absolute inset-0">
                   <img
                     src={sol.image}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     alt={sol.name}
                   />
-                  <div className="absolute inset-0 bg-brand-black/60 group-hover:bg-brand-black/40 transition-colors" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
+                  {/* Default overlay + darker overlay on hover for better text readability */}
+                  <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-brand-black/60 transition-colors duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent group-hover:from-black group-hover:via-black/70 transition-colors duration-500" />
                 </div>
-                <div className="absolute bottom-3 md:bottom-5 lg:bottom-6 left-3 md:left-5 lg:left-6 right-3 md:right-5 lg:right-6 z-10">
-                  <h4 className="font-display font-bold text-sm md:text-base lg:text-xl leading-tight text-soft-white group-hover:text-warm-gold-beige transition-colors">
+
+                {/* Text Content Area */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 lg:p-6 z-10 flex flex-col justify-end">
+                  <h4 className="font-display font-bold text-base md:text-lg lg:text-xl leading-tight text-soft-white group-hover:text-warm-gold-beige transition-colors duration-300">
                     {sol.name}
                   </h4>
+
+                  {/* Expandable Hover Details (CSS Grid Trick for smooth height transition) */}
+                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
+                    <div className="overflow-hidden">
+                      <div className="pt-2 md:pt-3 flex flex-col gap-3">
+                        <p className="text-soft-white/70 text-xs md:text-sm leading-relaxed line-clamp-3">
+                          {sol.description}
+                        </p>
+
+                        {/* Feature Tags */}
+                        <div className="flex flex-wrap gap-2">
+                          {sol.features.map((feature, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[9px] md:text-[10px] uppercase tracking-wider font-bold px-2 py-1 bg-white/10 backdrop-blur-md rounded-md border border-white/10 text-soft-white"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
