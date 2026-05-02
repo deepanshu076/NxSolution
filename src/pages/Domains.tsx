@@ -21,26 +21,12 @@ import {
 import { Link } from "react-router-dom";
 import { domains } from "../constants/domains";
 
-const industries = [
-  { id: "education", name: "Education & Campuses", img: "https://images.unsplash.com/photo-1523050853023-8c2d27443ef8?w=800&q=80", sub: "Campus · Library · Labs", icon: Building2, color: "blue", stat: "14+ Projects", emoji: "🏫" },
-  { id: "manufacturing", name: "Manufacturing & Units", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", sub: "Factory · Plant · Unit", icon: Factory, color: "green", stat: "9+ Projects", emoji: "🏭" },
-  { id: "healthcare", name: "Healthcare & Hospitals", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80", sub: "Hospital · Clinic · Lab", icon: Stethoscope, color: "red", stat: "11+ Projects", emoji: "🏥" },
-  { id: "corporate", name: "Corporate Offices", img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80", sub: "Office · HQ · Enterprise", icon: Briefcase, color: "purple", stat: "16+ Projects", emoji: "🏢" },
-  { id: "retail", name: "Retail & Commercial", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80", sub: "Store · Mall · Chain", icon: ShoppingBag, color: "orange", stat: "8+ Projects", emoji: "🏪" },
-  { id: "logistics", name: "Warehousing & Logistics", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80", sub: "Warehouse · Fleet · Hub", icon: Truck, color: "teal", stat: "7+ Projects", emoji: "🏗" },
-  { id: "hospitality", name: "Hospitality & Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80", sub: "Hospitality · Hotels", icon: Hotel, color: "amber", stat: "5+ Projects", emoji: "🏨" },
-  { id: "residential", name: "Residential Communities", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80", sub: "Society · Housing · Gated", icon: HomeIcon, color: "pink", stat: "5+ Projects", emoji: "🏘" },
-  { id: "government", name: "Govt Infrastructure", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80", sub: "Civic · Municipal · Public", icon: Landmark, color: "slate", stat: "6+ Projects", emoji: "🏛" },
-];
-
 const solutions = [
-  { name: "Smart Access Systems", icon: <Fingerprint size={32} strokeWidth={1.5} /> },
-  { name: "Attendance Systems", icon: <UserCheck size={32} strokeWidth={1.5} /> },
-  { name: "Security Intel", icon: <ShieldAlert size={32} strokeWidth={1.5} /> },
-  { name: "Surveillance Monitoring", icon: <Cctv size={32} strokeWidth={1.5} /> },
-  { name: "Energy Optimization", icon: <Zap size={32} strokeWidth={1.5} /> },
-  { name: "Facility Management", icon: <Building size={32} strokeWidth={1.5} /> },
-  { name: "Analytics Dashboard", icon: <BarChart3 size={32} strokeWidth={1.5} /> }
+  { name: "Smart Access Systems", image: "/images/smart access system.jpeg", icon: <Fingerprint size={32} strokeWidth={1.5} /> },
+  { name: "Attendance Systems", image: "/images/attendance system.jpeg", icon: <UserCheck size={32} strokeWidth={1.5} /> },
+  { name: "Security Intel", image: "/images/security intelligence.jpeg", icon: <ShieldAlert size={32} strokeWidth={1.5} /> },
+  { name: "Surveillance Monitoring", image: "/images/survillance monitoring.jpeg", icon: <Cctv size={32} strokeWidth={1.5} /> }, { name: "Facility Management", image: "/images/facility management.jpeg", icon: <Building size={32} strokeWidth={1.5} /> },
+  { name: "Analytics Dashboard", image: "/images/analytics dashboard.jpeg", icon: <BarChart3 size={32} strokeWidth={1.5} /> }
 ];
 
 export default function Domains() {
@@ -126,32 +112,52 @@ export default function Domains() {
       </section>
 
       {/* ── SOLUTIONS PREVIEW SLIDER (Smaller Cards) ── */}
-      <section className="py-12 md:py-16 bg-warm-cream">
-        <div className="container mx-auto px-4 md:px-6 text-center max-w-6xl">
-          <div className="mb-10 md:mb-12">
-            <span className="text-[10px] md:text-xs font-bold text-brand-walnut uppercase tracking-[0.3em] block mb-3 px-4 py-1.5 border border-brand-walnut/10 w-fit mx-auto rounded-full">
+      <section className="py-8 md:py-12 bg-warm-cream">
+        <div className="container mx-auto px-4 md:px-6 text-center max-w-5xl">
+
+          {/* Section Header */}
+          <div className="mb-8 md:mb-10">
+            <span className="text-[10px] font-bold text-brand-walnut uppercase tracking-[0.3em] block mb-2.5 px-3 py-1 border border-brand-walnut/10 w-fit mx-auto rounded-full">
               Solutions
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-brand-black leading-tight text-balance">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-brand-black leading-tight text-balance">
               Integrated Smart Solutions
             </h2>
           </div>
 
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 md:gap-5 lg:gap-6">
+          {/* Grid Container: 
+          Decreased minmax from 280px to 220px for smaller cards.
+          Tightened the gap between cards.
+        */}
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-5">
             {solutions.map((sol, i) => (
               <div
                 key={i}
-                className="bg-soft-white p-6 rounded-2xl border border-soft-taupe/30 transition-all duration-300 hover:border-brand-walnut group flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg hover:-translate-y-1 h-full min-h-[180px] md:min-h-[200px]"
+                className="bg-soft-white rounded-xl border border-soft-taupe/30 transition-all duration-300 hover:border-brand-walnut group flex flex-col shadow-sm hover:shadow-md hover:-translate-y-1 h-full min-h-[200px] overflow-hidden cursor-pointer"
               >
-                <div className="text-brand-black/40 group-hover:text-brand-walnut transition-colors duration-300 mb-4 bg-warm-cream/50 p-3 rounded-full">
-                  {sol.icon}
+                {/* Image Container - Reduced height */}
+                <div className="w-full h-32 sm:h-36 relative overflow-hidden bg-brand-black/5 flex-shrink-0">
+                  <img
+                    src={sol.image || "/api/placeholder/400/300"}
+                    alt={sol.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
-                <h4 className="font-bold text-brand-black text-sm md:text-base leading-tight group-hover:text-brand-walnut transition-colors">
-                  {sol.name}
-                </h4>
+
+                {/* Text & Icon Content Container - Reduced padding and text sizes */}
+                <div className="p-4 md:p-5 flex flex-col items-center justify-center text-center flex-1">
+                  <div className="text-brand-black/40 group-hover:text-brand-walnut transition-colors duration-300 mb-3 bg-warm-cream/50 p-2.5 rounded-full">
+                    {sol.icon}
+                  </div>
+                  <h4 className="font-bold text-brand-black text-sm md:text-base leading-tight group-hover:text-brand-walnut transition-colors">
+                    {sol.name}
+                  </h4>
+                </div>
+
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
