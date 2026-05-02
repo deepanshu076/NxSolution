@@ -169,28 +169,51 @@ export default function DomainDetail() {
          </section>
 
          {/* ── SOLUTIONS SECTION ── */}
-         <section className="py-24 bg-light-gray">
-            <div className="container mx-auto px-6">
-               <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
-                  <span className="text-xs font-bold text-brand-walnut uppercase tracking-[.2em] mb-4 block">Ecosystem</span>
-                  <h2 className="text-3xl font-display font-bold text-slate-blue mb-16">Smart Systems for {domain?.toUpperCase()}</h2>
+         <section className="bg-light-gray overflow-hidden">
+            <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+               <div className="flex flex-col items-center text-center w-full max-w-6xl mx-auto">
+                  <span className="text-[10px] font-bold text-brand-walnut uppercase tracking-[.2em] mb-3 block">
+                     Ecosystem
+                  </span>
+                  <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-bold text-slate-blue mb-10 md:mb-12">
+                     Smart Systems for {domain?.toUpperCase()}
+                  </h2>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+                  {/* Grid: Tighter gaps and fixed column count for mobile to prevent massive cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full">
                      {[
-                        { t: "Smart Access", icon: Shield },
-                        { t: "Attendance", icon: Users },
-                        { t: "Surveillance", icon: Activity },
-                        { t: "Intelligence", icon: Zap },
-                        { t: "Tracking", icon: Truck },
-                        { t: "Facility", icon: Settings },
-                        { t: "Energy", icon: Zap },
-                        { t: "Analytics", icon: Monitor }
+                        { t: "Smart Access", image: "/images/smart access system.jpeg" },
+                        { t: "Attendance", image: "/images/attendance system.jpeg" },
+                        { t: "Surveillance", image: "/images/survillance monitoring.jpeg" },
+                        { t: "Intelligence", image: "/images/security intelligence.jpeg" },
+                        { t: "Tracking", image: "/images/tracking system.jpeg" },
+                        { t: "Facility", image: "/images/facility management.jpeg" },
+                        { t: "Energy", image: "/images/energy optimization.jpeg" },
+                        { t: "Analytics", image: "/images/analytics system.jpeg" }
                      ].map((s, i) => (
-                        <div key={i} className="bg-pure-white p-8 rounded-3xl border border-cool-gray/30 hover:border-brand-walnut transition-all group">
-                           <div className="w-10 h-10 rounded-xl bg-slate-blue/5 flex items-center justify-center text-accent-sky mx-auto mb-4 group-hover:bg-accent-sky group-hover:text-brand-black transition-all">
-                              <s.icon size={20} />
+                        <div
+                           key={i}
+                           className="relative aspect-[4/3] sm:aspect-[4/3] bg-pure-white rounded-2xl overflow-hidden group shadow-sm hover:shadow-lg transition-all duration-300"
+                        >
+                           {/* Background Image Container */}
+                           <div className="absolute inset-0">
+                              <img
+                                 src={s.image}
+                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                 alt={s.t}
+                              />
+                              {/* Overlays for depth and readability */}
+                              <div className="absolute inset-0 bg-brand-black/20 group-hover:bg-brand-black/10 transition-colors" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                            </div>
-                           <h4 className="font-bold text-slate-blue text-xs uppercase tracking-widest">{s.t}</h4>
+
+                           {/* Content: Title overlaid on image */}
+                           <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-col justify-end">
+                              <h4 className="font-bold text-soft-white text-[10px] md:text-xs lg:text-sm uppercase tracking-wider text-balance group-hover:text-warm-gold-beige transition-colors">
+                                 {s.t}
+                              </h4>
+                           </div>
+
                         </div>
                      ))}
                   </div>
