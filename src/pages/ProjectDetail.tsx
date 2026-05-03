@@ -252,13 +252,16 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* ── 2. SUB-DOMAIN CARDS ROW ── */}
-      <section className="py-14 bg-[#F8F9FB]">
-        <div className="container mx-auto px-6">
-          {/* Centered matte orange-yellow heading */}
-          <p className="text-[10px] font-black uppercase tracking-[0.35em] mb-8 text-center text-[#D4862A]">
-            Sub-Domain Coverage
-          </p>
+      <section className="py-12 bg-[#F8F9FB] relative overflow-hidden">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-8">
+            <h2 className="text-xl md:text-2xl font-display font-black text-brand-black uppercase tracking-tight" style={{ color: accent.border }}>
+              Sub-Domain <span className="text-brand-black">Coverage</span>
+            </h2>
+          </div>
           <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x justify-start">
             {subCards.map((card, i) => {
               const isActive = activeSubDomain === i;
@@ -299,154 +302,112 @@ export default function ProjectDetail() {
         const solutions = (SUB_DOMAIN_SOLUTIONS[project.slug]?.[activeSubDomain]) ?? FALLBACK_SOLUTIONS;
         const activeSolution = solutions[activeSolCard] ?? solutions[0];
         return (
-          <section className="pb-14 bg-[#F8F9FB]">
+          <section className="pb-20 bg-[#F8F9FB] relative z-10">
             <div className="container mx-auto px-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] mb-6 text-center text-[#D4862A]">
-                Targeted Solutions — {subCards[activeSubDomain]?.label}
-              </p>
 
-              {/* Solution cards row — semi-transparent, full opacity on active */}
-              <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide mb-10">
-                {solutions.map((sol, i) => {
-                  const isSolActive = activeSolCard === i;
-                  return (
-                    <motion.div
-                      key={`${activeSubDomain}-${i}`}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.07 }}
-                      onClick={() => {
-                        setActiveSolCard(i);
-                        setIsPlaying(false);
-                        setTimeout(() => videoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
-                      }}
-                      className="relative flex-shrink-0 w-[220px] h-[155px] rounded-[1.75rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
-                      style={{
-                        border: isSolActive ? `3px solid ${accent.border}` : "3px solid transparent",
-                        boxShadow: isSolActive ? `0 0 28px ${accent.glow}` : "0 4px 20px rgba(0,0,0,0.08)",
-                        opacity: isSolActive ? 1 : 0.55,
-                      }}
-                    >
-                      <img src={sol.image} alt={sol.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center shrink-0">
-                          <Zap size={15} className="text-white" strokeWidth={1.8} />
-                        </div>
-                        <div>
-                          <p className="text-white/55 text-[8px] font-black uppercase tracking-[0.25em] mb-0.5">Solution</p>
-                          <p className="text-white font-black text-sm leading-tight">{sol.label}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+              {/* ── Unified grey frame wrapping both cards + video ── */}
+              <div className="bg-[#E8EAED] rounded-[2.5rem] p-8 md:p-12 flex flex-col gap-10 border border-slate-200/60 shadow-[inset_0_2px_12px_rgba(0,0,0,0.05)]">
 
-              {/* Video — updates with active solution */}
-              <div ref={videoRef}>
-                <motion.div
-                  key={`${activeSubDomain}-${activeSolCard}`}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.35 }}
-                  className="relative w-full max-w-3xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl group"
-                  style={{ border: `4px solid ${accent.border}`, boxShadow: `0 0 60px ${accent.glow}` }}
-                >
-                  {isPlaying ? (
-                    <iframe
-                      src={`${activeSolution.videoUrl}&autoplay=1`}
-                      className="absolute inset-0 w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <>
-                      <img src={activeSolution.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 to-transparent" />
-                      <button onClick={() => setIsPlaying(true)} className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110" style={{ background: accent.border }}>
-                          <Play size={26} fill="white" className="text-white ml-1" />
+                {/* Top: section title + solution cards */}
+                <div>
+                  <div className="mb-6">
+                    <h2 className="text-xl md:text-2xl font-display font-black text-[#1A1F2B] uppercase tracking-tight">
+                      Targeted <span style={{ color: accent.border }}>Solutions</span>
+                    </h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary mt-1">
+                      Focused on {subCards[activeSubDomain]?.label}
+                    </p>
+                  </div>
+
+                  {/* Solution cards row */}
+                  <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                    {solutions.map((sol, i) => {
+                      const isSolActive = activeSolCard === i;
+                      return (
+                        <motion.div
+                          key={`${activeSubDomain}-${i}`}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.07 }}
+                          onClick={() => {
+                            setActiveSolCard(i);
+                            setIsPlaying(false);
+                            setTimeout(() => videoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+                          }}
+                          className="relative flex-shrink-0 w-[220px] h-[150px] rounded-[1.5rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
+                          style={{
+                            border: isSolActive ? `3px solid ${accent.border}` : "3px solid rgba(255,255,255,0.6)",
+                            boxShadow: isSolActive ? `0 0 24px ${accent.glow}` : "0 4px 16px rgba(0,0,0,0.08)",
+                            opacity: isSolActive ? 1 : 0.6,
+                          }}
+                        >
+                          <img src={sol.image} alt={sol.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
+                            <div className="w-8 h-8 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center shrink-0">
+                              <Zap size={13} className="text-white" strokeWidth={1.8} />
+                            </div>
+                            <div>
+                              <p className="text-white/55 text-[8px] font-black uppercase tracking-[0.25em] mb-0.5">Solution</p>
+                              <p className="text-white font-black text-sm leading-tight">{sol.label}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Bottom: Video player */}
+                <div ref={videoRef}>
+                  <motion.div
+                    key={`${activeSubDomain}-${activeSolCard}`}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.35 }}
+                    className="relative w-full max-w-3xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl group"
+                    style={{ border: `4px solid ${accent.border}`, boxShadow: `0 0 60px ${accent.glow}` }}
+                  >
+                    {isPlaying ? (
+                      <iframe
+                        src={`${activeSolution.videoUrl}&autoplay=1`}
+                        className="absolute inset-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <>
+                        <img src={activeSolution.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 to-transparent" />
+                        <button onClick={() => setIsPlaying(true)} className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110" style={{ background: accent.border }}>
+                            <Play size={26} fill="white" className="text-white ml-1" />
+                          </div>
+                        </button>
+                        <div className="absolute bottom-6 left-6">
+                          <p className="text-white/50 text-[9px] font-black uppercase tracking-widest mb-1">Now Showing</p>
+                          <p className="text-white font-black text-base">{activeSolution.label}</p>
                         </div>
-                      </button>
-                      <div className="absolute bottom-6 left-6">
-                        <p className="text-white/50 text-[9px] font-black uppercase tracking-widest mb-1">Now Showing</p>
-                        <p className="text-white font-black text-base">{activeSolution.label}</p>
-                      </div>
-                    </>
-                  )}
-                </motion.div>
-              </div>
+                      </>
+                    )}
+                  </motion.div>
+                </div>
+
+              </div>{/* end grey frame */}
 
             </div>
           </section>
         );
       })()}
 
-      {/* ── 4. PROBLEM SECTION: list left, image right ── */}
-      <section className="py-16 bg-white">
+      {/* ── 4. PROBLEM SECTION: Image Left, List Right inside Grey Frame ── */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400 mb-5">The Problem</p>
-              <h2 className="text-2xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight mb-8">
-                Operational Challenges
-              </h2>
-              {/* Scrollable list container (approx 3 items visible) */}
-              <div className={`flex flex-col gap-3 max-h-[340px] overflow-y-auto pr-4 custom-scroll-${project.slug}`}>
-                {project.requirements.map((req, i) => {
-                  const isActive = activeReq === i;
-                  const { title, subtitle } = formatListText(req);
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -16 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.08 }}
-                      onClick={() => setActiveReq(i)}
-                      className={`p-6 rounded-[1.25rem] border cursor-pointer transition-all duration-300 ${
-                        isActive
-                          ? "shadow-md scale-[1.02]"
-                          : "hover:scale-[1.01]"
-                      }`}
-                      style={{
-                        background: isActive ? 'linear-gradient(135deg, #fdf2ee 0%, #fffaf8 100%)' : 'transparent',
-                        borderColor: isActive ? '#f8e4da' : `${accent.border}20`,
-                      }}
-                    >
-                      <div className="flex flex-col gap-1.5">
-                        <div className="mb-2">
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-[#E5484D]/10' : 'bg-slate-50'}`}>
-                            <Target size={15} className={isActive ? 'text-[#E5484D]' : 'text-slate-400'} />
-                          </div>
-                        </div>
-                        <h3 className={`text-[1.05rem] md:text-lg font-bold tracking-tight leading-tight ${isActive ? 'text-brand-black' : 'text-brand-black'}`}>
-                          {title}
-                        </h3>
-                        {subtitle && (
-                          <p className={`text-xs ${isActive ? 'text-brand-black/70 font-medium' : 'text-slate-500'}`}>
-                            {subtitle}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* Changing Image with 25% effect and low shade gradient border */}
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative rounded-[2rem] overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.08)] bg-slate-100"
-              style={{
-                background: "linear-gradient(145deg, rgba(255,255,255,0.4), rgba(0,0,0,0.05))",
-                border: "1px solid rgba(0,0,0,0.05)",
-              }}
-            >
-              <div className="relative w-full h-[380px]">
+          <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+            
+            {/* Left: Image Container (White Box) */}
+            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0">
+              <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   <motion.img
                     key={activeReq}
@@ -459,38 +420,81 @@ export default function ProjectDetail() {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </AnimatePresence>
-                {/* 25% opacity effect overlay */}
-                <div className="absolute inset-0 bg-red-900/25 mix-blend-multiply transition-colors duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-transparent to-transparent" />
+                {/* Subtle red tint overlay for "Problem" */}
+                <div className="absolute inset-0 bg-[#E5484D]/10 mix-blend-multiply transition-colors duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-[#0B1221]/20 to-transparent" />
                 
-                <div className="absolute bottom-5 left-5 right-5 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20">
-                  <p className="text-white text-xs font-black uppercase tracking-widest mb-0.5">Impact Area</p>
-                  <p className="text-white/90 text-sm font-medium leading-tight">
+                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                  <p className="text-white text-xs font-black uppercase tracking-widest mb-1">Impact Area</p>
+                  <p className="text-white/95 text-sm font-medium leading-tight">
                     {project.requirements[activeReq]}
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            {/* Right: Title & Scrollable Cards */}
+            <div className="flex flex-col h-full justify-center">
+              <div className="mb-8">
+                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-secondary mb-3">The Problem</p>
+                <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight">
+                  Operational Challenges
+                </h2>
+              </div>
+              
+              {/* Scrollable list without scrollbar line */}
+              <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
+                {project.requirements.map((req, i) => {
+                  const isActive = activeReq === i;
+                  const { title, subtitle } = formatListText(req);
+                  return (
+                    <motion.div
+                      key={i}
+                      onClick={() => setActiveReq(i)}
+                      className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
+                        isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                      }`}
+                      style={{
+                        boxShadow: isActive ? `0 4px 20px ${accent.glow}` : undefined,
+                      }}
+                    >
+                      {/* Shown Line Effect */}
+                      {isActive && (
+                        <motion.div 
+                          layoutId="activeReqLine"
+                          className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl"
+                          style={{ backgroundColor: accent.border }}
+                        />
+                      )}
+                      
+                      <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
+                        <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
+                          {title}
+                        </h3>
+                        {subtitle && (
+                          <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                            {subtitle}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── 5. SOLUTION SECTION: image left, list right ── */}
-      <section className="py-16 bg-[#F8F9FB]">
+      {/* ── 5. SOLUTION SECTION: Image Left, List Right inside Grey Frame ── */}
+      <section className="py-10 pb-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Changing Image with 25% effect and gradient border */}
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative rounded-[2rem] overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.08)] bg-slate-100 lg:order-1 order-2"
-              style={{
-                background: "linear-gradient(145deg, rgba(255,255,255,0.4), rgba(0,0,0,0.05))",
-                border: "1px solid rgba(0,0,0,0.05)",
-              }}
-            >
-              <div className="relative w-full h-[380px]">
+          <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+            
+            {/* Left: Image Container (White Box) */}
+            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
+              <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   <motion.img
                     key={activeImp}
@@ -503,58 +507,59 @@ export default function ProjectDetail() {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </AnimatePresence>
-                {/* 25% opacity effect overlay using accent color */}
-                <div className="absolute inset-0 opacity-25 mix-blend-multiply transition-colors duration-500" style={{ backgroundColor: accent.border }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-transparent to-transparent" />
+                {/* Subtle accent tint overlay for "Solution" */}
+                <div className="absolute inset-0 opacity-15 mix-blend-multiply transition-colors duration-500" style={{ backgroundColor: accent.border }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-[#0B1221]/20 to-transparent" />
                 
-                <div className="absolute bottom-5 left-5 right-5 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20">
-                  <p className="text-white/70 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Architecture</p>
+                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                  <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Architecture</p>
                   <p className="text-white font-medium text-sm leading-tight">
                     {project.implementation[activeImp]}
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
             
-            <div className="lg:order-2 order-1">
-              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400 mb-5">The Solution</p>
-              <h2 className="text-2xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight mb-8">
-                Solution Architecture
-              </h2>
-              {/* Scrollable list container (approx 3 items visible) */}
-              <div className={`flex flex-col gap-3 max-h-[340px] overflow-y-auto pr-4 custom-scroll-${project.slug}`}>
+            {/* Right: Title & Scrollable Cards */}
+            <div className="flex flex-col h-full justify-center lg:order-2 order-1">
+              <div className="mb-8">
+                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-secondary mb-3">The Solution</p>
+                <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight">
+                  Solution Architecture
+                </h2>
+              </div>
+              
+              {/* Scrollable list without scrollbar line */}
+              <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
                 {project.implementation.map((imp, i) => {
                   const isActive = activeImp === i;
                   const { title, subtitle } = formatListText(imp);
                   return (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, x: 16 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.08 }}
                       onClick={() => setActiveImp(i)}
-                      className={`p-6 rounded-[1.25rem] border cursor-pointer transition-all duration-300 ${
-                        isActive
-                          ? "shadow-md scale-[1.02]"
-                          : "hover:scale-[1.01] bg-white/50"
+                      className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
+                        isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
                       }`}
                       style={{
-                        background: isActive ? 'linear-gradient(135deg, #fdf2ee 0%, #fffaf8 100%)' : 'transparent',
-                        borderColor: isActive ? '#f8e4da' : `${accent.border}20`,
+                        boxShadow: isActive ? `0 4px 20px ${accent.glow}` : undefined,
                       }}
                     >
-                      <div className="flex flex-col gap-1.5">
-                        <div className="mb-2">
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-[#12A594]/10' : 'bg-slate-50'}`}>
-                            <Zap size={15} className={isActive ? 'text-[#12A594]' : 'text-slate-400'} />
-                          </div>
-                        </div>
-                        <h3 className={`text-[1.05rem] md:text-lg font-bold tracking-tight leading-tight ${isActive ? 'text-brand-black' : 'text-brand-black'}`}>
+                      {/* Shown Line Effect */}
+                      {isActive && (
+                        <motion.div 
+                          layoutId="activeImpLine"
+                          className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl"
+                          style={{ backgroundColor: accent.border }}
+                        />
+                      )}
+                      
+                      <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
+                        <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
                           {title}
                         </h3>
                         {subtitle && (
-                          <p className={`text-xs ${isActive ? 'text-brand-black/70 font-medium' : 'text-slate-500'}`}>
+                          <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                             {subtitle}
                           </p>
                         )}
@@ -564,54 +569,107 @@ export default function ProjectDetail() {
                 })}
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── 6. HARDWARE (BEST) — 2×4 grid ── */}
-      <section className="py-16 bg-white border-y border-slate-100">
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400 mb-3">Hardware & Infrastructure</p>
-          <h2 className="text-2xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight mb-12">
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-[#E3F2E1]/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#E3F2E1]/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+        
+        <div className="container mx-auto px-6 text-center relative z-10">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary mb-4">Hardware & Infrastructure</p>
+          <h2 className="text-3xl md:text-4xl font-display font-black text-brand-black uppercase tracking-tight mb-16">
             Core Products Leveraged
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-5">
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8">
             {CORE_PRODUCTS.map((prod, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                whileHover={{ 
+                  y: -10,
+                  scale: 1.02,
+                  transition: { duration: 0.3, ease: "easeOut" }
+                }}
+                transition={{ delay: i * 0.08, duration: 0.6 }}
+                className="relative group cursor-pointer"
               >
-                <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ borderColor: `${accent.border}30` }}>
-                  <prod.icon size={20} className="text-slate-400 group-hover:transition-colors" style={{ color: undefined }} />
+                {/* Main Card */}
+                <div className="h-full bg-gradient-to-br from-white to-[#E3F2E1] p-8 rounded-[2.5rem] border border-[#E3F2E1] shadow-[0_10px_30px_-10px_rgba(227,242,225,0.5)] flex flex-col items-center transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(227,242,225,0.8)] group-hover:border-[#C5E1C1]">
+                  
+                  {/* Icon Container with dynamic glow */}
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 bg-[#C5E1C1] rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-white border border-[#E3F2E1] flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-500">
+                      <prod.icon size={22} className="text-[#4F774F] transition-transform duration-500 group-hover:scale-110" />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1.5">
+                    <p className="text-base font-black text-[#2D442D] leading-tight">{prod.name}</p>
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-[#C5E1C1]" />
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4F774F]/60">{prod.sub}</p>
+                    </div>
+                  </div>
+
+                  {/* Corner indicator */}
+                  <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-[#C5E1C1] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-                <p className="text-sm font-black text-brand-black mb-1">{prod.name}</p>
-                <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">{prod.sub}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 7. SOFT FEATURES STRIP ── */}
-      <section className="py-12 bg-[#F8F9FB]">
+      {/* ── 7. SOFT FEATURES — Large Icon Cards ── */}
+      <section className="py-32 bg-[#F8F9FB] border-t border-slate-100">
         <div className="container mx-auto px-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400 mb-6 text-center">Soft Features</p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="text-center mb-16">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary mb-4">Ecosystem Intelligence</p>
+            <h2 className="text-3xl md:text-4xl font-display font-black text-brand-black uppercase tracking-tight">
+              Integrated Soft Features
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {SOFT_FEATURES.map((feat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-full border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default"
+                whileHover={{ 
+                  y: -8,
+                  transition: { duration: 0.3 }
+                }}
+                transition={{ delay: i * 0.04 }}
+                className="group relative"
               >
-                <feat.icon size={14} className="text-slate-400" />
-                <span className="text-xs font-black text-slate-600 uppercase tracking-widest">{feat.label}</span>
+                {/* Feature Card */}
+                <div className="h-full bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:shadow-xl group-hover:border-brand-walnut/20">
+                  
+                  {/* Big Icon with dynamic background */}
+                  <div className="relative mb-5">
+                    <div className="absolute inset-0 bg-brand-walnut/5 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center transition-colors duration-500 group-hover:bg-brand-walnut/10">
+                      <feat.icon size={24} className="text-slate-400 transition-colors duration-500 group-hover:text-brand-walnut" strokeWidth={1.5} />
+                    </div>
+                  </div>
+                  
+                  <span className="text-[10px] md:text-[11px] font-black text-slate-600 uppercase tracking-[0.15em] leading-tight">
+                    {feat.label}
+                  </span>
+
+                  {/* Glow effect on hover */}
+                  <div className="absolute -inset-1 bg-gradient-to-br from-brand-walnut/5 to-transparent rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                </div>
               </motion.div>
             ))}
           </div>
@@ -621,7 +679,7 @@ export default function ProjectDetail() {
       {/* ── 8. CTA ── */}
       <section className="py-12 bg-brand-black">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">
+          <p className="text-secondary text-[10px] font-black uppercase tracking-[0.3em]">
             Scale your ecosystem with Nx-Core™
           </p>
           <Link to="/contact">

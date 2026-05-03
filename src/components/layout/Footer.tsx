@@ -43,10 +43,6 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-[.3em] text-warm-gold-beige mb-8">Ecosystem</h4>
             <ul className="space-y-4 text-sm text-soft-white/40">
-              <li><Link to="/solutions" className="hover:text-soft-white transition-colors">Smart Access Systems</Link></li>
-              <li><Link to="/solutions" className="hover:text-soft-white transition-colors">Attendance Systems</Link></li>
-              <li><Link to="/solutions" className="hover:text-pure-white transition-colors">Security Intelligence</Link></li>
-              <li><Link to="/solutions" className="hover:text-soft-white transition-colors">Energy Optimization</Link></li>
               <li><Link to="/products" className="hover:text-soft-white transition-colors">Product Hub</Link></li>
             </ul>
           </div>

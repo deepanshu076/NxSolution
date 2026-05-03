@@ -302,74 +302,89 @@ export default function SubDomainDetail() {
             </div>
          </section>
 
-         {/* ── THE CHALLENGES (MEDIUM GREY GRADIENT) ── */}
-         <section className="py-12 bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:32px_32px]" />
-            <div className="w-full max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
-               
-               <div className="flex flex-col items-center text-center mb-8">
-                  <h2 className="text-xl md:text-2xl font-display font-black uppercase tracking-[0.1em] mb-2 text-brand-black">
-                     The Challenges
-                  </h2>
-               </div>
-
-               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+         {/* ── THE CHALLENGES ── */}
+         <section className="py-20 bg-white">
+            <div className="container mx-auto px-6">
+               <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
                   
-                  {/* Left Column: Interactive List */}
-                  <div className="flex flex-col gap-3">
-                     {activeSolution.challenges.map((challenge, i) => {
-                        const isActive = activeChallenge === i;
-                        return (
-                           <div 
-                              key={i} 
-                              onClick={() => setActiveChallenge(i)}
-                              className={`cursor-pointer bg-white/90 backdrop-blur-md px-5 py-4 rounded-2xl border transition-all duration-300 group ${
-                                 isActive 
-                                    ? 'border-accent-sky/40 shadow-[0_6px_24px_rgb(0,0,0,0.07)] bg-white' 
-                                    : 'border-white/60 hover:shadow-[0_3px_16px_rgb(0,0,0,0.04)] hover:-translate-y-0.5'
-                              }`}
-                           >
-                              <div className="flex items-center gap-3">
-                                 <div className={`w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-colors ${
-                                    isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400 group-hover:bg-accent-sky/10 group-hover:text-accent-sky'
-                                 }`}>
-                                    <challenge.icon size={16} />
-                                 </div>
-                                 <div className="flex flex-col">
-                                    <h4 className={`font-black text-sm md:text-base tracking-tight leading-tight transition-colors ${
-                                       isActive ? 'text-brand-black' : 'text-brand-black/80 group-hover:text-brand-black'
-                                    }`}>
-                                       {challenge.title}
-                                    </h4>
-                                    <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
-                                       {challenge.desc}
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-                        );
-                     })}
+                  {/* Left: Image Container (White Box) */}
+                  <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0">
+                     <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
+                        <AnimatePresence mode="popLayout">
+                           <motion.img
+                              key={activeChallenge}
+                              initial={{ opacity: 0, scale: 1.05 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.6 }}
+                              src={activeSolution.challenges[activeChallenge].image}
+                              alt={activeSolution.challenges[activeChallenge].title}
+                              className="absolute inset-0 w-full h-full object-cover"
+                           />
+                        </AnimatePresence>
+                        {/* Subtle red tint overlay for "Challenges" */}
+                        <div className="absolute inset-0 bg-[#E5484D]/10 mix-blend-multiply transition-colors duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
+                        
+                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                           <p className="text-white text-xs font-black uppercase tracking-widest mb-1">Impact Area</p>
+                           <p className="text-white/95 text-sm font-medium leading-tight">
+                              {activeSolution.challenges[activeChallenge].title}
+                           </p>
+                        </div>
+                     </div>
                   </div>
 
-                  {/* Right Column: Dynamic Image — stretches to match the list height */}
-                  <div className="relative w-full min-h-[280px] rounded-2xl overflow-hidden shadow-xl border-4 border-white/70 bg-slate-200">
-                     <AnimatePresence mode="wait">
-                        <motion.img
-                           key={activeChallenge}
-                           initial={{ opacity: 0, filter: "blur(8px)", scale: 1.05 }}
-                           animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-                           exit={{ opacity: 0, filter: "blur(4px)", scale: 0.98 }}
-                           transition={{ duration: 0.4, ease: "easeInOut" }}
-                           src={activeSolution.challenges[activeChallenge].image}
-                           alt={activeSolution.challenges[activeChallenge].title}
-                           className="absolute inset-0 w-full h-full object-cover"
-                        />
-                     </AnimatePresence>
-                     <div className="absolute inset-0 bg-gradient-to-t from-brand-black/30 to-transparent pointer-events-none" />
-                     <div className="absolute bottom-4 left-4 right-4">
-                        <span className="text-white font-black text-sm md:text-base drop-shadow-sm">
-                           {activeSolution.challenges[activeChallenge].title}
-                        </span>
+                  {/* Right: Title & Scrollable Cards */}
+                  <div className="flex flex-col h-full justify-center">
+                     <div className="mb-8">
+                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">The Problem</p>
+                        <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight uppercase">
+                           The Challenges
+                        </h2>
+                     </div>
+                     
+                     {/* Scrollable list without scrollbar line */}
+                     <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
+                        {activeSolution.challenges.map((challenge, i) => {
+                           const isActive = activeChallenge === i;
+                           return (
+                              <motion.div
+                                 key={i}
+                                 onClick={() => setActiveChallenge(i)}
+                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
+                                    isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                                 }`}
+                                 style={{
+                                    boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
+                                 }}
+                              >
+                                 {/* Shown Line Effect */}
+                                 {isActive && (
+                                    <motion.div 
+                                       layoutId="activeChallengeLine"
+                                       className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
+                                    />
+                                 )}
+                                 
+                                 <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
+                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${
+                                       isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
+                                    }`}>
+                                       <challenge.icon size={18} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                       <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
+                                          {challenge.title}
+                                       </h3>
+                                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                          {challenge.desc}
+                                       </p>
+                                    </div>
+                                 </div>
+                              </motion.div>
+                           );
+                        })}
                      </div>
                   </div>
 
@@ -378,76 +393,94 @@ export default function SubDomainDetail() {
          </section>
 
          {/* ── ENGINEERED INTELLIGENCE LAYER ── */}
-         <section className="py-12 bg-white relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:32px_32px]" />
-            <div className="w-full max-w-6xl mx-auto px-6 lg:px-12 relative z-10">
-
-               <div className="flex flex-col items-center text-center mb-8">
-                  <h2 className="text-xl md:text-2xl font-display font-black uppercase tracking-[0.1em] mb-2 text-brand-black">
-                     Engineered Intelligence Layer
-                  </h2>
-               </div>
-
-               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-
-                  {/* Left: Dynamic Image */}
-                  <div className="relative w-full min-h-[280px] rounded-2xl overflow-hidden shadow-xl border-4 border-slate-100 bg-slate-200">
-                     <AnimatePresence mode="wait">
-                        <motion.img
-                           key={`${activeSolution.id}-layer-${activeLayer}`}
-                           initial={{ opacity: 0, filter: "blur(8px)", scale: 1.05 }}
-                           animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-                           exit={{ opacity: 0, filter: "blur(4px)", scale: 0.98 }}
-                           transition={{ duration: 0.4, ease: "easeInOut" }}
-                           src={activeSolution.layers[activeLayer].image}
-                           alt={activeSolution.layers[activeLayer].title}
-                           className="absolute inset-0 w-full h-full object-cover"
-                        />
-                     </AnimatePresence>
-                     <div className="absolute inset-0 bg-gradient-to-t from-brand-black/60 via-brand-black/10 to-transparent pointer-events-none" />
-                     <div className="absolute bottom-4 left-4 right-4">
-                        <span className="text-white font-black text-sm md:text-base drop-shadow-sm block">
-                           {activeSolution.layers[activeLayer].title}
-                        </span>
-                        <span className="text-accent-sky font-bold text-[10px] uppercase tracking-widest">
-                           Integrated Tech Layer
-                        </span>
+         <section className="py-10 pb-20 bg-white">
+            <div className="container mx-auto px-6">
+               <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+                  
+                  {/* Left: Image Container (White Box) */}
+                  <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
+                     <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
+                        <AnimatePresence mode="popLayout">
+                           <motion.img
+                              key={`${activeSolution.id}-layer-${activeLayer}`}
+                              initial={{ opacity: 0, scale: 1.05 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.6 }}
+                              src={activeSolution.layers[activeLayer].image}
+                              alt={activeSolution.layers[activeLayer].title}
+                              className="absolute inset-0 w-full h-full object-cover"
+                           />
+                        </AnimatePresence>
+                        {/* Subtle accent tint overlay for "Layer" */}
+                        <div className="absolute inset-0 bg-accent-sky/10 mix-blend-multiply transition-colors duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
+                        
+                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                           <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Integrated Tech Layer</p>
+                           <p className="text-white font-medium text-sm leading-tight">
+                              {activeSolution.layers[activeLayer].title}
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  {/* Right: Title & Scrollable Cards */}
+                  <div className="flex flex-col h-full justify-center lg:order-2 order-1">
+                     <div className="mb-8">
+                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">The Solution</p>
+                        <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight uppercase">
+                           Engineered Intelligence Layer
+                        </h2>
+                     </div>
+                     
+                     {/* Scrollable list without scrollbar line */}
+                     <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
+                        {activeSolution.layers.map((layer, i) => {
+                           const isActive = activeLayer === i;
+                           return (
+                              <motion.div
+                                 key={i}
+                                 onClick={() => setActiveLayer(i)}
+                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
+                                    isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                                 }`}
+                                 style={{
+                                    boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
+                                 }}
+                              >
+                                 {/* Shown Line Effect */}
+                                 {isActive && (
+                                    <motion.div 
+                                       layoutId="activeLayerLine"
+                                       className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
+                                    />
+                                 )}
+                                 
+                                 <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
+                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${
+                                       isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
+                                    }`}>
+                                       <layer.icon size={18} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                       <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
+                                          {layer.title}
+                                       </h3>
+                                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                          {layer.desc}
+                                       </p>
+                                    </div>
+                                 </div>
+                              </motion.div>
+                           );
+                        })}
                      </div>
                   </div>
 
-                  {/* Right: Interactive List */}
-                  <div className="flex flex-col gap-3 justify-center">
-                     {activeSolution.layers.map((layer, i) => {
-                        const isActive = activeLayer === i;
-                        return (
-                           <div
-                              key={i}
-                              onClick={() => setActiveLayer(i)}
-                              className={`cursor-pointer bg-white/90 backdrop-blur-md px-5 py-4 rounded-2xl border transition-all duration-300 group ${
-                                 isActive
-                                    ? 'border-accent-sky/40 shadow-[0_6px_24px_rgb(0,0,0,0.07)] bg-white'
-                                    : 'border-slate-100 hover:shadow-[0_3px_16px_rgb(0,0,0,0.04)] hover:-translate-y-0.5'
-                              }`}
-                           >
-                              <div className="flex items-center gap-3">
-                                 <div className={`w-9 h-9 shrink-0 rounded-full flex items-center justify-center transition-colors ${
-                                    isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400 group-hover:bg-accent-sky/10 group-hover:text-accent-sky'
-                                 }`}>
-                                    <layer.icon size={16} />
-                                 </div>
-                                 <div className="flex flex-col">
-                                    <h4 className={`font-black text-sm md:text-base tracking-tight leading-tight transition-colors ${
-                                       isActive ? 'text-brand-black' : 'text-brand-black/80 group-hover:text-brand-black'
-                                    }`}>
-                                       {layer.title}
-                                    </h4>
-                                    <p className="text-xs text-slate-500 font-medium leading-relaxed mt-0.5">
-                                       {layer.desc}
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-                        );
+               </div>
+            </div>
+         </section>
                      })}
                   </div>
 

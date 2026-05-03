@@ -43,7 +43,7 @@ export const projectsData = [
       ]
     },
     impact: "Resulted in a 40% reduction in campus security operational costs within the first six months.",
-    image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200"
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200"
   },
   {
      id: "hospital-icu-monitor",

@@ -13,7 +13,6 @@ import DomainDetail from "@/src/pages/DomainDetail";
 import SubDomainDetail from "@/src/pages/SubDomainDetail";
 import Projects from "@/src/pages/Projects";
 import ProjectDetail from "@/src/pages/ProjectDetail";
-import Solutions from "@/src/pages/Solutions";
 import Products from "@/src/pages/Products";
 import { AuthProvider } from "@/src/lib/AuthContext";
 import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
@@ -75,7 +74,6 @@ export default function App() {
                     <Route path="/domains/:domain/:subdomain" element={<SubDomainDetail />} />
                     
                     {/* Phase 3 Routes */}
-                    <Route path="/solutions" element={<Solutions />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/:slug" element={<ProjectDetail />} />
                     <Route path="/products" element={<Products />} />
