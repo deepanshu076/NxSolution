@@ -400,13 +400,13 @@ export default function ProjectDetail() {
         );
       })()}
 
-      {/* ── 4. PROBLEM SECTION: Image Left, List Right inside Grey Frame ── */}
+      {/* ── 4. PROBLEM SECTION: Content Left, Image Right inside Grey Frame ── */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
             
-            {/* Left: Image Container (White Box) */}
-            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0">
+            {/* Left: Image Container (White Box) - NOW MOVED TO RIGHT VISUALLY */}
+            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-2 order-1">
               <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   <motion.img
@@ -433,8 +433,8 @@ export default function ProjectDetail() {
               </div>
             </div>
 
-            {/* Right: Title & Scrollable Cards */}
-            <div className="flex flex-col h-full justify-center">
+            {/* Right: Title & Scrollable Cards - NOW MOVED TO LEFT VISUALLY */}
+            <div className="flex flex-col h-full justify-center lg:order-1 order-2">
               <div className="mb-8">
                 <p className="text-[10px] font-black uppercase tracking-[0.35em] text-secondary mb-3">The Problem</p>
                 <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight">
@@ -451,21 +451,10 @@ export default function ProjectDetail() {
                     <motion.div
                       key={i}
                       onClick={() => setActiveReq(i)}
-                      className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
-                        isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                      className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 ${
+                        isActive ? "bg-[#FDF2F8] shadow-lg border border-[#FBCFE8] scale-105 z-10" : "bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:border-slate-300"
                       }`}
-                      style={{
-                        boxShadow: isActive ? `0 4px 20px ${accent.glow}` : undefined,
-                      }}
                     >
-                      {/* Shown Line Effect */}
-                      {isActive && (
-                        <motion.div 
-                          layoutId="activeReqLine"
-                          className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl"
-                          style={{ backgroundColor: accent.border }}
-                        />
-                      )}
                       
                       <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
                         <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
@@ -490,7 +479,7 @@ export default function ProjectDetail() {
       {/* ── 5. SOLUTION SECTION: Image Left, List Right inside Grey Frame ── */}
       <section className="py-10 pb-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
             
             {/* Left: Image Container (White Box) */}
             <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
@@ -538,21 +527,10 @@ export default function ProjectDetail() {
                     <motion.div
                       key={i}
                       onClick={() => setActiveImp(i)}
-                      className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
-                        isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                      className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 ${
+                        isActive ? "bg-[#FDF2F8] shadow-lg border border-[#FBCFE8] scale-105 z-10" : "bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:border-slate-300"
                       }`}
-                      style={{
-                        boxShadow: isActive ? `0 4px 20px ${accent.glow}` : undefined,
-                      }}
                     >
-                      {/* Shown Line Effect */}
-                      {isActive && (
-                        <motion.div 
-                          layoutId="activeImpLine"
-                          className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl"
-                          style={{ backgroundColor: accent.border }}
-                        />
-                      )}
                       
                       <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
                         <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">

@@ -481,12 +481,6 @@ export default function SubDomainDetail() {
                </div>
             </div>
          </section>
-                     })}
-                  </div>
-
-               </div>
-            </div>
-         </section>
  
          {/* ── TECH STACK (COMPACT MATTE BROWN) ── */}
          <section className="py-20 bg-[#F5F2EE]">
