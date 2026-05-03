@@ -19,7 +19,10 @@ import {
   Briefcase
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { domains } from "../constants/domains";
+import type { Domain } from "@/src/types";
+import { listDomains } from "@/src/services/domains.service";
 
 const solutions = [
   {
@@ -67,6 +70,37 @@ const solutions = [
 ];
 
 export default function Domains() {
+  const [domainRows, setDomainRows] = useState<Domain[]>([]);
+  const [isLoadingDomains, setIsLoadingDomains] = useState(true);
+
+  useEffect(() => {
+    const loadDomains = async () => {
+      try {
+        setIsLoadingDomains(true);
+        const rows = await listDomains(true);
+        setDomainRows(rows);
+      } catch (error) {
+        console.error("[Domains] Failed to load domains", error);
+      } finally {
+        setIsLoadingDomains(false);
+      }
+    };
+    void loadDomains();
+  }, []);
+
+  const dbDomains = domainRows.map((domain, index) => ({
+    id: domain.slug,
+    name: domain.name,
+    image:
+      domain.image_url ||
+      `https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=800&q=80&sig=${index}`,
+  }));
+
+  const domainMap = new Map<string, { id: string; name: string; image: string }>();
+  for (const item of domains) domainMap.set(item.id, item);
+  for (const item of dbDomains) domainMap.set(item.id, item);
+  const uiDomains = Array.from(domainMap.values());
+
   return (
     <div className="flex flex-col pt-16 md:pt-20">
       {/* ── HERO SECTION ── */}
@@ -109,7 +143,7 @@ export default function Domains() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 gap-y-8 md:gap-y-10">
-            {domains.map((dom) => (
+            {(isLoadingDomains ? domains : uiDomains).map((dom) => (
               <Link
                 key={dom.id}
                 to={`/domains/${dom.id}`}

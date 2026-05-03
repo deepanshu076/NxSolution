@@ -167,6 +167,85 @@ export default function Solutions() {
           </div>
         </div>
       </section>
+
+      {/* ── SOLUTIONS GRID SECTION ── */}
+      <section className="py-16 md:py-24 bg-pure-white">
+        <div className="container mx-auto px-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeDomain}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {solutionsData[activeDomain as keyof typeof solutionsData]?.map((solution, idx) => {
+                  const IconComponent = solution.icon;
+                  return (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.05 }}
+                      className="group relative overflow-hidden rounded-[2rem] border border-cool-gray/30 bg-pure-white shadow-sm hover:shadow-xl hover:border-brand-walnut/30 transition-all duration-300 cursor-pointer"
+                    >
+                      {/* Image Container */}
+                      <div className="relative h-48 overflow-hidden bg-light-gray">
+                        <img
+                          src={solution.image}
+                          alt={solution.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6">
+                        <div className="flex items-start justify-between gap-4 mb-4">
+                          <div className="w-12 h-12 rounded-2xl bg-brand-walnut/10 flex items-center justify-center group-hover:bg-brand-walnut group-hover:text-pure-white transition-all duration-300">
+                            <IconComponent size={20} className="text-brand-walnut group-hover:text-pure-white transition-colors" />
+                          </div>
+                          <ChevronRight size={18} className="text-cool-gray group-hover:text-brand-walnut transition-all group-hover:translate-x-1" />
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-blue mb-2 group-hover:text-brand-walnut transition-colors">
+                          {solution.name}
+                        </h3>
+                        <p className="text-sm text-slate-blue/60 leading-relaxed">
+                          {solution.desc}
+                        </p>
+                      </div>
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-brand-walnut/0 via-brand-walnut/5 to-brand-walnut/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* ── CTA SECTION ── */}
+      <section className="py-20 md:py-28 bg-brand-black relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 grid-bg" />
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <h2 className="text-3xl md:text-5xl font-display font-bold text-pure-white mb-6">
+            Ready to transform your operations?
+          </h2>
+          <p className="text-pure-white/50 text-lg mb-10 max-w-2xl mx-auto">
+            Get in touch with our team to discuss how our solutions can streamline your business.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-brand-walnut text-pure-white rounded-2xl font-bold hover:bg-brand-walnut/90 transition-all hover:-translate-y-0.5 shadow-xl shadow-brand-walnut/30"
+          >
+            <span>Get started today</span>
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

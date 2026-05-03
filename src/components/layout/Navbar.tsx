@@ -1,7 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShieldCheck, LayoutDashboard, LogIn, ArrowRight, Home } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShieldCheck,
+  LayoutDashboard,
+  LogIn,
+  ArrowRight,
+  Home,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/src/lib/AuthContext";
+import { LogOut } from "lucide-react"; // Import LogOut icon
 import { motion, AnimatePresence } from "motion/react";
 
 const navLinks = [
@@ -11,13 +20,15 @@ const navLinks = [
   { name: "Products", path: "/products" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
+  { name: "Admin", path: "/admin", adminOnly: true },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth(); // Add logout function
+  const dashboardPath = user?.role === "admin" ? "/admin" : "/dashboard";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -39,23 +50,34 @@ export default function Navbar() {
       <div className="h-[2px] bg-gradient-to-r from-transparent via-[#EA580C] to-transparent opacity-70" />
       {/* ════ MAIN NAVBAR BAR ════ */}
       <div
-        className={`transition-all duration-500 border-b border-slate-200/50 ${scrolled
-          ? "bg-white/98 backdrop-blur-2xl shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
-          : "bg-white/90 backdrop-blur-xl"
-          }`}
+        className={`transition-all duration-500 border-b border-slate-200/50 ${
+          scrolled
+            ? "bg-white/98 backdrop-blur-2xl shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
+            : "bg-white/90 backdrop-blur-xl"
+        }`}
       >
-        <div className="container mx-auto px-6" style={{ paddingTop: 0, paddingBottom: 0 }}>
+        <div
+          className="container mx-auto px-6"
+          style={{ paddingTop: 0, paddingBottom: 0 }}
+        >
           <div className="flex items-center justify-between h-[64px]">
-
             {/* ── Logo ── */}
             <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-10 h-10 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
-                               transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl">
-                <ShieldCheck size={20} className="text-white" strokeWidth={2.5} />
+              <div
+                className="relative w-10 h-10 rounded-xl bg-[#EA580C] flex items-center justify-center shadow-lg shadow-[#EA580C]/30
+                               transition-all duration-300 group-hover:scale-105 group-hover:shadow-[#EA580C]/50 group-hover:shadow-xl"
+              >
+                <ShieldCheck
+                  size={20}
+                  className="text-white"
+                  strokeWidth={2.5}
+                />
               </div>
               <div className="block leading-none">
-                <span className="block font-display font-extrabold text-[16px] sm:text-[20px] tracking-[-0.02em] text-slate-900
-                                 group-hover:text-[#EA580C] transition-colors duration-300">
+                <span
+                  className="block font-display font-extrabold text-[16px] sm:text-[20px] tracking-[-0.02em] text-slate-900
+                                 group-hover:text-[#EA580C] transition-colors duration-300"
+                >
                   NX-SOLUTIONS
                 </span>
                 <span className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.28em] text-[#EA580C] mt-[3px]">
@@ -67,23 +89,30 @@ export default function Navbar() {
             {/* ── Center nav links ── */}
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => {
-                const isActive = link.path === "/"
-                  ? location.pathname === "/"
-                  : location.pathname.startsWith(link.path);
+                if (link.adminOnly && user?.role !== "admin") return null;
+                const isActive =
+                  link.path === "/"
+                    ? location.pathname === "/"
+                    : location.pathname.startsWith(link.path);
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${isActive
-                      ? "text-[#EA580C]"
-                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                      }`}
+                    className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${
+                      isActive
+                        ? "text-[#EA580C]"
+                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
                   >
                     {isActive && (
                       <motion.span
                         layoutId="nav-underline"
                         className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full bg-[#EA580C]"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 30,
+                        }}
                       />
                     )}
                     {link.name}
@@ -96,16 +125,34 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-2">
               <div className="w-px h-5 bg-slate-200 mr-1" />
               {user ? (
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-white
-                             bg-[#EA580C] shadow-lg shadow-[#EA580C]/25
-                             hover:bg-[#C2410C] hover:-translate-y-0.5 hover:shadow-[#EA580C]/40
-                             active:translate-y-0 transition-all duration-200"
-                >
-                  <LayoutDashboard size={13} />
-                  Dashboard
-                </Link>
+                <>
+                  <div className="relative">
+                    <Link
+                      to={dashboardPath}
+                      className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-white
+                                 bg-[#EA580C] shadow-lg shadow-[#EA580C]/25
+                                 hover:bg-[#C2410C] hover:-translate-y-0.5 hover:shadow-[#EA580C]/40
+                                 active:translate-y-0 transition-all duration-200"
+                    >
+                      <LayoutDashboard size={13} />
+                      {user.role === "admin" ? "Admin Panel" : "Dashboard"}
+                    </Link>
+                    {user.role === "admin" && (
+                      <span className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-yellow-400 text-slate-900 rounded-full text-[10px] font-bold shadow-lg">
+                        ⚡
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => logout()}
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500
+                               border border-slate-200 hover:text-slate-900 hover:bg-slate-50
+                               transition-all duration-200"
+                  >
+                    <LogOut size={13} />
+                    Logout
+                  </button>
+                </>
               ) : (
                 <>
                   <Link
@@ -123,9 +170,14 @@ export default function Navbar() {
                                hover:bg-[#C2410C] hover:-translate-y-0.5 hover:shadow-[#EA580C]/40
                                active:translate-y-0 transition-all duration-200"
                   >
-                    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500
-                                     bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 pointer-events-none" />
-                    <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                    <span
+                      className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500
+                                     bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 pointer-events-none"
+                    />
+                    <ArrowRight
+                      size={12}
+                      className="group-hover:translate-x-0.5 transition-transform"
+                    />
                     Get Started
                   </Link>
                 </>
@@ -170,7 +222,11 @@ export default function Navbar() {
               to="/"
               className="group flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-slate-400 hover:text-[#EA580C] transition-colors duration-150"
             >
-              <Home size={9} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
+              <Home
+                size={9}
+                strokeWidth={2.5}
+                className="group-hover:scale-110 transition-transform"
+              />
               Home
             </Link>
 
@@ -181,7 +237,9 @@ export default function Navbar() {
               return (
                 <div key={path} className="flex items-center gap-0">
                   {/* Separator slash */}
-                  <span className="mx-2 text-slate-300 text-[10px] font-light select-none">/</span>
+                  <span className="mx-2 text-slate-300 text-[10px] font-light select-none">
+                    /
+                  </span>
 
                   {last ? (
                     <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#EA580C]">
@@ -216,28 +274,60 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-6 py-3 flex flex-col gap-0.5">
               {navLinks.map((l) => {
-                const isActive = l.path === "/"
-                  ? location.pathname === "/"
-                  : location.pathname.startsWith(l.path);
+                if (l.adminOnly && user?.role !== "admin") return null;
+                const isActive =
+                  l.path === "/"
+                    ? location.pathname === "/"
+                    : location.pathname.startsWith(l.path);
                 return (
-                  <MobileNavLink key={l.name} to={l.path} label={l.name} active={isActive} onClick={() => setIsOpen(false)} />
+                  <MobileNavLink
+                    key={l.name}
+                    to={l.path}
+                    label={l.name}
+                    active={isActive}
+                    onClick={() => setIsOpen(false)}
+                  />
                 );
               })}
+              
               <div className="flex gap-3 mt-4 pt-4 border-t border-slate-100">
-                <Link
-                  to="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-slate-600 bg-slate-50 hover:bg-slate-100 hover:text-slate-900 transition-colors"
-                >
-                  <LogIn size={13} /> Login
-                </Link>
-                <Link
-                  to="/contact"
-                  onClick={() => setIsOpen(false)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
-                >
-                  <ArrowRight size={13} /> Get Started
-                </Link>
+                {user ? (
+                  <>
+                    <Link
+                      to={dashboardPath}
+                      onClick={() => setIsOpen(false)}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
+                    >
+                      <LayoutDashboard size={13} /> {user.role === "admin" ? "Admin Panel" : "Dashboard"}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsOpen(false);
+                      }}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-slate-600 bg-slate-50 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    >
+                      <LogOut size={13} /> Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsOpen(false)}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-slate-600 bg-slate-50 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    >
+                      <LogIn size={13} /> Login
+                    </Link>
+                    <Link
+                      to="/contact"
+                      onClick={() => setIsOpen(false)}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
+                    >
+                      <ArrowRight size={13} /> Get Started
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
@@ -247,17 +337,27 @@ export default function Navbar() {
   );
 }
 
-function MobileNavLink({ to, label, active, onClick }: {
-  to: string; label: string; active: boolean; onClick: () => void; key?: string;
+function MobileNavLink({
+  to,
+  label,
+  active,
+  onClick,
+}: {
+  to: string;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  key?: string;
 }) {
   return (
     <Link
       to={to}
       onClick={onClick}
-      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${active
-        ? "text-[#EA580C] bg-[#EA580C]/10"
-        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-        }`}
+      className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${
+        active
+          ? "text-[#EA580C] bg-[#EA580C]/10"
+          : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+      }`}
     >
       {active && (
         <motion.span
