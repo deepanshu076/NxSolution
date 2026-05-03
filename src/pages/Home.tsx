@@ -273,7 +273,6 @@ export default function Home() {
 
       {/* ───────────────────── OPERATIONAL & DOMAIN SECTIONS ───────────────────── */}
       <OperationalChallenges />
-      <DomainSection />
 
       {/* ─────────────────────── WORKING ARCHITECTURE ─────────────────────── */}
       <section className="py-14 md:py-24 lg:py-32 bg-[#FAFAFA] relative overflow-hidden">
