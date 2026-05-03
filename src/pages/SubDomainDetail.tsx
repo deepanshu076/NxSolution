@@ -27,12 +27,13 @@ import {
    Wifi,
    CircleDot
 } from "lucide-react";
+import { div } from "motion/react-client";
 
 const solutions = [
-   { 
-      id: "S01", 
-      name: "Smart Access Control", 
-      desc: "Automated entry with real-time logging.", 
+   {
+      id: "S01",
+      name: "Smart Access Control",
+      desc: "Automated entry with real-time logging.",
       image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=10",
       challenges: [
@@ -46,10 +47,10 @@ const solutions = [
          { title: "Biometric Integration", desc: "Optional facial or fingerprint verification layer for high-security zones.", icon: Users, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" }
       ]
    },
-   { 
-      id: "S02", 
-      name: "Presence Analytics", 
-      desc: "Know exactly who is in which zone.", 
+   {
+      id: "S02",
+      name: "Presence Analytics",
+      desc: "Know exactly who is in which zone.",
       image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=400",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=30",
       challenges: [
@@ -63,10 +64,10 @@ const solutions = [
          { title: "Space Optimizer", desc: "AI-driven recommendations to reallocate underused areas for maximum ROI.", icon: BarChart3, image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800" }
       ]
    },
-   { 
-      id: "S03", 
-      name: "Environmental Control", 
-      desc: "Smart lighting and climate management.", 
+   {
+      id: "S03",
+      name: "Environmental Control",
+      desc: "Smart lighting and climate management.",
       image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=50",
       challenges: [
@@ -80,10 +81,10 @@ const solutions = [
          { title: "Energy Dashboard", desc: "Granular per-zone consumption tracking with automated efficiency reports.", icon: Zap, image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800" }
       ]
    },
-   { 
-      id: "S04", 
-      name: "Safety Protocol Hub", 
-      desc: "Emergency alerts and compliance tracking.", 
+   {
+      id: "S04",
+      name: "Safety Protocol Hub",
+      desc: "Emergency alerts and compliance tracking.",
       image: "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?auto=format&fit=crop&q=80&w=400",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=70",
       challenges: [
@@ -97,10 +98,10 @@ const solutions = [
          { title: "Evacuation Roster", desc: "Live headcount per zone during emergencies, viewable from any device instantly.", icon: Users, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" }
       ]
    },
-   { 
-      id: "S05", 
-      name: "Resource Tracking", 
-      desc: "Track equipment and facility usage instantly.", 
+   {
+      id: "S05",
+      name: "Resource Tracking",
+      desc: "Track equipment and facility usage instantly.",
       image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=400",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=90",
       challenges: [
@@ -137,7 +138,7 @@ export default function SubDomainDetail() {
       // Added better handling for college/hostel and generic fallbacks
       if (t.includes('hostel') || t.includes('dormitory') || t.includes('resident')) return "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&q=80";
       if (t.includes('college') || t.includes('university') || t.includes('campus')) return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80";
-      
+
       if (t.includes('gate') || t.includes('entry') || t.includes('entrance') || t.includes('access')) return "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80";
       if (t.includes('reception') || t.includes('help desk') || t.includes('front desk') || t.includes('lobby') || t.includes('waiting')) return "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80";
       if (t.includes('admin') || t.includes('office') || t.includes('management') || t.includes('hr') || t.includes('cabin')) return "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80";
@@ -153,7 +154,7 @@ export default function SubDomainDetail() {
       if (t.includes('garden') || t.includes('open space') || t.includes('play') || t.includes('perimeter')) return "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?w=1200&q=80";
       if (t.includes('corridor') || t.includes('stair') || t.includes('lift') || t.includes('common')) return "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80";
       if (t.includes('storage') || t.includes('inventory') || t.includes('material') || t.includes('utility') || t.includes('maintenance')) return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80";
-      
+
       // Default premium building image
       return "https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=1200&q=80";
    };
@@ -188,9 +189,9 @@ export default function SubDomainDetail() {
          {/* ── HERO ── */}
          <section className="relative min-h-[400px] md:min-h-[500px] bg-brand-black overflow-hidden flex items-center justify-center">
             <div className="absolute inset-0">
-               <img 
-                  src={heroImage} 
-                  alt={smartTitle} 
+               <img
+                  src={heroImage}
+                  alt={smartTitle}
                   className="w-full h-full object-cover opacity-40 mix-blend-overlay"
                />
                <div className="absolute inset-0 bg-gradient-to-b from-brand-black/90 via-brand-black/80 to-brand-black" />
@@ -240,15 +241,14 @@ export default function SubDomainDetail() {
                            setActiveLayer(0);
                            videoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }}
-                        className={`relative flex-shrink-0 w-72 md:w-80 bg-pure-white rounded-[1.5rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.03)] border snap-start transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] cursor-pointer hover:-translate-y-1 overflow-hidden ${
-                           activeSolution.id === sol.id 
-                              ? 'border-blue-500 ring-2 ring-blue-500/20' 
-                              : 'border-slate-100 hover:border-slate-200'
-                        }`}
+                        className={`relative flex-shrink-0 w-72 md:w-80 bg-pure-white rounded-[1.5rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.03)] border snap-start transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] cursor-pointer hover:-translate-y-1 overflow-hidden ${activeSolution.id === sol.id
+                           ? 'border-blue-500 ring-2 ring-blue-500/20'
+                           : 'border-slate-100 hover:border-slate-200'
+                           }`}
                      >
                         <div className="w-full h-32 rounded-xl bg-slate-100 mb-6 overflow-hidden">
-                           <img 
-                              src={sol.image} 
+                           <img
+                              src={sol.image}
                               alt={sol.name}
                               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                            />
@@ -268,24 +268,24 @@ export default function SubDomainDetail() {
             <div className="w-full max-w-4xl mx-auto px-6">
                <div className="relative w-full aspect-video bg-brand-black rounded-[2rem] shadow-2xl overflow-hidden flex flex-col justify-end group border-[6px] border-pure-white shadow-[0_20px_60px_rgb(0,0,0,0.15)]">
                   {isPlaying ? (
-                     <iframe 
-                        src={`${activeSolution.videoUrl}&autoplay=1`} 
+                     <iframe
+                        src={`${activeSolution.videoUrl}&autoplay=1`}
                         title={activeSolution.name}
                         className="absolute inset-0 w-full h-full rounded-xl"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                      />
                   ) : (
                      <>
-                        <img 
-                           src={activeSolution.image} 
-                           alt={activeSolution.name} 
+                        <img
+                           src={activeSolution.image}
+                           alt={activeSolution.name}
                            className="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/40 to-transparent" />
-                        
+
                         <div className="absolute inset-0 flex items-center justify-center">
-                           <button 
+                           <button
                               onClick={() => setIsPlaying(true)}
                               className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30 z-20"
                            >
@@ -306,7 +306,7 @@ export default function SubDomainDetail() {
          <section className="py-20 bg-white">
             <div className="container mx-auto px-6">
                <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
-                  
+
                   {/* Left: Image Container (White Box) */}
                   <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0">
                      <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
@@ -325,7 +325,7 @@ export default function SubDomainDetail() {
                         {/* Subtle red tint overlay for "Challenges" */}
                         <div className="absolute inset-0 bg-[#E5484D]/10 mix-blend-multiply transition-colors duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
-                        
+
                         <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
                            <p className="text-white text-xs font-black uppercase tracking-widest mb-1">Impact Area</p>
                            <p className="text-white/95 text-sm font-medium leading-tight">
@@ -343,7 +343,7 @@ export default function SubDomainDetail() {
                            The Challenges
                         </h2>
                      </div>
-                     
+
                      {/* Scrollable list without scrollbar line */}
                      <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
                         {activeSolution.challenges.map((challenge, i) => {
@@ -352,25 +352,23 @@ export default function SubDomainDetail() {
                               <motion.div
                                  key={i}
                                  onClick={() => setActiveChallenge(i)}
-                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
-                                    isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
-                                 }`}
+                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                                    }`}
                                  style={{
                                     boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
                                  }}
                               >
                                  {/* Shown Line Effect */}
                                  {isActive && (
-                                    <motion.div 
+                                    <motion.div
                                        layoutId="activeChallengeLine"
                                        className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
                                     />
                                  )}
-                                 
+
                                  <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
-                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${
-                                       isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
-                                    }`}>
+                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
+                                       }`}>
                                        <challenge.icon size={18} />
                                     </div>
                                     <div className="flex flex-col">
@@ -396,7 +394,7 @@ export default function SubDomainDetail() {
          <section className="py-10 pb-20 bg-white">
             <div className="container mx-auto px-6">
                <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
-                  
+
                   {/* Left: Image Container (White Box) */}
                   <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
                      <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
@@ -415,7 +413,7 @@ export default function SubDomainDetail() {
                         {/* Subtle accent tint overlay for "Layer" */}
                         <div className="absolute inset-0 bg-accent-sky/10 mix-blend-multiply transition-colors duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
-                        
+
                         <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
                            <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Integrated Tech Layer</p>
                            <p className="text-white font-medium text-sm leading-tight">
@@ -424,7 +422,7 @@ export default function SubDomainDetail() {
                         </div>
                      </div>
                   </div>
-                  
+
                   {/* Right: Title & Scrollable Cards */}
                   <div className="flex flex-col h-full justify-center lg:order-2 order-1">
                      <div className="mb-8">
@@ -433,7 +431,7 @@ export default function SubDomainDetail() {
                            Engineered Intelligence Layer
                         </h2>
                      </div>
-                     
+
                      {/* Scrollable list without scrollbar line */}
                      <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
                         {activeSolution.layers.map((layer, i) => {
@@ -442,25 +440,23 @@ export default function SubDomainDetail() {
                               <motion.div
                                  key={i}
                                  onClick={() => setActiveLayer(i)}
-                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${
-                                    isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
-                                 }`}
+                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
+                                    }`}
                                  style={{
                                     boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
                                  }}
                               >
                                  {/* Shown Line Effect */}
                                  {isActive && (
-                                    <motion.div 
+                                    <motion.div
                                        layoutId="activeLayerLine"
                                        className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
                                     />
                                  )}
-                                 
+
                                  <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
-                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${
-                                       isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
-                                    }`}>
+                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
+                                       }`}>
                                        <layer.icon size={18} />
                                     </div>
                                     <div className="flex flex-col">
@@ -481,7 +477,7 @@ export default function SubDomainDetail() {
                </div>
             </div>
          </section>
- 
+
          {/* ── TECH STACK (COMPACT MATTE BROWN) ── */}
          <section className="py-20 bg-[#F5F2EE]">
             <div className="w-full max-w-6xl mx-auto px-6 lg:px-12">
@@ -501,8 +497,8 @@ export default function SubDomainDetail() {
                      { name: "Hub-Z Controller", icon: Layers },
                      { name: "Comms-X Gateway", icon: Wifi }
                   ].map((tech, i) => (
-                     <div 
-                        key={i} 
+                     <div
+                        key={i}
                         className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:shadow-[#8D6E63]/5 hover:-translate-y-1"
                      >
                         <div className="w-12 h-12 rounded-full bg-[#F9F7F5] shadow-sm flex items-center justify-center mb-6 border border-[#E0Dcd5]">
