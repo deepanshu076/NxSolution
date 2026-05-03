@@ -105,7 +105,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* ── HERO SECTION ── */}
-      <section className="relative min-h-[75vh] sm:min-h-[80vh] md:min-h-screen flex flex-col items-center justify-center py-16 sm:py-12 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden">
+      {/* Reduced min-heights and vertical padding */}
+      <section className="relative min-h-[60vh] sm:min-h-[65vh] md:min-h-[75vh] flex flex-col items-center justify-center py-10 sm:py-12 md:py-16 bg-brand-black text-center overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 opacity-10 flex gap-px" aria-hidden="true">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -117,25 +118,27 @@ export default function Home() {
 
         <div className="container mx-auto px-5 md:px-6 relative z-10 flex flex-col items-center">
 
-          <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-5 md:mb-8 leading-tight">
+          {/* Reduced bottom margin */}
+          <h1 className="w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-4 md:mb-6 leading-tight">
             We Transform Traditional Operations&nbsp;to
-            <span className="block mt-3 md:mt-5 lg:mt-6 text-warm-gold-beige">
+            <span className="block mt-2 md:mt-3 lg:mt-4 text-warm-gold-beige">
               Smart Automated Ecosystems
             </span>
           </h1>
 
-          <p className="text-soft-white/50 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-8 md:mb-10 leading-relaxed px-2">
+          {/* Reduced bottom margin */}
+          <p className="text-soft-white/50 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-6 md:mb-8 leading-relaxed px-2">
             NX-Solutions transforms hidden daily operational challenges that go unnoticed but create major disruption across industries.
           </p>
 
-          <div className="flex flex-row justify-center gap-2 sm:gap-3 md:gap-4 w-full sm:w-auto px-1 sm:px-0">
+          <div className="flex flex-row justify-center gap-2 sm:gap-3 w-full sm:w-auto px-1 sm:px-0">
             <Link
               to="/solutions"
-              className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2.5 md:py-3 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-[13px] sm:text-sm md:text-base whitespace-nowrap"
+              className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2 md:py-2.5 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-[13px] sm:text-sm md:text-base whitespace-nowrap"
             >
               Get Started
             </Link>
-            <button className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2.5 md:py-3 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-center text-[13px] sm:text-sm md:text-base transition-colors whitespace-nowrap">
+            <button className="flex-1 sm:flex-none px-3 sm:px-5 md:px-8 py-2 md:py-2.5 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-center text-[13px] sm:text-sm md:text-base transition-colors whitespace-nowrap">
               Learn More
             </button>
           </div>
@@ -143,15 +146,16 @@ export default function Home() {
       </section>
 
       {/* ── PARTNERS STRIP ── */}
-      <section className="py-20 bg-[#111827] overflow-hidden">
-        <div className="container mx-auto px-6 mb-12 text-center">
-          <h2 className="text-2xl md:text-3xl font-display font-medium italic text-white/90 mb-4 tracking-tight">
+      {/* Reduced py and gap spacing */}
+      <section className="py-10 md:py-12 bg-[#111827] overflow-hidden">
+        <div className="container mx-auto px-6 mb-6 md:mb-8 text-center">
+          <h2 className="text-xl md:text-2xl font-display font-medium italic text-white/90 mb-3 tracking-tight">
             Our Partners and Recognitions
           </h2>
-          <div className="w-1/3 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto" aria-hidden="true" />
+          <div className="w-1/4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto" aria-hidden="true" />
         </div>
 
-        <div className="relative group mt-10">
+        <div className="relative group mt-6 md:mt-8">
           <div className="flex overflow-hidden relative">
             <style>{`
               @keyframes scrollDark {
@@ -164,16 +168,17 @@ export default function Home() {
                 animation: scrollDark 35s linear infinite;
               }
             `}</style>
-            <div className="scroll-track-dark gap-20 md:gap-40 items-center px-4">
+            {/* Reduced gap between partners */}
+            <div className="scroll-track-dark gap-12 md:gap-24 items-center px-4">
               {[...partners, ...partners].map((partner, i) => (
                 <div
                   key={`partner-${i}-${partner.name}`}
-                  className="flex items-center space-x-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all cursor-default group/p"
+                  className="flex items-center space-x-3 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all cursor-default group/p"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center font-black text-white/20 text-2xl group-hover/p:text-blue-400 group-hover/p:bg-white/10 transition-all">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 flex items-center justify-center font-black text-white/20 text-xl md:text-2xl group-hover/p:text-blue-400 group-hover/p:bg-white/10 transition-all">
                     {partner.name.charAt(0)}
                   </div>
-                  <span className="font-display font-bold text-xl md:text-2xl text-white/80 tracking-tight whitespace-nowrap">
+                  <span className="font-display font-bold text-lg md:text-xl text-white/80 tracking-tight whitespace-nowrap">
                     {partner.name}
                   </span>
                 </div>
@@ -187,10 +192,11 @@ export default function Home() {
       <OperationalChallenges />
 
       {/* ── WORKING ARCHITECTURE ── */}
-      <section className="py-32 bg-[#FAFAFA] relative overflow-hidden">
-        <div className="container mx-auto px-6 max-w-7xl text-center mb-24 relative z-10">
-          <h4 className="text-[#2563EB] font-bold text-sm tracking-[0.3em] uppercase mb-4 opacity-70">Strategic Flow</h4>
-          <h2 className="text-4xl md:text-5xl font-display font-black text-[#111827]">Working Architecture</h2>
+      {/* Considerably reduced overall section padding and staggering height */}
+      <section className="py-16 md:py-20 bg-[#FAFAFA] relative overflow-hidden">
+        <div className="container mx-auto px-6 max-w-7xl text-center mb-12 md:mb-16 relative z-10">
+          <h4 className="text-[#2563EB] font-bold text-xs md:text-sm tracking-[0.3em] uppercase mb-3 opacity-70">Strategic Flow</h4>
+          <h2 className="text-3xl md:text-4xl font-display font-black text-[#111827]">Working Architecture</h2>
         </div>
 
         <div className="container mx-auto px-6 max-w-7xl relative">
@@ -200,7 +206,7 @@ export default function Home() {
             </svg>
           </div>
 
-          <div className="flex overflow-x-auto pb-12 gap-8 lg:gap-4 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0 scrollbar-hide snap-x scroll-px-6">
+          <div className="flex overflow-x-auto pb-8 gap-6 lg:gap-4 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0 scrollbar-hide snap-x scroll-px-6">
             {steps.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -208,29 +214,31 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
-                className={`flex flex-col items-center group relative shrink-0 w-[280px] md:w-[320px] lg:w-auto snap-center ${i % 2 === 0 ? "lg:mb-32 translate-y-4 lg:translate-y-10" : "lg:mt-32 -translate-y-4 lg:-translate-y-10"
+                // Reduced structural shifting heights (mt/mb)
+                className={`flex flex-col items-center group relative shrink-0 w-[240px] md:w-[280px] lg:w-auto snap-center ${i % 2 === 0 ? "lg:mb-16 translate-y-2 lg:translate-y-6" : "lg:mt-16 -translate-y-2 lg:-translate-y-6"
                   }`}
               >
-                <div className={`${item.color} pl-8 pr-6 py-4 rounded-[2rem] border border-white shadow-xl flex items-center justify-center gap-4 mb-8 transition-all duration-500 group-hover:shadow-2xl group-hover:scale-105 relative z-20`}>
-                  <span className={`font-display font-black text-lg md:text-xl ${item.text} tracking-tight`}>
+                {/* Reduced padding inside architecture cards */}
+                <div className={`${item.color} pl-6 pr-4 py-3 rounded-2xl border border-white shadow-lg flex items-center justify-center gap-3 mb-4 md:mb-6 transition-all duration-500 group-hover:shadow-xl group-hover:scale-105 relative z-20`}>
+                  <span className={`font-display font-black text-base md:text-lg ${item.text} tracking-tight`}>
                     {item.title}
                   </span>
-                  <div className={`${item.text} bg-white/40 p-2 rounded-full`}>
-                    <item.icon size={20} />
+                  <div className={`${item.text} bg-white/40 p-1.5 md:p-2 rounded-full`}>
+                    <item.icon size={18} />
                   </div>
 
                   <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 border border-white hidden lg:block" aria-hidden="true" />
                   <div className="absolute right-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-slate-300 border border-white hidden lg:block" aria-hidden="true" />
                 </div>
 
-                <div className="max-w-[220px] text-center px-4">
-                  <p className="text-gray-500 font-bold text-sm leading-relaxed mb-4 group-hover:text-gray-800 transition-colors">
+                <div className="max-w-[200px] text-center px-3">
+                  <p className="text-gray-500 font-bold text-xs md:text-sm leading-relaxed mb-3 group-hover:text-gray-800 transition-colors">
                     {item.desc}
                   </p>
-                  <div className="w-12 h-0.5 bg-gray-200 mx-auto rounded-full group-hover:bg-blue-400 group-hover:w-16 transition-all" aria-hidden="true" />
+                  <div className="w-8 h-0.5 bg-gray-200 mx-auto rounded-full group-hover:bg-blue-400 group-hover:w-12 transition-all" aria-hidden="true" />
                 </div>
 
-                <div className="absolute -top-4 -right-2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-[10px] font-black text-slate-400 border border-slate-100 group-hover:text-blue-500 transition-colors z-30">
+                <div className="absolute -top-3 -right-1 md:-right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-[9px] md:text-[10px] font-black text-slate-400 border border-slate-100 group-hover:text-blue-500 transition-colors z-30">
                   0{i + 1}
                 </div>
               </motion.div>
@@ -240,23 +248,25 @@ export default function Home() {
       </section>
 
       {/* ── TESTIMONIALS SECTION ── */}
-      <section className="py-8 md:py-16 lg:py-20 bg-soft-white overflow-hidden">
+      {/* Reduced py and bottom pb */}
+      <section className="py-8 md:py-12 lg:py-16 bg-soft-white overflow-hidden">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-6 md:mb-12 lg:mb-14">
-            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-bold text-brand-black leading-tight max-w-3xl mx-auto">
+          <div className="text-center mb-6 md:mb-8 lg:mb-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-bold text-brand-black leading-tight max-w-3xl mx-auto">
               Trusted by Industry Leaders
             </h2>
-            <h3 className="text-sm md:text-lg lg:text-xl font-semibold text-brand-black/70 leading-tight mt-1.5 md:mt-3">
+            <h3 className="text-sm md:text-base lg:text-lg font-semibold text-brand-black/70 leading-tight mt-1.5 md:mt-2">
               Trusted by Forward-Thinking Organizations
             </h3>
           </div>
 
-          <div className="relative w-full overflow-hidden pb-4 md:pb-10 lg:pb-12">
+          <div className="relative w-full overflow-hidden pb-4 md:pb-6 lg:pb-8">
             <div className="absolute inset-y-0 left-0 w-8 md:w-24 bg-gradient-to-r from-soft-white to-transparent z-10 pointer-events-none" aria-hidden="true" />
             <div className="absolute inset-y-0 right-0 w-8 md:w-24 bg-gradient-to-l from-soft-white to-transparent z-10 pointer-events-none" aria-hidden="true" />
 
+            {/* Reduced gap and py for cards */}
             <div
-              className="flex w-max animate-marquee gap-4 md:gap-5 lg:gap-6 px-3 md:px-4 py-3 md:py-4"
+              className="flex w-max animate-marquee gap-3 md:gap-4 lg:gap-5 px-3 md:px-4 py-2 md:py-3"
               style={{ animationPlayState: isMarqueePaused ? "paused" : "running" }}
             >
               {testimonials.map((t, i) => (
@@ -264,21 +274,22 @@ export default function Home() {
                   key={`testimonial-${i}`}
                   onMouseEnter={() => setIsMarqueePaused(true)}
                   onMouseLeave={() => setIsMarqueePaused(false)}
-                  className="w-[280px] sm:w-[340px] md:w-[400px] lg:w-[440px] min-h-[180px] sm:min-h-[160px] md:aspect-[21/9] p-5 md:p-7 lg:p-10 rounded-2xl md:rounded-3xl bg-white border border-soft-taupe/40 flex flex-col justify-between transition-all duration-300 hover:border-brand-walnut hover:shadow-2xl hover:shadow-brand-walnut/20 hover:-translate-y-2 cursor-pointer flex-shrink-0"
+                  // Reduced overall widths and padding of cards
+                  className="w-[260px] sm:w-[300px] md:w-[360px] lg:w-[400px] min-h-[140px] sm:min-h-[150px] p-4 md:p-6 rounded-2xl bg-white border border-soft-taupe/40 flex flex-col justify-between transition-all duration-300 hover:border-brand-walnut hover:shadow-xl hover:shadow-brand-walnut/20 hover:-translate-y-1.5 cursor-pointer flex-shrink-0"
                 >
-                  <div className="mb-3 md:mb-4">
-                    <div className="flex gap-0.5 mb-2 md:mb-3 text-[#EF9F27] text-sm md:text-base" aria-label="5 out of 5 stars">
+                  <div className="mb-2 md:mb-3">
+                    <div className="flex gap-0.5 mb-1.5 md:mb-2 text-[#EF9F27] text-xs md:text-sm" aria-label="5 out of 5 stars">
                       {"★★★★★".split("").map((s, idx) => (
                         <span key={`star-${idx}`}>{s}</span>
                       ))}
                     </div>
-                    <p className="text-brand-black/80 italic text-sm md:text-base font-medium leading-relaxed">
+                    <p className="text-brand-black/80 italic text-xs md:text-sm font-medium leading-relaxed">
                       &quot;{t.quote}&quot;
                     </p>
                   </div>
                   <div>
-                    <div className="font-bold text-brand-black text-sm md:text-base">{t.author}</div>
-                    <div className="text-[10px] md:text-[10px] text-brand-black/50 uppercase tracking-[.2em] mt-0.5 font-extrabold">{t.role}</div>
+                    <div className="font-bold text-brand-black text-xs md:text-sm">{t.author}</div>
+                    <div className="text-[9px] md:text-[10px] text-brand-black/50 uppercase tracking-[.2em] mt-0.5 font-extrabold">{t.role}</div>
                   </div>
                 </div>
               ))}
