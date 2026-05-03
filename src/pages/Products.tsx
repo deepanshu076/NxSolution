@@ -100,51 +100,52 @@ function ProductCard({ prod, i }: { prod: any; i: number; key?: string | number 
          animate={{ opacity: 1, y: 0 }}
          exit={{ opacity: 0, scale: 0.95 }}
          transition={{ duration: 0.3, delay: i * 0.05 }}
-         className="group bg-white rounded-xl border border-soft-taupe/10 overflow-hidden hover:shadow-xl hover:border-brand-walnut/20 transition-all cursor-pointer"
+         className="group bg-white flex flex-col h-full rounded-2xl border border-soft-taupe/10 overflow-hidden hover:shadow-xl hover:-translate-y-1 hover:border-brand-walnut/20 transition-all duration-300 cursor-pointer"
       >
-         {/* Image Container - More Compact */}
-         <div className="aspect-[16/9] overflow-hidden relative">
+         {/* Image Container */}
+         <div className="aspect-[16/10] sm:aspect-[4/3] overflow-hidden relative shrink-0">
             <img
                src={prod.image}
-               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                alt={prod.name}
+               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent opacity-80" />
 
             {/* Type Badge */}
-            <div className="absolute top-3 left-3">
-               <div className={`px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider backdrop-blur-md ${isHardware
-                  ? "bg-brand-black/80 text-soft-white border border-soft-white/20"
-                  : "bg-warm-gold-beige/90 text-brand-black border border-brand-black/10"
+            <div className="absolute top-3 left-3 md:top-4 md:left-4">
+               <div className={`px-2.5 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm ${isHardware
+                  ? "bg-brand-black/85 text-soft-white border border-soft-white/10"
+                  : "bg-warm-gold-beige/95 text-brand-black border border-brand-black/10"
                   }`}>
                   {isHardware ? "Hardware" : "Solution"}
                </div>
             </div>
          </div>
 
-         {/* Content - More Compact */}
-         <div className="p-4">
-            <h4 className="text-sm font-bold text-brand-black mb-1.5 leading-tight group-hover:text-brand-walnut transition-colors line-clamp-2">
+         {/* Content Container */}
+         <div className="p-4 sm:p-5 flex flex-col flex-grow">
+            <h4 className="text-sm sm:text-base font-bold text-brand-black mb-2 leading-tight group-hover:text-brand-walnut transition-colors line-clamp-2">
                {prod.name}
             </h4>
-            <p className="text-brand-black/50 text-[11px] leading-relaxed mb-3 line-clamp-2">
+            <p className="text-brand-black/60 text-[12px] sm:text-[13px] leading-relaxed mb-4 line-clamp-2 flex-grow">
                {prod.desc}
             </p>
 
             {/* Footer */}
-            <div className="flex items-center justify-between pt-2 border-t border-soft-taupe/10">
-               <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between pt-3 border-t border-soft-taupe/10 mt-auto">
+               <div className="flex items-center gap-1.5">
                   {isHardware ? (
-                     <Cpu size={10} className="text-brand-black/30" />
+                     <Cpu size={12} className="text-brand-black/40" />
                   ) : (
-                     <Cloud size={10} className="text-brand-black/30" />
+                     <Cloud size={12} className="text-brand-black/40" />
                   )}
-                  <span className="text-[8px] font-bold text-brand-black/30 uppercase tracking-wider">
+                  <span className="text-[9px] md:text-[10px] font-bold text-brand-black/40 uppercase tracking-wider">
                      {isHardware ? "Edge Device" : "Cloud Ready"}
                   </span>
                </div>
-               <div className="w-6 h-6 rounded-full border border-soft-taupe/20 flex items-center justify-center text-brand-black/30 group-hover:bg-brand-walnut group-hover:text-soft-white group-hover:border-brand-walnut transition-all">
-                  <ArrowUpRight size={10} />
+               <div className="w-7 h-7 rounded-full border border-soft-taupe/30 flex items-center justify-center text-brand-black/40 group-hover:bg-brand-walnut group-hover:text-soft-white group-hover:border-brand-walnut transition-all duration-300">
+                  <ArrowUpRight size={14} />
                </div>
             </div>
          </div>
@@ -166,9 +167,9 @@ export default function Products() {
    }, [activeCategory]);
 
    return (
-      <div className="flex flex-col pt-16 bg-soft-white">
-         {/* ── COMPACT HERO SECTION ── */}
-         <section className="relative bg-brand-black text-center overflow-hidden py-12">
+      <div className="flex flex-col pt-16 lg:pt-20 bg-soft-white min-h-screen">
+         {/* ── HERO SECTION ── */}
+         <section className="relative bg-brand-black text-center overflow-hidden py-16 sm:py-20 lg:py-24 px-4 sm:px-6">
             {/* Decorative Background */}
             <div className="absolute inset-0 opacity-5 flex gap-px" aria-hidden="true">
                {Array.from({ length: 6 }).map((_, i) => (
@@ -176,21 +177,22 @@ export default function Products() {
                ))}
             </div>
 
-            <div className="container mx-auto px-6 relative z-10">
+            <div className="container mx-auto max-w-5xl relative z-10">
                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                >
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-white/5 backdrop-blur-sm text-warm-gold-beige font-bold text-[9px] uppercase tracking-wider mb-4 border border-soft-white/10">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-soft-white/5 backdrop-blur-sm text-warm-gold-beige font-bold text-[10px] sm:text-xs uppercase tracking-wider mb-6 border border-soft-white/10">
                      Hardware + Software · Integrated
                   </div>
 
-                  <h1 className="text-2xl sm:text-3xl font-display font-bold text-soft-white mb-3 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-4 sm:mb-6 leading-[1.2]">
                      Technology That Powers Our{" "}
+                     <br className="hidden sm:block" />
                      <span className="text-warm-gold-beige">Smart Solutions</span>
                   </h1>
 
-                  <p className="text-soft-white/50 text-sm max-w-xl mx-auto">
+                  <p className="text-soft-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
                      Our products are part of integrated smart systems designed to deliver reliable, scalable, and efficient operational outcomes.
                   </p>
                </motion.div>
@@ -198,12 +200,12 @@ export default function Products() {
          </section>
 
          {/* ── PRODUCTS SECTION WITH CATEGORY FILTERS ── */}
-         <section className="py-8 bg-soft-white">
-            <div className="container mx-auto px-6">
+         <section className="py-10 sm:py-16 bg-soft-white flex-grow">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
 
-               {/* Category Filter Cards - Horizontal Scroll on Mobile */}
-               <div className="mb-8 overflow-x-auto scrollbar-hide">
-                  <div className="flex gap-2 md:gap-3 justify-start md:justify-center min-w-max">
+               {/* Category Filter Cards - Mobile Optimized Scroll */}
+               <div className="mb-8 sm:mb-12 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+                  <div className="flex gap-2 sm:gap-3 lg:gap-4 justify-start lg:justify-center min-w-max pb-4">
                      {categories.map((category) => {
                         const Icon = category.icon;
                         const isActive = activeCategory === category.id;
@@ -211,12 +213,12 @@ export default function Products() {
                            <button
                               key={category.id}
                               onClick={() => setActiveCategory(category.id)}
-                              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all whitespace-nowrap ${isActive
-                                 ? "bg-brand-walnut text-soft-white shadow-md scale-105"
-                                 : "bg-white text-brand-black/60 hover:bg-white/80 hover:text-brand-black border border-soft-taupe/20"
+                              className={`flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm transition-all whitespace-nowrap snap-start touch-manipulation ${isActive
+                                 ? "bg-brand-walnut text-soft-white shadow-lg shadow-brand-walnut/20 -translate-y-0.5"
+                                 : "bg-white text-brand-black/60 hover:bg-soft-taupe/10 hover:text-brand-black border border-soft-taupe/20"
                                  }`}
                            >
-                              <Icon size={14} />
+                              <Icon size={16} className={isActive ? "text-soft-white" : "text-brand-black/40"} />
                               {category.label}
                            </button>
                         );
@@ -225,13 +227,13 @@ export default function Products() {
                </div>
 
                {/* Results Count */}
-               <div className="mb-6 text-center">
-                  <p className="text-brand-black/40 text-xs">
+               <div className="mb-6 sm:mb-8 text-center sm:text-left flex items-center justify-between">
+                  <p className="text-brand-black/50 text-xs sm:text-sm font-medium w-full text-center">
                      Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
                   </p>
                </div>
 
-               {/* Products Grid - More Compact */}
+               {/* Products Grid */}
                <AnimatePresence mode="wait">
                   <motion.div
                      key={activeCategory}
@@ -239,7 +241,7 @@ export default function Products() {
                      animate={{ opacity: 1, y: 0 }}
                      exit={{ opacity: 0, y: -10 }}
                      transition={{ duration: 0.3 }}
-                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-8"
                   >
                      {filteredProducts.map((prod, i) => (
                         <ProductCard key={`${prod.name}-${i}`} prod={prod} i={i} />
@@ -249,42 +251,48 @@ export default function Products() {
 
                {/* Empty State */}
                {filteredProducts.length === 0 && (
-                  <div className="text-center py-16">
+                  <div className="text-center py-20 px-4">
                      <div className="text-brand-black/20 text-6xl mb-4">🔍</div>
-                     <p className="text-brand-black/40 text-sm">No products found in this category</p>
+                     <p className="text-brand-black/50 text-base sm:text-lg">No products found in this category.</p>
+                     <button
+                        onClick={() => setActiveCategory("all")}
+                        className="mt-4 text-brand-walnut font-semibold text-sm hover:underline"
+                     >
+                        Clear filters
+                     </button>
                   </div>
                )}
             </div>
          </section>
 
-         {/* ── COMPACT CTA STRIP ── */}
-         <section className="py-16 bg-brand-black text-center relative overflow-hidden">
+         {/* ── CTA STRIP ── */}
+         <section className="py-16 sm:py-20 lg:py-24 bg-brand-black text-center relative overflow-hidden px-4 sm:px-6">
             <div className="absolute inset-0 opacity-5 flex gap-px" aria-hidden="true">
                {Array.from({ length: 6 }).map((_, i) => (
                   <div key={`cta-bg-${i}`} className="flex-1 bg-soft-white" />
                ))}
             </div>
 
-            <div className="container mx-auto px-6 relative z-10">
-               <span className="text-[9px] font-bold text-soft-white/40 tracking-[0.3em] uppercase mb-3 block">
+            <div className="container mx-auto max-w-4xl relative z-10">
+               <span className="text-[10px] sm:text-xs font-bold text-soft-white/40 tracking-[0.3em] uppercase mb-4 block">
                   Ready to build
                </span>
-               <h2 className="text-2xl md:text-3xl font-display font-bold text-soft-white mb-4 max-w-3xl mx-auto leading-tight">
-                  Build a Complete Smart System for Your Operations
+               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-6 leading-tight">
+                  Build a Complete Smart System <br className="hidden sm:block" /> for Your Operations
                </h2>
-               <p className="text-soft-white/50 text-sm mb-8 max-w-2xl mx-auto">
+               <p className="text-soft-white/60 text-sm sm:text-base lg:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
                   Tell us your operational challenges — we'll design the right system around them.
                </p>
-               <div className="flex flex-col sm:flex-row justify-center gap-3">
+               <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5 w-full sm:w-auto">
                   <Link
                      to="/consultation"
-                     className="px-6 py-2.5 bg-brand-walnut text-soft-white font-bold rounded-lg transition-all hover:bg-brand-black border border-brand-walnut shadow-lg text-sm"
+                     className="px-6 py-3.5 sm:px-8 sm:py-4 bg-brand-walnut text-soft-white font-bold rounded-xl transition-all hover:bg-soft-taupe/20 border border-brand-walnut hover:border-soft-white/20 shadow-lg shadow-brand-walnut/20 text-sm sm:text-base w-full sm:w-auto touch-manipulation"
                   >
                      Get Free Consultation
                   </Link>
                   <Link
                      to="/solutions"
-                     className="px-6 py-2.5 border border-soft-white/20 text-soft-white font-bold rounded-lg hover:bg-soft-white/5 backdrop-blur-sm transition-colors text-sm"
+                     className="px-6 py-3.5 sm:px-8 sm:py-4 border border-soft-white/20 text-soft-white font-bold rounded-xl hover:bg-soft-white/10 backdrop-blur-sm transition-colors text-sm sm:text-base w-full sm:w-auto touch-manipulation"
                   >
                      Explore Solutions
                   </Link>
