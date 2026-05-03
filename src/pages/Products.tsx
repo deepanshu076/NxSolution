@@ -1,285 +1,296 @@
-import { motion } from "motion/react";
-import { 
-  Shield, 
-  Monitor, 
-  Activity, 
-  Zap, 
-  Settings, 
-  BarChart3, 
-  ArrowRight,
-  Database,
-  Cpu,
-  Smartphone,
-  Server,
-  Cloud,
-  Layers,
-  ChevronRight,
-  ArrowUpRight,
-  Globe
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import {
+   Zap,
+   Cpu,
+   Smartphone,
+   Cloud,
+   Layers,
+   ArrowUpRight,
+   CheckCircle2,
+   Lock,
+   Users,
+   Camera,
+   Brain,
+   Car,
+   Package,
+   BarChart3,
+   Shield,
+   Wifi,
+   Bot,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+// ── DATA DEFINITIONS ──
+
+const productsData = {
+   // Access & Entry
+   access: [
+      { type: "hardware", name: "Biometric Access Control Devices", desc: "High-precision fingerprint & hand geometry entry.", image: "https://images.unsplash.com/photo-1554224155-1696413565d3?w=600&q=80", category: ["security", "ai", "automation"] },
+      { type: "hardware", name: "Face Recognition Terminals", desc: "Contactless AI detection with anti-spoofing.", image: "https://images.unsplash.com/photo-1593583853246-8e503375862f?w=600&q=80", category: ["security", "ai", "automation"] },
+      { type: "hardware", name: "RFID Card Readers", desc: "Long-range and encrypted frequency readers.", image: "https://images.unsplash.com/photo-1624397648248-9a98f7f01e53?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Smart Turnstile Gates", desc: "Industrial-grade tripod and flap barriers.", image: "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Boom Barrier Systems", desc: "Automated vehicle entry with high-speed motor.", image: "https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Smart Door Locks", desc: "Cloud-connected locks for granular room access.", image: "https://images.unsplash.com/photo-1631541909061-71e349d1f3b3?w=600&q=80", category: ["security", "automation"] },
+      { type: "solution", name: "QR Code Access Systems", desc: "Mobile-first temporary access for visitors.", image: "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?w=600&q=80", category: ["saas", "analytics"] },
+      { type: "solution", name: "Cloud Access Controller", desc: "Manage all entry points from a single web dashboard.", image: "https://images.unsplash.com/photo-1558494949-ef010ca68a9c?w=600&q=80", category: ["cloud", "saas"] },
+   ],
+   // Attendance
+   attendance: [
+      { type: "hardware", name: "Biometric Attendance Machines", desc: "Fast reporting and shift management integration.", image: "https://images.unsplash.com/photo-1554224155-1696413565d3?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Face Recognition Attendance Systems", desc: "Group detection for classroom and office entries.", image: "https://images.unsplash.com/photo-1593583853246-8e503375862f?w=600&q=80", category: ["ai", "automation"] },
+      { type: "solution", name: "Mobile Attendance Apps (GPS-based)", desc: "Geofencing based presence tracking for remote teams.", image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80", category: ["saas", "cloud", "analytics"] },
+      { type: "hardware", name: "Smart Attendance Kiosks", desc: "Self-service kiosks for staff and visitors.", image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80", category: ["automation"] },
+      { type: "solution", name: "Payroll Integration Suite", desc: "Automatically sync attendance logs with accounting software.", image: "https://images.unsplash.com/photo-1454165833267-0e6988448a3e?w=600&q=80", category: ["cloud", "analytics"] },
+   ],
+   // Surveillance
+   surveillance: [
+      { type: "hardware", name: "AI CCTV Cameras", desc: "On-edge processing for object and face detection.", image: "https://images.unsplash.com/photo-1557597774-9d2739f05a76?w=600&q=80", category: ["security", "ai", "analytics"] },
+      { type: "hardware", name: "IP Surveillance Cameras", desc: "4K resolution with night vision and PoE support.", image: "https://images.unsplash.com/photo-1551817958-d143ea6f0df5?w=600&q=80", category: ["security"] },
+      { type: "hardware", name: "PTZ Cameras (Pan-Tilt-Zoom)", desc: "Remote controlled tracking cameras.", image: "https://images.unsplash.com/photo-1559828589-72de70ca3738?w=600&q=80", category: ["security", "automation"] },
+      { type: "solution", name: "Video Management Systems (VMS)", desc: "Centralized control software for all feeds.", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80", category: ["saas", "cloud"] },
+      { type: "hardware", name: "Network Video Recorders (NVR)", desc: "High-capacity server storage for surveillance.", image: "https://images.unsplash.com/photo-1558494949-ef010ca68a9c?w=600&q=80", category: ["security"] },
+      { type: "solution", name: "Smart Surveillance Analytics", desc: "AI analytics for perimeter security and breach detection.", image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80", category: ["ai", "analytics"] },
+   ],
+   // Security Intel
+   intelligence: [
+      { type: "solution", name: "AI-Based Monitoring Systems", desc: "Predictive analytics for anomaly detection.", image: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600&q=80", category: ["ai", "analytics", "security"] },
+      { type: "hardware", name: "Intrusion Detection Systems", desc: "Vibration and perimeter breach sensors.", image: "https://images.unsplash.com/photo-1558494949-ef010ca68a9c?w=600&q=80", category: ["security"] },
+      { type: "solution", name: "Smart Alarm Systems", desc: "Multi-zone alerts with app notifications.", image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Panic Button Devices", desc: "Instant emergency triggering for security staff.", image: "https://images.unsplash.com/photo-1517077304055-6e89a382830f?w=600&q=80", category: ["security"] },
+      { type: "hardware", name: "Emergency Alert Systems", desc: "Visual and audio mass notification units.", image: "https://images.unsplash.com/photo-1454165833267-0e6988448a3e?w=600&q=80", category: ["security"] },
+   ],
+   // Parking
+   parking: [
+      { type: "hardware", name: "Automated Boom Barriers", desc: "High-speed Entry/Exit vehicle hurdles.", image: "https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?w=600&q=80", category: ["automation"] },
+      { type: "hardware", name: "RFID Vehicle Access Tags", desc: "Windshield tags for seamless gate entry.", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80", category: ["security", "automation"] },
+      { type: "hardware", name: "Smart Parking Sensors", desc: "Ultrasonic sensors for slot occupancy.", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80", category: ["automation", "analytics"] },
+      { type: "solution", name: "Parking Guidance Systems", desc: "Directional LED systems for vacant slot finding.", image: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=600&q=80", category: ["saas", "analytics"] },
+      { type: "solution", name: "License Plate Recognition (ANPR) Systems", desc: "AI cameras for automated logging.", image: "https://images.unsplash.com/photo-1557597774-9d2739f05a76?w=600&q=80", category: ["ai", "security", "analytics"] },
+   ],
+   // Assets
+   assets: [
+      { type: "hardware", name: "RFID Asset Tracking Tags", desc: "Metal-mount and flexible tags for equipment.", image: "https://images.unsplash.com/photo-1586528116311-ad8619bc9141?w=600&q=80", category: ["automation"] },
+      { type: "hardware", name: "GPS Tracking Devices", desc: "Real-time location for transit and fleet.", image: "https://images.unsplash.com/photo-1533035353112-9c42c2627402?w=600&q=80", category: ["automation", "analytics"] },
+      { type: "hardware", name: "BLE Tracking Beacons", desc: "Indoor positioning and proximity triggers.", image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80", category: ["automation"] },
+      { type: "solution", name: "Smart Inventory Tracking Systems", desc: "Live stock monitoring and automated audits.", image: "https://images.unsplash.com/photo-1586528116311-ad8619bc9141?w=600&q=80", category: ["cloud", "analytics"] },
+   ],
+};
+
+// Flatten all products for initial display
+const allProducts = Object.values(productsData).flat();
+
+// Category configuration
 const categories = [
-  { 
-    name: "Access Control Devices", 
-    desc: "Biometric readers, RFID terminals, smart locks, and gate controllers for entry management.",
-    icon: Shield 
-  },
-  { 
-    name: "Surveillance Systems", 
-    desc: "IP cameras, NVR/DVR units, and AI-powered video analytics for perimeter monitoring.",
-    icon: Monitor 
-  },
-  { 
-    name: "Sensors & IoT Devices", 
-    desc: "Motion, temperature, occupancy, and environmental sensors for live data collection.",
-    icon: Activity 
-  },
-  { 
-    name: "Automation Controllers", 
-    desc: "PLCs, relay modules, and edge computing units that trigger automated actions.",
-    icon: Settings 
-  },
-  { 
-    name: "Monitoring Dashboards", 
-    desc: "Web and app-based control panels for real-time visibility, alerts, and reporting.",
-    icon: BarChart3 
-  },
-  { 
-    name: "Network Infrastructure", 
-    desc: "Managed switches, PoE equipment, and structured cabling for reliable connectivity.",
-    icon: Server 
-  },
+   { id: "all", label: "All Products", icon: Layers },
+   { id: "ai", label: "AI", icon: Brain },
+   { id: "automation", label: "Automation", icon: Bot },
+   { id: "saas", label: "SaaS", icon: Cloud },
+   { id: "analytics", label: "Analytics", icon: BarChart3 },
+   { id: "security", label: "Security", icon: Shield },
+   { id: "cloud", label: "Cloud", icon: Wifi },
 ];
 
-const domains = [
-  { id: "education", name: "Education", icon: "🏫", sub: "Access · Attendance · Surveillance", color: "#1a1a18" },
-  { id: "manufacturing", name: "Manufacturing", icon: "🏭", sub: "Sensors · Automation · Tracking", color: "#1c1a18" },
-  { id: "healthcare", name: "Healthcare", icon: "🏥", sub: "Access · Energy · Monitoring", color: "#181c1a" },
-  { id: "corporate", name: "Corporate", icon: "🏢", sub: "Access · Automation · Analytics", color: "#1a1c18" },
-  { id: "retail", name: "Retail", icon: "🏪", sub: "Surveillance · IoT · Analytics", color: "#1c1818" },
-  { id: "logistics", name: "Logistics", icon: "🏗", sub: "Tracking · Network · Automation", color: "#181a1c" },
-];
+function ProductCard({ prod, i }: { prod: any; i: number; key?: string | number }) {
+   const isHardware = prod.type === 'hardware';
 
-export default function Products() {
-  return (
-    <div className="flex flex-col pt-20">
-      {/* ── TECH HERO SECTION ── */}
-      <section className="relative py-24 bg-brand-black overflow-hidden flex items-center">
-        <div className="absolute inset-0 opacity-20 grid-bg" />
-        
-        {/* Abstract Hardware Pattern Background */}
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-           <svg className="w-full h-full" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                 <pattern id="chipPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                    <rect x="10" y="10" width="30" height="30" rx="3" fill="none" stroke="white" strokeWidth="0.5" />
-                    <line x1="40" y1="25" x2="60" y2="25" stroke="white" strokeWidth="0.5" />
-                    <circle cx="70" cy="25" r="4" fill="none" stroke="white" strokeWidth="0.5" />
-                 </pattern>
-              </defs>
-              <rect width="1000" height="500" fill="url(#chipPattern)" />
-           </svg>
-        </div>
+   return (
+      <motion.div
+         initial={{ opacity: 0, y: 20 }}
+         animate={{ opacity: 1, y: 0 }}
+         exit={{ opacity: 0, scale: 0.95 }}
+         transition={{ duration: 0.3, delay: i * 0.05 }}
+         className="group bg-white rounded-xl border border-soft-taupe/10 overflow-hidden hover:shadow-xl hover:border-brand-walnut/20 transition-all cursor-pointer"
+      >
+         {/* Image Container - More Compact */}
+         <div className="aspect-[16/9] overflow-hidden relative">
+            <img
+               src={prod.image}
+               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+               alt={prod.name}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
-        <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-           <div>
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass-morphism text-warm-gold-beige font-bold text-xs uppercase tracking-widest mb-8 border border-white/10">
-                Hardware + Software · Integrated
-              </div>
-              <h1 className="text-4xl md:text-7xl font-display font-bold text-soft-white mb-6 leading-[1.1] text-balance">
-                Technology That Powers Our <span className="text-warm-gold-beige">Smart Solutions</span>
-              </h1>
-              <p className="text-soft-white/60 text-lg md:text-xl mb-10 leading-relaxed max-w-md">
-                Our products are part of integrated smart systems designed to deliver reliable, scalable, and efficient operational outcomes.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                 <button className="px-10 py-5 bg-brand-walnut text-soft-white font-bold rounded-xl hover:bg-dark-coffee transition-all shadow-xl shadow-brand-walnut/20">Explore Solutions</button>
-                 <button className="px-10 py-5 border border-soft-white/20 text-soft-white font-bold rounded-xl hover:bg-soft-white/5 backdrop-blur-sm transition-all">Talk to Expert</button>
-              </div>
-           </div>
+            {/* Type Badge */}
+            <div className="absolute top-3 left-3">
+               <div className={`px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider backdrop-blur-md ${isHardware
+                  ? "bg-brand-black/80 text-soft-white border border-soft-white/20"
+                  : "bg-warm-gold-beige/90 text-brand-black border border-brand-black/10"
+                  }`}>
+                  {isHardware ? "Hardware" : "Solution"}
+               </div>
+            </div>
+         </div>
 
-           <div className="relative hidden lg:block">
-              <div className="aspect-square bg-brand-walnut/10 rounded-[4rem] border-2 border-soft-white/5 p-16 relative overflow-hidden shadow-2xl">
-                 <div className="absolute inset-0 grid-bg opacity-10" />
-                 <div className="relative z-10 grid grid-cols-2 gap-8 h-full">
-                    <div className="bg-soft-white/5 rounded-3xl p-10 flex flex-col justify-between border border-white/10 hover:bg-soft-white/10 transition-colors">
-                       <Cpu size={40} className="text-warm-gold-beige" />
-                       <div className="h-2 w-16 bg-white/20 rounded-full" />
-                    </div>
-                    <div className="bg-brand-walnut rounded-3xl p-10 flex flex-col justify-between shadow-2xl scale-110">
-                       <Layers size={40} className="text-soft-white" />
-                       <div className="h-2 w-20 bg-brand-black/20 rounded-full" />
-                    </div>
-                    <div className="bg-soft-white/5 rounded-3xl p-10 flex flex-col justify-between border border-white/10 hover:bg-soft-white/10 transition-colors">
-                       <Smartphone size={40} className="text-warm-gold-beige" />
-                       <div className="h-2 w-16 bg-white/20 rounded-full" />
-                    </div>
-                    <div className="bg-soft-white/5 rounded-3xl p-10 flex flex-col justify-between border border-white/10 hover:bg-soft-white/10 transition-colors">
-                       <Cloud size={40} className="text-warm-gold-beige" />
-                       <div className="h-2 w-16 bg-white/20 rounded-full" />
-                    </div>
-                 </div>
-              </div>
-              {/* Float badge */}
-              <div className="absolute -bottom-10 -left-10 glass-morphism p-8 rounded-3xl border border-white/10 shadow-2xl walnut-glow">
-                 <div className="text-3xl font-display font-bold text-warm-gold-beige">Sync</div>
-                 <div className="text-[10px] text-soft-white/40 font-bold uppercase tracking-[0.3em] mt-2">Systems Operational</div>
-              </div>
-           </div>
-        </div>
-      </section>
+         {/* Content - More Compact */}
+         <div className="p-4">
+            <h4 className="text-sm font-bold text-brand-black mb-1.5 leading-tight group-hover:text-brand-walnut transition-colors line-clamp-2">
+               {prod.name}
+            </h4>
+            <p className="text-brand-black/50 text-[11px] leading-relaxed mb-3 line-clamp-2">
+               {prod.desc}
+            </p>
 
-      {/* ── OVERVIEW SECTION ── */}
-      <section className="py-24 bg-soft-white border-b border-soft-taupe/30">
-        <div className="container mx-auto px-6">
-           <div className="flex flex-col lg:flex-row items-center gap-20">
-              <div className="flex-1">
-                 <span className="text-xs font-bold text-brand-walnut tracking-widest uppercase mb-4 block">Overview</span>
-                 <h2 className="text-3xl md:text-4xl font-display font-bold text-brand-black mb-6 leading-tight">Not Just Products — Complete Smart Systems</h2>
-                 <p className="text-charcoal/60 text-lg leading-relaxed mb-8">
-                   We combine hardware and software components to build intelligent systems tailored to real operational environments. Every component is selected and configured for the specific domain and use case.
-                 </p>
-                 <div className="flex flex-wrap gap-3">
-                    {["Hardware", "Software", "IoT Devices", "Dashboards", "Sensors", "Controllers"].map(p => (
-                      <span key={p} className="px-6 py-2 bg-warm-cream rounded-full text-brand-black/60 text-xs font-bold border border-soft-taupe/50">{p}</span>
-                    ))}
-                 </div>
-              </div>
-              <div className="flex-1 space-y-6">
-                 {[
-                   { l: "Deployment model", v: "Domain-first · Solution-specific · Fully integrated" },
-                   { l: "Core principle", v: "No standalone products — every component is part of a system" }
-                 ].map((item, i) => (
-                   <div key={i} className="bg-warm-cream/30 p-10 rounded-[2.5rem] border border-soft-taupe/30">
-                      <div className="text-[10px] font-bold text-brand-black/40 uppercase tracking-widest mb-3">{item.l}</div>
-                      <div className="text-xl font-display font-bold text-brand-black leading-tight">{item.v}</div>
-                   </div>
-                 ))}
-              </div>
-           </div>
-        </div>
-      </section>
-
-      {/* ── PRODUCTS BY DOMAIN SECTION ── */}
-      <section className="py-24 bg-warm-cream/50">
-        <div className="container mx-auto px-6">
-           <div className="mb-16">
-              <span className="text-xs font-bold text-brand-walnut tracking-widest uppercase mb-1 block">Products by domain</span>
-              <h2 className="text-3xl font-display font-bold text-brand-black">Deployed Across Different Domains</h2>
-              <p className="text-brand-black/50 text-sm max-w-lg mt-4">Select a domain to explore how our technology components are deployed in that environment.</p>
-           </div>
-
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {domains.map((dom) => (
-                <Link 
-                   key={dom.id}
-                   to={`/domains/${dom.id}`}
-                   className="group relative h-64 rounded-[2.5rem] overflow-hidden border border-soft-taupe/30 bg-brand-black transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
-                >
-                   {/* Mock Pattern Background */}
-                   <div className="absolute inset-0 bg-brand-black">
-                      <div className="absolute inset-0 grid-bg opacity-10" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] transition-transform duration-700 group-hover:scale-110">
-                        {dom.icon}
-                      </div>
-                   </div>
-                   
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-80 transition-opacity" />
-                   
-                   <div className="absolute top-8 right-8 w-12 h-12 rounded-full glass-morphism flex items-center justify-center text-warm-gold-beige opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0 shadow-xl">
-                      <ArrowUpRight size={24} />
-                   </div>
-
-                   <div className="relative z-10 p-10 h-full flex flex-col justify-end">
-                      <div className="w-10 h-10 rounded-xl bg-soft-white/10 flex items-center justify-center text-soft-white/60 group-hover:text-warm-gold-beige transition-colors mb-4">
-                         <Layers size={20} />
-                      </div>
-                      <h3 className="text-2xl font-display font-bold text-soft-white mb-2">{dom.name}</h3>
-                      <p className="text-soft-white/50 text-xs uppercase font-bold tracking-widest">{dom.sub}</p>
-                   </div>
-                </Link>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* ── CORE COMPONENTS SECTION ── */}
-      <section className="py-24 bg-soft-white text-center">
-        <div className="container mx-auto px-6">
-           <div className="mb-20">
-              <span className="text-xs font-bold text-brand-walnut tracking-widest uppercase mb-1 block">Core components</span>
-              <h2 className="text-4xl font-display font-bold text-brand-black">Core Technology Components</h2>
-              <p className="text-brand-black/50 text-lg max-w-lg mx-auto mt-4">An awareness of what goes into a smart system — not a product catalog.</p>
-           </div>
-
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {categories.map((cat, i) => (
-                <div key={i} className="p-10 rounded-[2.5rem] border border-soft-taupe/30 hover:border-brand-walnut transition-all text-left flex flex-col items-start group hover:bg-warm-cream/10">
-                   <div className="w-16 h-16 rounded-2xl bg-warm-cream flex items-center justify-center text-brand-black mb-8 group-hover:bg-brand-walnut group-hover:text-soft-white transition-all shadow-md">
-                      <cat.icon size={28} />
-                   </div>
-                   <h4 className="font-bold text-brand-black text-xl mb-4 leading-tight">{cat.name}</h4>
-                   <p className="text-charcoal/50 text-sm leading-relaxed mb-10">{cat.desc}</p>
-                   <div className="mt-auto w-10 h-1.5 bg-soft-taupe/30 rounded-full group-hover:bg-brand-walnut group-hover:w-24 transition-all" />
-                </div>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* ── SYSTEM FLOW SECTION ── */}
-      <section className="py-24 bg-warm-cream/30 relative overflow-hidden">
-        <div className="container mx-auto px-6">
-           <div className="text-center mb-20 px-4">
-              <span className="text-xs font-bold text-brand-walnut tracking-widest uppercase mb-1 block">System thinking</span>
-              <h2 className="text-4xl font-display font-bold text-brand-black">Integrated into Smart System Ecosystems</h2>
-              <p className="text-charcoal/50 text-lg max-w-2xl mx-auto mt-6">Our products are not standalone — they work together as part of complete smart systems that automate operations.</p>
-           </div>
-
-           <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-5xl mx-auto">
-              {[
-                { t: "Product", d: "Hardware or component", icon: Cpu },
-                { t: "System", d: "Components together", icon: Layers },
-                { t: "Solution", d: "Outcome achieved", icon: CheckCircle2 },
-                { t: "Domain", d: "Environment served", icon: Globe }
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col md:flex-row items-center gap-6 w-full">
-                   <div className="bg-soft-white p-10 rounded-[2.5rem] border border-soft-taupe/30 text-center w-full shadow-lg hover:shadow-xl transition-shadow">
-                      <div className="w-14 h-14 rounded-2xl bg-brand-walnut/5 flex items-center justify-center text-brand-walnut mb-6 mx-auto">
-                         <item.icon size={28} />
-                      </div>
-                      <h4 className="font-bold text-brand-black text-lg mb-2">{item.t}</h4>
-                      <p className="text-charcoal/40 text-xs leading-relaxed px-4">{item.d}</p>
-                   </div>
-                   {i < 3 && <ArrowRight className="text-soft-taupe/50 rotate-90 md:rotate-0 hidden md:block" key={`arr-${i}`} size={32} />}
-                </div>
-              ))}
-           </div>
-           
-           <div className="mt-20 text-center">
-              <p className="text-charcoal/40 max-w-2xl mx-auto text-base leading-relaxed italic">
-                "Every product is selected, configured, and deployed as part of a complete system — never in isolation. This is what makes our implementations reliable and scalable."
-              </p>
-           </div>
-        </div>
-      </section>
-
-      {/* ── CTA STRIP ── */}
-      <section className="py-32 bg-brand-black text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 grid-bg" />
-        <div className="container mx-auto px-6 relative z-10">
-           <span className="text-xs font-bold text-soft-white/40 tracking-widest uppercase mb-4 block">Ready to build</span>
-           <h2 className="text-4xl md:text-6xl font-display font-bold text-soft-white mb-10 max-w-3xl mx-auto leading-tight">Build a Complete Smart System for Your Operations</h2>
-           <p className="text-soft-white/50 text-xl mb-16 max-w-2xl mx-auto leading-relaxed">Tell us your operational challenges — we'll design the right system around them.</p>
-           <div className="flex flex-wrap justify-center gap-8">
-              <Link to="/consultation" className="px-12 py-6 bg-brand-walnut text-soft-white font-bold rounded-2xl transition-all hover:scale-105 shadow-2xl">Get Free Consultation</Link>
-              <Link to="/solutions" className="px-12 py-6 border border-soft-white/10 text-soft-white font-bold rounded-2xl transition-all hover:bg-soft-white/5 backdrop-blur-md">Explore Solutions</Link>
-           </div>
-        </div>
-      </section>
-    </div>
-  );
+            {/* Footer */}
+            <div className="flex items-center justify-between pt-2 border-t border-soft-taupe/10">
+               <div className="flex items-center gap-1">
+                  {isHardware ? (
+                     <Cpu size={10} className="text-brand-black/30" />
+                  ) : (
+                     <Cloud size={10} className="text-brand-black/30" />
+                  )}
+                  <span className="text-[8px] font-bold text-brand-black/30 uppercase tracking-wider">
+                     {isHardware ? "Edge Device" : "Cloud Ready"}
+                  </span>
+               </div>
+               <div className="w-6 h-6 rounded-full border border-soft-taupe/20 flex items-center justify-center text-brand-black/30 group-hover:bg-brand-walnut group-hover:text-soft-white group-hover:border-brand-walnut transition-all">
+                  <ArrowUpRight size={10} />
+               </div>
+            </div>
+         </div>
+      </motion.div>
+   );
 }
 
-import { CheckCircle2 } from "lucide-react";
+export default function Products() {
+   const [activeCategory, setActiveCategory] = useState("all");
+
+   // Filter products based on selected category
+   const filteredProducts = useMemo(() => {
+      if (activeCategory === "all") {
+         return allProducts;
+      }
+      return allProducts.filter(product =>
+         product.category && product.category.includes(activeCategory)
+      );
+   }, [activeCategory]);
+
+   return (
+      <div className="flex flex-col pt-16 bg-soft-white">
+         {/* ── COMPACT HERO SECTION ── */}
+         <section className="relative bg-brand-black text-center overflow-hidden py-12">
+            {/* Decorative Background */}
+            <div className="absolute inset-0 opacity-5 flex gap-px" aria-hidden="true">
+               {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={`hero-bg-${i}`} className="flex-1 bg-soft-white" />
+               ))}
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+               <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+               >
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-white/5 backdrop-blur-sm text-warm-gold-beige font-bold text-[9px] uppercase tracking-wider mb-4 border border-soft-white/10">
+                     Hardware + Software · Integrated
+                  </div>
+
+                  <h1 className="text-2xl sm:text-3xl font-display font-bold text-soft-white mb-3 leading-tight">
+                     Technology That Powers Our{" "}
+                     <span className="text-warm-gold-beige">Smart Solutions</span>
+                  </h1>
+
+                  <p className="text-soft-white/50 text-sm max-w-xl mx-auto">
+                     Our products are part of integrated smart systems designed to deliver reliable, scalable, and efficient operational outcomes.
+                  </p>
+               </motion.div>
+            </div>
+         </section>
+
+         {/* ── PRODUCTS SECTION WITH CATEGORY FILTERS ── */}
+         <section className="py-8 bg-soft-white">
+            <div className="container mx-auto px-6">
+
+               {/* Category Filter Cards - Horizontal Scroll on Mobile */}
+               <div className="mb-8 overflow-x-auto scrollbar-hide">
+                  <div className="flex gap-2 md:gap-3 justify-start md:justify-center min-w-max">
+                     {categories.map((category) => {
+                        const Icon = category.icon;
+                        const isActive = activeCategory === category.id;
+                        return (
+                           <button
+                              key={category.id}
+                              onClick={() => setActiveCategory(category.id)}
+                              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all whitespace-nowrap ${isActive
+                                 ? "bg-brand-walnut text-soft-white shadow-md scale-105"
+                                 : "bg-white text-brand-black/60 hover:bg-white/80 hover:text-brand-black border border-soft-taupe/20"
+                                 }`}
+                           >
+                              <Icon size={14} />
+                              {category.label}
+                           </button>
+                        );
+                     })}
+                  </div>
+               </div>
+
+               {/* Results Count */}
+               <div className="mb-6 text-center">
+                  <p className="text-brand-black/40 text-xs">
+                     Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+                  </p>
+               </div>
+
+               {/* Products Grid - More Compact */}
+               <AnimatePresence mode="wait">
+                  <motion.div
+                     key={activeCategory}
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: -10 }}
+                     transition={{ duration: 0.3 }}
+                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+                  >
+                     {filteredProducts.map((prod, i) => (
+                        <ProductCard key={`${prod.name}-${i}`} prod={prod} i={i} />
+                     ))}
+                  </motion.div>
+               </AnimatePresence>
+
+               {/* Empty State */}
+               {filteredProducts.length === 0 && (
+                  <div className="text-center py-16">
+                     <div className="text-brand-black/20 text-6xl mb-4">🔍</div>
+                     <p className="text-brand-black/40 text-sm">No products found in this category</p>
+                  </div>
+               )}
+            </div>
+         </section>
+
+         {/* ── COMPACT CTA STRIP ── */}
+         <section className="py-16 bg-brand-black text-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-5 flex gap-px" aria-hidden="true">
+               {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={`cta-bg-${i}`} className="flex-1 bg-soft-white" />
+               ))}
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+               <span className="text-[9px] font-bold text-soft-white/40 tracking-[0.3em] uppercase mb-3 block">
+                  Ready to build
+               </span>
+               <h2 className="text-2xl md:text-3xl font-display font-bold text-soft-white mb-4 max-w-3xl mx-auto leading-tight">
+                  Build a Complete Smart System for Your Operations
+               </h2>
+               <p className="text-soft-white/50 text-sm mb-8 max-w-2xl mx-auto">
+                  Tell us your operational challenges — we'll design the right system around them.
+               </p>
+               <div className="flex flex-col sm:flex-row justify-center gap-3">
+                  <Link
+                     to="/consultation"
+                     className="px-6 py-2.5 bg-brand-walnut text-soft-white font-bold rounded-lg transition-all hover:bg-brand-black border border-brand-walnut shadow-lg text-sm"
+                  >
+                     Get Free Consultation
+                  </Link>
+                  <Link
+                     to="/solutions"
+                     className="px-6 py-2.5 border border-soft-white/20 text-soft-white font-bold rounded-lg hover:bg-soft-white/5 backdrop-blur-sm transition-colors text-sm"
+                  >
+                     Explore Solutions
+                  </Link>
+               </div>
+            </div>
+         </section>
+      </div>
+   );
+}
