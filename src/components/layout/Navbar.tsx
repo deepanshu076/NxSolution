@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "motion/react";
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "Domains", path: "/domains" },
-  { name: "Solutions", path: "/solutions" },
   { name: "Projects", path: "/projects" },
   { name: "Products", path: "/products" },
   { name: "About", path: "/about" },
@@ -41,8 +40,8 @@ export default function Navbar() {
       {/* ════ MAIN NAVBAR BAR ════ */}
       <div
         className={`transition-all duration-500 border-b border-slate-200/50 ${scrolled
-            ? "bg-white/98 backdrop-blur-2xl shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
-            : "bg-white/90 backdrop-blur-xl"
+          ? "bg-white/98 backdrop-blur-2xl shadow-[0_4px_20px_-8px_rgba(0,0,0,0.08)]"
+          : "bg-white/90 backdrop-blur-xl"
           }`}
       >
         <div className="container mx-auto px-6" style={{ paddingTop: 0, paddingBottom: 0 }}>
@@ -76,8 +75,8 @@ export default function Navbar() {
                     key={link.name}
                     to={link.path}
                     className={`relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] rounded-lg transition-all duration-200 ${isActive
-                        ? "text-[#EA580C]"
-                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                      ? "text-[#EA580C]"
+                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
                       }`}
                   >
                     {isActive && (
@@ -256,8 +255,8 @@ function MobileNavLink({ to, label, active, onClick }: {
       to={to}
       onClick={onClick}
       className={`relative flex items-center gap-3 px-4 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-150 ${active
-          ? "text-[#EA580C] bg-[#EA580C]/10"
-          : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+        ? "text-[#EA580C] bg-[#EA580C]/10"
+        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
         }`}
     >
       {active && (
