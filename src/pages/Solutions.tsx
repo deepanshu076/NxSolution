@@ -89,11 +89,6 @@ export default function Solutions() {
     }
   }, [activeDomain]);
 
-  const activeSolutions = solutionsData[activeDomain as keyof typeof solutionsData] || solutionsData.education;
-
-  // Check if current domain is logistics to apply smaller card size
-  const isLogistics = activeDomain === "logistics";
-
   return (
     <div className="flex flex-col pt-24 min-h-screen bg-gray-50">
       {/* ── HERO SECTION ── */}
@@ -170,84 +165,8 @@ export default function Solutions() {
               })}
             </div>
           </div>
-
-          {/* Solutions Grid */}
-          <div className="bg-white rounded-[3rem] border border-gray-200 overflow-hidden shadow-2xl p-8 md:p-16">
-            <div className="text-center mb-16">
-              <h3 className="text-2xl md:text-4xl font-display font-bold text-brand-black mb-4 capitalize">
-                {activeDomain} Solutions
-              </h3>
-              <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto font-medium">
-                Industrial-grade components integrated into tailored ecosystems for {activeDomain} environments.
-              </p>
-            </div>
-
-            <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 ${isLogistics ? 'lg:grid-cols-2 max-w-4xl mx-auto' : 'lg:grid-cols-3'
-              }`}>
-              <AnimatePresence mode="wait">
-                {activeSolutions.map((sol, i) => (
-                  <motion.div
-                    key={`${activeDomain}-${i}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -30 }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={`relative rounded-[2.5rem] overflow-hidden border border-gray-100 group transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover:border-brand-walnut hover:-translate-y-2 ${isLogistics
-                      ? 'h-[280px] md:h-[320px]'
-                      : 'h-[340px] md:h-[400px]'
-                      }`}
-                  >
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                      {sol.image ? (
-                        <img
-                          src={sol.image}
-                          alt={sol.name}
-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-50 flex items-center justify-center">
-                          <sol.icon size={48} className="text-gray-200" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/70 transition-colors duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className={`p-2 bg-white/10 backdrop-blur-md rounded-xl text-white group-hover:bg-brand-walnut transition-colors ${isLogistics ? 'p-2' : 'p-3'
-                          }`}>
-                          <sol.icon size={isLogistics ? 18 : 20} />
-                        </div>
-                        <h4 className={`font-display font-bold text-white group-hover:text-warm-gold-beige transition-colors ${isLogistics ? 'text-lg' : 'text-xl'
-                          }`}>
-                          {sol.name}
-                        </h4>
-                      </div>
-
-                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
-                        <div className="overflow-hidden">
-                          <p className={`text-white/70 leading-relaxed pt-2 ${isLogistics ? 'text-xs' : 'text-sm'
-                            }`}>
-                            {sol.desc}
-                          </p>
-                          <div className={`mt-4 flex items-center gap-2 text-warm-gold-beige font-bold uppercase tracking-[0.2em] ${isLogistics ? 'text-[10px]' : 'text-xs'
-                            }`}>
-                            Explore Solution <ArrowRight size={isLogistics ? 12 : 14} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
         </div>
       </section>
-
     </div>
   );
 }

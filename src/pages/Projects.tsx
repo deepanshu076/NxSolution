@@ -42,7 +42,8 @@ const allProjectsList = [
     status: "COMPLETED",
     deployment: "Security Deployment",
     year: "2026",
-    image: "https://images.unsplash.com/photo-1590674899484-13da0d1b58f5?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1590674899484-13da0d1b58f5?w=800&q=80",
+    icon: Shield
   },
   {
     title: "City General Smart ICU Hub",
@@ -51,7 +52,8 @@ const allProjectsList = [
     status: "COMPLETED",
     deployment: "ICU Deployment",
     year: "2025",
-    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80",
+    icon: Stethoscope
   },
   {
     title: "Eco-Industrial Manufacturing Hub",
@@ -60,7 +62,8 @@ const allProjectsList = [
     status: "ONGOING",
     deployment: "Sustainability Deployment",
     year: "2026",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+    icon: Factory
   },
   {
     title: "Smart Logistics Distribution Center",
@@ -69,7 +72,8 @@ const allProjectsList = [
     status: "COMPLETED",
     deployment: "WMS Deployment",
     year: "2024",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
+    icon: Truck
   },
   {
     title: "Enterprise HQ Smart Campus",
@@ -78,7 +82,8 @@ const allProjectsList = [
     status: "COMPLETED",
     deployment: "BMS Deployment",
     year: "2025",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+    icon: Building2
   },
   {
     title: "Retail Vision Analytics Suite",
@@ -87,7 +92,8 @@ const allProjectsList = [
     status: "ONGOING",
     deployment: "Store Optimization",
     year: "2026",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80",
+    icon: ShoppingBag
   }
 ];
 
@@ -117,7 +123,7 @@ export default function Projects() {
            {domainProjects.map((dom, i) => (
              <div key={i} className="relative group overflow-hidden bg-slate-blue/20">
                 <div className="absolute inset-0 flex items-center justify-center opacity-10 text-9xl group-hover:scale-110 transition-transform duration-700 select-none">
-                  {dom.emoji}
+                   {dom.emoji}
                 </div>
                 <div className="absolute inset-0 bg-brand-black/40" />
              </div>
@@ -196,44 +202,51 @@ export default function Projects() {
               <Link key={project.slug} to={`/projects/${project.slug}`} className="group block">
                 <motion.div 
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 flex flex-col hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="relative aspect-[4/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden group cursor-pointer shadow-xl"
                 >
-                  {/* Image Section */}
-                  <div className="relative aspect-[4/3] overflow-hidden p-4 pb-0">
-                    <div className="w-full h-full overflow-hidden rounded-[2rem] relative">
-                      <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                      {/* Badges */}
-                      <div className="absolute top-6 left-6 flex flex-wrap gap-2">
-                        <span className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider text-slate-800 shadow-sm">
+                  {/* Background Image */}
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  />
+                  
+                  {/* Dark Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+                  
+                  {/* Content Overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:scale-110 transition-transform duration-500">
+                      <project.icon size={18} />
+                    </div>
+                    <div className="flex flex-col">
+                      <h3 className="text-white font-bold text-sm md:text-base leading-tight">
+                        {project.title}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-white/40 text-[10px] font-black uppercase tracking-wider">
                           {project.category}
                         </span>
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-sm ${project.status === "COMPLETED" ? "bg-green-500" : "bg-blue-600"}`}>
-                          {project.status}
+                        <div className="w-1 h-1 rounded-full bg-white/20" />
+                        <span className="text-white/40 text-[10px] font-black uppercase tracking-wider">
+                          {project.year}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Content Section */}
-                  <div className="p-8 pt-6 flex flex-col flex-grow">
-                    <h3 className="text-xl md:text-2xl font-display font-black text-brand-black mb-2 group-hover:text-blue-600 transition-colors leading-tight">
-                      {project.title}
-                    </h3>
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-10">
-                      {project.deployment}
-                    </span>
-
-                    <div className="mt-auto flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-blue-600 font-bold text-xs">
-                        <Clock size={14} className="opacity-40" />
-                        {project.year}
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-brand-black transition-all group-hover:bg-brand-black group-hover:text-white group-hover:scale-110">
-                        <ArrowRight size={18} />
-                      </div>
+                  {/* Top Badges */}
+                  <div className="absolute top-6 left-6 flex items-center gap-2">
+                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-white ${project.status === "COMPLETED" ? "bg-green-500/80" : "bg-blue-600/80"} backdrop-blur-md`}>
+                      {project.status}
                     </div>
+                  </div>
+
+                  {/* Corner Arrow */}
+                  <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <ArrowUpRight size={16} />
                   </div>
                 </motion.div>
               </Link>
