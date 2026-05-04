@@ -11,6 +11,7 @@ type ProjectForm = {
   slug: string;
   year: string;
   overview: string;
+  image_url: string;
   thumbnail_url: string;
   video_url: string;
   tagsInput: string;
@@ -36,6 +37,7 @@ const emptyForm: ProjectForm = {
   slug: "",
   year: "",
   overview: "",
+  image_url: "",
   thumbnail_url: "",
   video_url: "",
   tagsInput: "",
@@ -89,6 +91,7 @@ export default function ProjectModal({
         slug: project.slug,
         year: project.year ?? "",
         overview: project.overview ?? "",
+        image_url: project.thumbnail_url ?? "",
         thumbnail_url: project.thumbnail_url ?? "",
         video_url: project.video_url ?? "",
         tagsInput: (project.tags ?? []).join(", "),
@@ -138,7 +141,7 @@ export default function ProjectModal({
         slug: slugify(form.slug || form.title),
         year: form.year.trim() || null,
         overview: form.overview.trim() || null,
-        thumbnail_url: form.thumbnail_url.trim() || null,
+        thumbnail_url: (form.thumbnail_url.trim() || form.image_url.trim()) || null,
         video_url: form.video_url.trim() || null,
         tags: tags.length > 0 ? tags : null,
         order_index: Number(form.order_index) || 0,
@@ -334,6 +337,22 @@ export default function ProjectModal({
                       />
                     </div>
                   ) : null}
+                  <label className="block space-y-2 text-sm font-semibold text-slate-blue">
+                    {" "}
+                    <span>Image URL</span>
+                    <input
+                      value={form.image_url}
+                      onChange={(e) =>
+                        setForm((c) => ({
+                          ...c,
+                          image_url: e.target.value,
+                          thumbnail_url: c.thumbnail_url || e.target.value,
+                        }))
+                      }
+                      placeholder="Primary project image link"
+                      className="w-full rounded-2xl border border-cool-gray/40 bg-pure-white px-4 py-3 text-sm outline-none transition-colors focus:border-brand-walnut"
+                    />
+                  </label>
                   <label className="block space-y-2 text-sm font-semibold text-slate-blue">
                     {" "}
                     <span>Thumbnail URL</span>

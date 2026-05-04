@@ -47,6 +47,7 @@ export default function DomainsAdmin() {
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [viewMode, setViewMode] = useState<"list" | "card">("list");
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [modalState, setModalState] = useState<ModalState>(null);
   const [deleteState, setDeleteState] = useState<DeleteState>(null);
@@ -210,6 +211,30 @@ export default function DomainsAdmin() {
           >
             <Plus size={16} /> Add Subdomain
           </button>
+          <div className="inline-flex rounded-2xl border border-cool-gray/30 p-1">
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
+                viewMode === "list"
+                  ? "bg-brand-walnut text-pure-white"
+                  : "text-slate-blue/70 hover:bg-light-gray"
+              }`}
+            >
+              List View
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("card")}
+              className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
+                viewMode === "card"
+                  ? "bg-brand-walnut text-pure-white"
+                  : "text-slate-blue/70 hover:bg-light-gray"
+              }`}
+            >
+              Card View
+            </button>
+          </div>
         </div>
       </div>
 
@@ -226,7 +251,7 @@ export default function DomainsAdmin() {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
@@ -259,7 +284,7 @@ export default function DomainsAdmin() {
             Add your first domain
           </button>
         </div>
-      ) : (
+      ) : viewMode === "card" ? (
         <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
           <AnimatePresence>
             {filteredDomains.map((domain) => {
@@ -386,7 +411,7 @@ export default function DomainsAdmin() {
                                   className="rounded-2xl border border-cool-gray/20 bg-light-gray/40 p-4"
                                 >
                                   <div className="flex items-start justify-between gap-3">
-                                    <div>
+                                    <div className="min-w-0 flex-1">
                                       <div className="flex items-center gap-2">
                                         <span className="text-sm font-bold text-slate-blue">
                                           {subdomain.name}
@@ -404,9 +429,9 @@ export default function DomainsAdmin() {
                                           "No description provided."}
                                       </p>
                                       <div className="mt-3 rounded-xl border border-cool-gray/20 bg-pure-white p-3">
-                                        <div className="flex items-center justify-between gap-2 mb-2">
+                                        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                                           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-blue/45">
-                                            Targeted solution videos
+                                            Subdomain Media
                                           </p>
                                           <button
                                             type="button"
@@ -416,6 +441,9 @@ export default function DomainsAdmin() {
                                             Add Video
                                           </button>
                                         </div>
+                                        <p className="mb-3 text-[11px] text-slate-blue/45">
+                                          Manage targeted solution videos for this subdomain.
+                                        </p>
                                         {(solutionsBySubdomain[subdomain.id] ?? []).length === 0 &&
                                         (constantSolutionsBySubdomainSlug[
                                           (subdomain.slug || "").toLowerCase()
@@ -432,9 +460,19 @@ export default function DomainsAdmin() {
                                                   className="flex items-start justify-between gap-2 rounded-lg border border-cool-gray/20 px-3 py-2"
                                                 >
                                                   <div className="min-w-0 flex-1">
-                                                    <p className="text-xs font-semibold text-slate-blue truncate">
-                                                      {solution.title}
-                                                    </p>
+                                                    <div className="flex items-center gap-2">
+                                                      <p className="text-xs font-semibold text-slate-blue truncate">
+                                                        {solution.title}
+                                                      </p>
+                                                      <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+                                                        DB
+                                                      </span>
+                                                      {!solution.video_url ? (
+                                                        <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-amber-700">
+                                                          Missing
+                                                        </span>
+                                                      ) : null}
+                                                    </div>
                                                     <p className="text-[11px] text-slate-blue/45 truncate">
                                                       {solution.video_url || "No video URL"}
                                                     </p>
@@ -463,16 +501,23 @@ export default function DomainsAdmin() {
                                                 className="flex items-start justify-between gap-2 rounded-lg border border-cool-gray/20 px-3 py-2"
                                               >
                                                 <div className="min-w-0 flex-1">
-                                                  <p className="text-xs font-semibold text-slate-blue truncate">
-                                                    {solution.name}
-                                                  </p>
+                                                  <div className="flex items-center gap-2">
+                                                    <p className="text-xs font-semibold text-slate-blue truncate">
+                                                      {solution.name}
+                                                    </p>
+                                                    <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-blue/55">
+                                                      Fallback
+                                                    </span>
+                                                    {!solution.videoUrl ? (
+                                                      <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-amber-700">
+                                                        Missing
+                                                      </span>
+                                                    ) : null}
+                                                  </div>
                                                   <p className="text-[11px] text-slate-blue/45 truncate">
                                                     {solution.videoUrl || "No video URL"}
                                                   </p>
                                                 </div>
-                                                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-blue/55">
-                                                  Constant
-                                                </span>
                                               </div>
                                             ))}
                                           </div>
@@ -520,6 +565,197 @@ export default function DomainsAdmin() {
               );
             })}
           </AnimatePresence>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-3xl border border-cool-gray/20 bg-pure-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-left">
+              <thead className="bg-light-gray/50 text-[10px] font-bold uppercase tracking-widest text-slate-blue/40">
+                <tr>
+                  <th className="px-5 py-4">Domain</th>
+                  <th className="px-5 py-4">Subdomains</th>
+                  <th className="px-5 py-4">Status</th>
+                  <th className="px-5 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-cool-gray/10">
+                {filteredDomains.map((domain) => {
+                  const domainSubdomains = subdomainsByDomain[domain.id] ?? [];
+                  const isExpanded = expandedIds.includes(domain.id);
+                  return (
+                    <React.Fragment key={`list-${domain.id}`}>
+                      <tr className="hover:bg-light-cream/20 transition-colors">
+                        <td className="px-5 py-4">
+                          <p className="font-bold text-slate-blue">{domain.name}</p>
+                          <p className="text-xs text-slate-blue/45">{domain.slug}</p>
+                        </td>
+                        <td className="px-5 py-4 text-sm text-slate-blue/60">
+                          {domainSubdomains.length}
+                        </td>
+                        <td className="px-5 py-4">
+                          <span
+                            className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${domain.is_active ? "bg-green-500/10 text-green-600" : "bg-red-500/10 text-red-600"}`}
+                          >
+                            {domain.is_active ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpandedIds((current) =>
+                                  current.includes(domain.id)
+                                    ? current.filter((id) => id !== domain.id)
+                                    : [...current, domain.id],
+                                )
+                              }
+                              className="rounded-xl border border-cool-gray/30 p-2 text-slate-blue/45 transition-colors hover:border-brand-walnut hover:text-brand-walnut"
+                            >
+                              {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setModalState({ kind: "domain", mode: "edit", domain })}
+                              className="rounded-xl border border-cool-gray/30 p-2 text-slate-blue/45 transition-colors hover:border-brand-walnut hover:text-brand-walnut"
+                            >
+                              <Pencil size={16} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeleteState({ kind: "domain", item: domain })}
+                              className="rounded-xl border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      {isExpanded ? (
+                        <tr>
+                          <td colSpan={4} className="px-5 pb-5">
+                            <div className="rounded-2xl border border-cool-gray/20 bg-light-gray/35 p-4 space-y-3">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-blue/45">
+                                  Subdomain Media
+                                </h3>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setModalState({
+                                      kind: "subdomain",
+                                      mode: "create",
+                                      domainId: domain.id,
+                                      subdomain: null,
+                                    })
+                                  }
+                                  className="inline-flex items-center gap-2 rounded-xl bg-brand-walnut px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-pure-white transition-colors hover:bg-brand-black"
+                                >
+                                  <Plus size={13} /> Add Subdomain
+                                </button>
+                              </div>
+                              {domainSubdomains.map((subdomain) => {
+                                const dbRows = solutionsBySubdomain[subdomain.id] ?? [];
+                                const fallbackRows =
+                                  constantSolutionsBySubdomainSlug[(subdomain.slug || "").toLowerCase()] ?? [];
+                                return (
+                                  <div key={`list-sub-${subdomain.id}`} className="rounded-xl border border-cool-gray/20 bg-pure-white p-3">
+                                    <div className="mb-2 flex items-center justify-between gap-2">
+                                      <div className="min-w-0">
+                                        <p className="truncate text-sm font-bold text-slate-blue">{subdomain.name}</p>
+                                        <p className="truncate text-[11px] text-slate-blue/45">{subdomain.slug}</p>
+                                      </div>
+                                      <div className="flex items-center gap-2">
+                                        <button
+                                          type="button"
+                                          onClick={() => setVideoModalSubdomain(subdomain)}
+                                          className="rounded-lg bg-brand-walnut px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-pure-white transition-colors hover:bg-brand-black"
+                                        >
+                                          Add Video
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            setModalState({
+                                              kind: "subdomain",
+                                              mode: "edit",
+                                              domainId: domain.id,
+                                              subdomain,
+                                            })
+                                          }
+                                          className="rounded-lg border border-cool-gray/30 p-2 text-slate-blue/45 transition-colors hover:border-brand-walnut hover:text-brand-walnut"
+                                          title="Edit subdomain"
+                                        >
+                                          <Pencil size={14} />
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            setDeleteState({
+                                              kind: "subdomain",
+                                              item: subdomain,
+                                            })
+                                          }
+                                          className="rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50"
+                                          title="Delete subdomain"
+                                        >
+                                          <Trash2 size={14} />
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                      {dbRows.map((solution) => (
+                                        <div key={`list-db-${solution.id}`} className="flex items-start justify-between gap-2 rounded-lg border border-cool-gray/20 px-3 py-2">
+                                          <div className="min-w-0 flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <p className="truncate text-xs font-semibold text-slate-blue">{solution.title}</p>
+                                              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-emerald-700">DB</span>
+                                            </div>
+                                            <p className="truncate text-[11px] text-slate-blue/45">{solution.video_url || "No video URL"}</p>
+                                          </div>
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              setDeleteState({
+                                                kind: "video",
+                                                item: solution,
+                                              })
+                                            }
+                                            className="shrink-0 rounded-lg border border-red-200 p-2 text-red-600 transition-colors hover:bg-red-50"
+                                            title="Delete video"
+                                          >
+                                            <Trash2 size={14} />
+                                          </button>
+                                        </div>
+                                      ))}
+                                      {fallbackRows.map((solution, index) => (
+                                        <div key={`list-fallback-${solution.id}-${index}`} className="flex items-start justify-between gap-2 rounded-lg border border-cool-gray/20 px-3 py-2">
+                                          <div className="min-w-0 flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <p className="truncate text-xs font-semibold text-slate-blue">{solution.name}</p>
+                                              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-blue/55">Fallback</span>
+                                            </div>
+                                            <p className="truncate text-[11px] text-slate-blue/45">{solution.videoUrl || "No video URL"}</p>
+                                          </div>
+                                        </div>
+                                      ))}
+                                      {dbRows.length === 0 && fallbackRows.length === 0 ? (
+                                        <p className="text-xs text-slate-blue/45">No videos configured yet.</p>
+                                      ) : null}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

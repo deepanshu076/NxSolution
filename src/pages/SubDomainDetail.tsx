@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Play, ArrowRight, Cpu, Wifi, Monitor, Layers } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
@@ -24,6 +24,61 @@ const defaultChallengeImage =
   "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1200";
 const defaultLayerImage =
   "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200";
+
+function toSlug(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function mapDomainToSolutionDomain(domainSlug: string) {
+  const key = toSlug(domainSlug);
+  const domainAliasMap: Record<string, string> = {
+    "schools": "education",
+    "colleges": "education",
+    "coaching-institutes": "education",
+    "hostels": "education",
+    "it-companies": "corporate",
+    "offices": "corporate",
+    "startups": "corporate",
+    "banks": "corporate",
+    "government-offices": "corporate",
+    "apartments": "corporate",
+    "housing-societies": "corporate",
+    "gated-communities": "corporate",
+    "pg-paying-guest": "corporate",
+    "rental-spaces": "corporate",
+    "hotels": "corporate",
+    "factories": "manufacturing",
+    "airports": "manufacturing",
+  };
+  return domainAliasMap[key] ?? key;
+}
+
+function mapSubdomainToSolutionSubdomain(subdomainSlug: string) {
+  const key = toSlug(subdomainSlug);
+  if (
+    key.includes("entry") ||
+    key.includes("gate") ||
+    key.includes("reception") ||
+    key.includes("visitor") ||
+    key.includes("security")
+  ) {
+    return "security";
+  }
+  if (
+    key.includes("transport") ||
+    key.includes("parking") ||
+    key.includes("canteen") ||
+    key.includes("cafeteria") ||
+    key.includes("campus")
+  ) {
+    return "campus";
+  }
+  return key;
+}
 
 function normalizeYoutubeUrl(url: string) {
   if (!url) return "";
@@ -86,6 +141,7 @@ export default function SubDomainDetail() {
   const [activeLayer, setActiveLayer] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -164,8 +220,19 @@ export default function SubDomainDetail() {
   }, [domain, subdomain]);
 
   const mergedSolutions = useMemo(() => {
-    const constantFallback = solutionsData
-      .filter((item) => item.subdomainSlug === subdomain)
+    const normalizedDomain = mapDomainToSolutionDomain(domain ?? "");
+    const normalizedSubdomain = mapSubdomainToSolutionSubdomain(subdomain ?? "");
+    const allDomainConstants = solutionsData.filter((item) => {
+      const itemDomain = toSlug(item.domainId);
+      return normalizedDomain ? itemDomain === normalizedDomain : true;
+    });
+
+    const constantFallbackBySubdomain = allDomainConstants
+      .filter((item) => {
+        const itemSubdomain = toSlug(item.subdomainSlug);
+        if (!normalizedSubdomain) return false;
+        return itemSubdomain === normalizedSubdomain;
+      })
       .map((item, index) => ({
         id: `constant-${item.id}-${index}`,
         domain_id: domainData?.id ?? null,
@@ -216,17 +283,83 @@ export default function SubDomainDetail() {
         ],
       })) as EnrichedSolution[];
 
+    const constantFallbackByDomain = allDomainConstants.map((item, index) => ({
+      id: `constant-domain-${item.id}-${index}`,
+      domain_id: domainData?.id ?? null,
+      subdomain_id: subdomainData?.id ?? null,
+      title: item.name,
+      slug: item.slug,
+      description: item.description ?? null,
+      video_url: item.videoUrl ?? null,
+      thumbnail_url: null,
+      tags: item.features ?? null,
+      is_active: true,
+      order_index: 500 + index,
+      created_at: null,
+      updated_at: null,
+      localChallenges: [
+        {
+          title: "Access Bottlenecks",
+          desc: "Legacy processes slow down user movement and approvals.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "Security Blind Spots",
+          desc: "Limited observability increases operational risk.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "No Actionable Insights",
+          desc: "Data exists but does not support timely decisions.",
+          image: defaultChallengeImage,
+        },
+      ],
+      localLayers: [
+        {
+          title: "Sensing Layer",
+          desc: "Capture live data from entry points and movement events.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Control Layer",
+          desc: "Automated policies enforce security and workflow rules.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Intelligence Layer",
+          desc: "Operational insights help improve efficiency continuously.",
+          image: defaultLayerImage,
+        },
+      ],
+    })) as EnrichedSolution[];
+
+    const constantFallback =
+      constantFallbackBySubdomain.length > 0
+        ? constantFallbackBySubdomain
+        : constantFallbackByDomain;
+
     const db = solutions.map((item) => item as EnrichedSolution);
+    const constantsBySlug = new Map(
+      constantFallback.map((item) => [item.slug, item] as const),
+    );
+
     const map = new Map<string, EnrichedSolution>();
     for (const item of constantFallback) map.set(item.slug, item);
-    for (const item of db) map.set(item.slug, item);
+    for (const item of db) {
+      const constantMatch = constantsBySlug.get(item.slug);
+      map.set(item.slug, {
+        ...item,
+        video_url: item.video_url || constantMatch?.video_url || null,
+        thumbnail_url: item.thumbnail_url || constantMatch?.thumbnail_url || null,
+        description: item.description || constantMatch?.description || null,
+      });
+    }
     return Array.from(map.values());
-  }, [domainData?.id, solutions, subdomain, subdomainData?.id]);
+  }, [domain, domainData?.id, solutions, subdomain, subdomainData?.id]);
 
   useEffect(() => {
     if (mergedSolutions.length === 0) {
       setActiveSolutionId(null);
-      setIsPlaying(false);
       setActiveChallenge(0);
       setActiveLayer(0);
       return;
@@ -351,81 +484,113 @@ export default function SubDomainDetail() {
             <>
               <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4">
                 {mergedSolutions.map((solution) => (
-                  <button
+                  <div
                     key={solution.id}
                     onClick={() => {
                       setActiveSolutionId(solution.id);
                       setIsPlaying(false);
                       setActiveChallenge(0);
                       setActiveLayer(0);
+                      videoRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
                     }}
-                    className={`text-left relative flex-shrink-0 w-72 md:w-80 rounded-2xl p-5 border transition-all ${
+                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all ${
                       solution.id === activeSolutionId
                         ? "border-blue-500 ring-2 ring-blue-500/20"
                         : "border-slate-200 hover:border-slate-300"
-                    }`}
+                    } cursor-pointer`}
                   >
-                    <div className="h-28 rounded-xl overflow-hidden bg-slate-100 mb-4">
-                      {solution.thumbnail_url ? (
+                    <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
+                      {solution.thumbnail_url || solution.localChallenges?.[0]?.image ? (
                         <img
-                          src={solution.thumbnail_url}
+                          src={solution.thumbnail_url || solution.localChallenges?.[0]?.image}
                           alt={solution.title}
-                          className="w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs font-bold uppercase tracking-widest">
+                        <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs font-bold uppercase tracking-widest">
                           No thumbnail
                         </div>
                       )}
                     </div>
-                    <h3 className="text-base font-bold text-brand-black">
-                      {solution.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-blue/60 line-clamp-2">
-                      {solution.description ?? "No description provided."}
-                    </p>
-                  </button>
+
+                    <div className="pt-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-base font-bold text-brand-black leading-snug">
+                          {solution.title}
+                        </h3>
+                        {solution.id === activeSolutionId ? (
+                          <span className="shrink-0 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-blue-700">
+                            Active
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-2 text-sm text-slate-blue/60 line-clamp-2">
+                        {solution.description ?? "No description provided."}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsPlaying(false);
+                          setActiveSolutionId(solution.id);
+                          setActiveChallenge(0);
+                          setActiveLayer(0);
+                        }}
+                        className={`mt-4 w-full rounded-xl px-4 py-2 text-sm font-bold transition-colors ${
+                          solution.id === activeSolutionId
+                            ? "bg-blue-600 text-white"
+                            : "bg-slate-100 text-slate-blue hover:bg-slate-200"
+                        }`}
+                      >
+                        Use this solution
+                      </button>
+                    </div>
+                  </div>
                 ))}
               </div>
 
-              <section className="pt-10">
+              <section ref={videoRef} className="pt-10">
                 <div className="relative w-full max-w-4xl mx-auto aspect-video bg-brand-black rounded-[2rem] overflow-hidden border-[6px] border-pure-white shadow-[0_20px_60px_rgb(0,0,0,0.15)]">
                   {isPlaying && activeVideo && featuredSolution ? (
                     <iframe
                       src={`${activeVideo}${activeVideo.includes("?") ? "&" : "?"}autoplay=1`}
                       title={featuredSolution.title}
-                      className="absolute inset-0 w-full h-full"
+                      className="absolute inset-0 w-full h-full rounded-xl"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
                   ) : (
                     <>
-                      {featuredSolution?.thumbnail_url ? (
+                      {featuredSolution?.thumbnail_url || featuredSolution?.localChallenges?.[0]?.image ? (
                         <img
-                          src={featuredSolution.thumbnail_url}
-                          alt={featuredSolution.title}
-                          className="absolute inset-0 w-full h-full object-cover opacity-65"
+                          src={featuredSolution?.thumbnail_url || featuredSolution?.localChallenges?.[0]?.image}
+                          alt={featuredSolution?.title || "Selected solution"}
+                          className="absolute inset-0 w-full h-full object-cover opacity-60"
                         />
                       ) : (
                         <div className="absolute inset-0 bg-brand-black" />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/40 to-transparent" />
+
                       {activeVideo && featuredSolution ? (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <button
+                            type="button"
                             onClick={() => setIsPlaying(true)}
-                            className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-blue-600/30"
+                            className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30 z-20"
                           >
                             <Play size={28} className="ml-1 fill-white" />
                           </button>
                         </div>
                       ) : null}
-                      <div className="absolute bottom-6 left-6 right-6">
-                        <h3 className="text-white font-black text-xl md:text-2xl">
+                      <div className="relative z-10 p-6 md:p-8 pointer-events-none">
+                        <h3 className="text-white font-black text-xl md:text-2xl mb-2">
                           {featuredSolution?.title ?? "No solution selected"}
                         </h3>
-                        <p className="mt-2 text-pure-white/75 text-sm">
-                          {featuredSolution?.description ?? "Pick a solution above to view its video and details."}
+                        <p className="text-blue-400 font-bold text-[10px] md:text-xs uppercase tracking-widest">
+                          {featuredSolution?.description ?? "Pick a solution to view the demo video."}
                         </p>
                       </div>
                     </>

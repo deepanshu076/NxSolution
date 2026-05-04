@@ -126,7 +126,7 @@ export default function Navbar() {
               <div className="w-px h-5 bg-slate-200 mr-1" />
               {user ? (
                 <>
-                  <div className="relative">
+                  {user.role !== "admin" ? (
                     <Link
                       to={dashboardPath}
                       className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-white
@@ -135,14 +135,9 @@ export default function Navbar() {
                                  active:translate-y-0 transition-all duration-200"
                     >
                       <LayoutDashboard size={13} />
-                      {user.role === "admin" ? "Admin Panel" : "Dashboard"}
+                      Dashboard
                     </Link>
-                    {user.role === "admin" && (
-                      <span className="absolute -top-2 -right-2 flex items-center gap-1 px-2 py-1 bg-yellow-400 text-slate-900 rounded-full text-[10px] font-bold shadow-lg">
-                        ⚡
-                      </span>
-                    )}
-                  </div>
+                  ) : null}
                   <button
                     onClick={() => logout()}
                     className="flex items-center gap-2 px-5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500
@@ -293,13 +288,15 @@ export default function Navbar() {
               <div className="flex gap-3 mt-4 pt-4 border-t border-slate-100">
                 {user ? (
                   <>
-                    <Link
-                      to={dashboardPath}
-                      onClick={() => setIsOpen(false)}
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
-                    >
-                      <LayoutDashboard size={13} /> {user.role === "admin" ? "Admin Panel" : "Dashboard"}
-                    </Link>
+                    {user.role !== "admin" ? (
+                      <Link
+                        to={dashboardPath}
+                        onClick={() => setIsOpen(false)}
+                        className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wide text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-lg shadow-[#EA580C]/30 transition-colors"
+                      >
+                        <LayoutDashboard size={13} /> Dashboard
+                      </Link>
+                    ) : null}
                     <button
                       onClick={() => {
                         logout();
