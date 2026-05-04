@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { 
-  Building2, 
-  Factory, 
-  Stethoscope, 
-  Briefcase, 
-  ShoppingBag, 
-  Truck, 
-  Landmark, 
+import {
+  Building2,
+  Factory,
+  Stethoscope,
+  Briefcase,
+  ShoppingBag,
+  Truck,
+  Landmark,
   Home as HomeIcon,
   ArrowRight,
   Shield,
@@ -22,6 +22,8 @@ import {
   Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import PageHero from "../components/ui/PageHero";
+
 
 const domainProjects = [
   { id: "education", name: "Education", count: "14 projects", emoji: "🏫", color: "#1a1a18", image: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=80" },
@@ -102,12 +104,12 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProjects = allProjectsList.filter(project => {
-    const matchesTab = 
-      activeTab === "All Projects" || 
+    const matchesTab =
+      activeTab === "All Projects" ||
       (activeTab === "Complete Projects" && project.status === "COMPLETED") ||
       (activeTab === "Ongoing Projects" && project.status === "ONGOING");
-    
-    const matchesSearch = 
+
+    const matchesSearch =
       project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.category.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -116,64 +118,27 @@ export default function Projects() {
 
   return (
     <div className="flex flex-col pt-20">
-      {/* ── MOSAIC HERO SECTION ── */}
-      <section className="relative min-h-[500px] bg-brand-black flex items-center overflow-hidden">
-        {/* Mosaic Grid Background */}
-        <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-[2px] opacity-20">
-           {domainProjects.map((dom, i) => (
-             <div key={i} className="relative group overflow-hidden bg-slate-blue/20">
-                <div className="absolute inset-0 flex items-center justify-center opacity-10 text-9xl group-hover:scale-110 transition-transform duration-700 select-none">
-                   {dom.emoji}
-                </div>
-                <div className="absolute inset-0 bg-brand-black/40" />
-             </div>
-           ))}
-        </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/60 to-transparent" />
-
-        <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-          <div className="max-w-3xl flex flex-col items-center">
-
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="w-full text-3xl md:text-4xl lg:text-5xl font-display font-bold text-pure-white mb-6 leading-tight"
-            >
-              Smart Systems Implemented Across <span className="text-warm-gold-beige">Multiple Domains</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-pure-white/50 text-lg mb-10 max-w-xl mx-auto"
-            >
-              Explore how our solutions are applied across industries to solve real operational challenges.
-            </motion.p>
-            <motion.div 
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: 0.3 }}
-               className="flex justify-center gap-4"
-            >
-               <button className="px-10 py-4 bg-brand-walnut text-pure-white font-bold rounded-xl transition-all hover:bg-black border border-brand-walnut shadow-xl">Explore Domains</button>
-               <button className="px-10 py-4 border border-pure-white/20 text-pure-white font-bold rounded-xl hover:bg-white/5 backdrop-blur-sm transition-all">Talk to Expert</button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* ── HERO SECTION ── */}
+      <PageHero
+        titleLine1="Smart Systems"
+        titleLine2="Across Domains"
+        descriptionLine1="Explore how our solutions are applied across industries to solve"
+        descriptionLine2="real operational challenges."
+      >
+        <button className="px-8 py-3.5 bg-nx-navy text-white font-bold rounded-full transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-lg text-sm whitespace-nowrap">Explore Domains</button>
+        <button className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy font-bold rounded-full hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 text-sm whitespace-nowrap">Talk to Expert</button>
+      </PageHero>
 
       {/* ── PROJECTS FILTER & SEARCH ── */}
-      <section className="py-12 bg-pure-white border-b border-slate-100">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <section className="py-12 bg-nx-ice/30 border-b border-nx-steel/10">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
           {/* Tabs */}
-          <div className="bg-slate-50 p-1.5 rounded-[2rem] flex items-center gap-1 border border-slate-100 overflow-x-auto max-w-full no-scrollbar">
+          <div className="bg-nx-white p-1.5 rounded-2xl flex items-center gap-1 border border-nx-steel/5 shadow-sm overflow-x-auto max-w-full scrollbar-hide">
             {["All Projects", "Complete Projects", "Ongoing Projects"].map((tab) => (
-              <button 
+              <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2.5 rounded-full text-[11px] md:text-sm font-bold transition-all whitespace-nowrap ${activeTab === tab ? "bg-white text-blue-600 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+                className={`px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab ? "bg-nx-navy text-nx-white shadow-lg shadow-nx-navy/20" : "text-nx-navy/40 hover:text-nx-navy"}`}
               >
                 {tab}
               </button>
@@ -183,9 +148,9 @@ export default function Projects() {
           {/* Search */}
           <div className="relative w-full max-w-md">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search by title or domain..." 
+            <input
+              type="text"
+              placeholder="Search by title or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
@@ -200,22 +165,22 @@ export default function Projects() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {filteredProjects.map((project, i) => (
               <Link key={project.slug} to={`/projects/${project.slug}`} className="group block">
-                <motion.div 
+                <motion.div
                   layout
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="relative aspect-[4/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden group cursor-pointer shadow-xl"
                 >
                   {/* Background Image */}
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
-                  
+
                   {/* Dark Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
-                  
+
                   {/* Content Overlay */}
                   <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:scale-110 transition-transform duration-500">
@@ -254,9 +219,9 @@ export default function Projects() {
           </div>
 
           {filteredProjects.length === 0 && (
-             <div className="py-24 text-center">
-                <p className="text-slate-400 font-medium">No projects found matching your criteria.</p>
-             </div>
+            <div className="py-24 text-center">
+              <p className="text-slate-400 font-medium">No projects found matching your criteria.</p>
+            </div>
           )}
         </div>
       </section>
@@ -264,36 +229,20 @@ export default function Projects() {
 
 
       {/* ── VISION CTA SECTION ── */}
-      <section className="py-32 relative overflow-hidden bg-gradient-to-br from-orange-400 to-yellow-400">
-        {/* Subtle Matte Finish Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/dust.png')]" />
-        
-        {/* Soft Radial Glow for depth */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-radial-gradient from-white/20 to-transparent opacity-30" />
-
-        <div className="container mx-auto px-6 text-center relative z-10">
-           <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-6xl font-display font-black text-pure-white mb-12 max-w-4xl mx-auto uppercase tracking-tighter leading-[0.9]"
-           >
-              Have a Vision <br /> For Your Environment?
-           </motion.h2>
-           <div className="flex justify-center">
-              <Link to="/contact">
-                <motion.button 
-                   initial={{ opacity: 0, scale: 0.9 }}
-                   whileInView={{ opacity: 1, scale: 1 }}
-                   whileHover={{ scale: 1.05 }}
-                   whileTap={{ scale: 0.95 }}
-                   viewport={{ once: true }}
-                   className="px-12 py-6 bg-gradient-to-r from-[#5D4037] to-[#8D6E63] text-white text-sm md:text-base font-black rounded-2xl transition-all hover:shadow-[0_20px_60px_rgba(141,110,99,0.5)] shadow-2xl shadow-[#5D4037]/30 uppercase tracking-widest"
-                >
-                   Initiate Project Discussion
-                </motion.button>
-              </Link>
-           </div>
+      <section className="py-32 bg-nx-ice border-t border-nx-steel/5">
+        <div className="container mx-auto px-6 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-7xl font-display font-black text-nx-navy mb-12 max-w-4xl mx-auto uppercase tracking-tighter leading-[0.9]"
+          >
+            Have a Vision <br /> <span className="text-nx-steel/40">For Your Space?</span>
+          </motion.h2>
+          <Link to="/contact" className="inline-flex items-center gap-4 px-12 py-6 bg-nx-navy text-nx-white text-xs font-black rounded-2xl transition-all hover:scale-105 shadow-2xl shadow-nx-navy/30 uppercase tracking-[0.2em] group">
+            Initiate Project Discussion
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </section>
     </div>

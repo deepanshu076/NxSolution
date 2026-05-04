@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { domains } from "../constants/domains";
 import type { Domain } from "@/src/types";
 import { listDomains } from "@/src/services/domains.service";
+import PageHero from "../components/ui/PageHero";
 
 const solutions = [
   {
@@ -72,21 +73,27 @@ const solutions = [
 export default function Domains() {
   const [domainRows, setDomainRows] = useState<Domain[]>([]);
   const [isLoadingDomains, setIsLoadingDomains] = useState(true);
+  const [error, setError] = useState<any>(null);
+
+  const loadDomains = async () => {
+    try {
+      setIsLoadingDomains(true);
+      setError(null);
+      const rows = await listDomains(true);
+      setDomainRows(rows);
+    } catch (err) {
+      console.error("[Domains] Failed to load domains", err);
+      setError(err);
+    } finally {
+      setIsLoadingDomains(false);
+    }
+  };
 
   useEffect(() => {
-    const loadDomains = async () => {
-      try {
-        setIsLoadingDomains(true);
-        const rows = await listDomains(true);
-        setDomainRows(rows);
-      } catch (error) {
-        console.error("[Domains] Failed to load domains", error);
-      } finally {
-        setIsLoadingDomains(false);
-      }
-    };
     void loadDomains();
   }, []);
+
+  const refetch = () => void loadDomains();
 
   const dbDomains = domainRows.map((domain, index) => ({
     id: domain.slug,
@@ -104,65 +111,93 @@ export default function Domains() {
   return (
     <div className="flex flex-col pt-16 md:pt-20">
       {/* ── HERO SECTION ── */}
-      <section className="relative py-12 md:py-16 lg:py-24 bg-brand-black text-center overflow-hidden">
-        <div className="absolute inset-0 opacity-10 flex gap-px">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex-1 bg-soft-white" />
-          ))}
-        </div>
-        <div className="absolute -top-12 -right-12 w-48 h-48 bg-brand-walnut opacity-10 rounded-xl rotate-45" />
-        <div className="absolute -bottom-16 -left-8 w-32 h-32 bg-warm-gold-beige opacity-5 rounded-xl rotate-45" />
-
-        <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-soft-white mb-4 max-w-2xl leading-tight text-balance">
-            Domains We Power with <br className="hidden sm:block" /> <span className="text-warm-gold-beige">Smart Ecosystems</span>
-          </h1>
-          <p className="text-soft-white/60 text-sm md:text-base lg:text-lg max-w-xl mx-auto mb-8 leading-relaxed text-balance">
-            Intelligent systems tailored for different industries — solving real operational challenges across diverse environments.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-            <Link to="/solutions" className="px-6 py-3.5 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl w-full sm:w-auto text-center text-sm">
-              Explore Solutions
-            </Link>
-            <button className="px-6 py-3.5 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm transition-all w-full sm:w-auto text-center text-sm">
-              Talk to Expert
-            </button>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        titleLine1="Domains We Power with"
+        titleLine2="Smart Ecosystems"
+        descriptionLine1="Intelligent systems tailored for different industries — solving real"
+        descriptionLine2="operational challenges across diverse environments."
+      >
+        <Link to="/solutions" className="px-10 py-4 bg-nx-navy text-nx-white rounded-full font-black transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-xl w-full sm:w-auto text-center text-[10px] uppercase tracking-widest whitespace-nowrap">
+          Explore Solutions
+        </Link>
+        <button className="px-10 py-4 border border-nx-navy/20 text-nx-navy rounded-full font-black hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 w-full sm:w-auto text-center text-[10px] uppercase tracking-widest whitespace-nowrap">
+          Talk to Expert
+        </button>
+      </PageHero>
 
 
 
       {/* ── DOMAINS GRID ── */}
-      <section className="py-12 md:py-16 bg-soft-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col items-center mb-10 md:mb-12 text-center">
-            <span className="text-xs font-bold text-brand-walnut tracking-[0.3em] uppercase mb-3">Explore Domains</span>
-            <div className="h-1 w-12 md:w-16 bg-brand-walnut/30 rounded-full" />
-          </div>
+      <section className="pt-0 pb-0 bg-nx-white">
+        <div className="px-2 md:px-4">
+          <div className="bg-[#f2f2f2] rounded-[3rem] p-10 md:p-16 border border-black/5 shadow-inner relative overflow-hidden">
+            {/* Subtle background decoration */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-nx-navy/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-nx-steel/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 gap-y-8 md:gap-y-10">
-            {(isLoadingDomains ? domains : uiDomains).map((dom) => (
-              <Link
-                key={dom.id}
-                to={`/domains/${dom.id}`}
-                className="group block flex-col items-center text-center"
-              >
-                <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-warm-cream mb-3 border border-soft-taupe/10 transition-shadow group-hover:shadow-md relative">
-                  <img
-                    src={dom.image}
-                    alt={dom.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition-colors duration-300" />
+            <div className="relative z-10">
+              <div className="flex flex-col items-center mb-12 text-center">
+                <span className="text-[10px] font-black text-nx-navy/30 tracking-[0.5em] uppercase mb-4 block">Select Domain</span>
+                <h2 className="text-3xl md:text-5xl font-display font-black text-nx-navy uppercase tracking-tight">
+                  Explore <span className="text-nx-steel">Domains</span>
+                </h2>
+                <div className="h-1.5 w-16 bg-nx-navy/10 rounded-full mt-5" />
+              </div>
+
+              {/* Loading State */}
+              {isLoadingDomains && (
+                <div className="flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-nx-navy/20 border-t-nx-navy" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-black group-hover:text-brand-walnut transition-colors leading-snug px-1">
-                  {dom.name}
-                </h3>
-              </Link>
-            ))}
+              )}
+
+              {/* Error State */}
+              {error && (
+                <div className="text-center py-10">
+                  <p className="text-red-500 mb-3">Failed to load domains</p>
+                  <button
+                    onClick={() => refetch()}
+                    className="px-4 py-2 bg-nx-navy text-white rounded-full text-sm"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!isLoadingDomains && !error && uiDomains?.length === 0 && (
+                <div className="text-center py-20">
+                  <p className="text-nx-navy/60">No domains available at the moment.</p>
+                </div>
+              )}
+
+              {/* Domains Grid with Data from Backend */}
+              {!isLoadingDomains && !error && uiDomains?.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                  {uiDomains.map((dom) => (
+                    <Link
+                      key={dom.id}
+                      to={`/domains/${dom.id}`}
+                      className="group block flex-col items-center text-center transition-all"
+                    >
+                      <div className="aspect-video w-full rounded-2xl overflow-hidden bg-nx-white mb-6 border border-nx-steel/10 transition-all duration-500 group-hover:shadow-2xl group-hover:border-nx-navy/20 relative shadow-md">
+                        <img
+                          src={dom.image}
+                          alt={dom.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          referrerPolicy="no-referrer"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-nx-navy/0 group-hover:bg-nx-navy/5 transition-colors duration-300" />
+                      </div>
+                      <h3 className="text-sm md:text-lg font-black text-nx-navy group-hover:text-nx-navy transition-colors leading-tight px-1 uppercase tracking-wider">
+                        {dom.name}
+                      </h3>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>

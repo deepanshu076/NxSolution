@@ -20,6 +20,7 @@ import {
   Bot,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import PageHero from "../components/ui/PageHero";
 
 // ── DATA DEFINITIONS ──
 
@@ -353,11 +354,10 @@ function ProductCard({
         {/* Type Badge */}
         <div className="absolute top-3 left-3 md:top-4 md:left-4">
           <div
-            className={`px-2.5 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm ${
-              isHardware
-                ? "bg-brand-black/85 text-soft-white border border-soft-white/10"
-                : "bg-warm-gold-beige/95 text-brand-black border border-brand-black/10"
-            }`}
+            className={`px-2.5 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-sm ${isHardware
+              ? "bg-brand-black/85 text-soft-white border border-soft-white/10"
+              : "bg-warm-gold-beige/95 text-brand-black border border-brand-black/10"
+              }`}
           >
             {isHardware ? "Hardware" : "Solution"}
           </div>
@@ -411,38 +411,19 @@ export default function Products() {
   return (
     <div className="flex flex-col pt-16 lg:pt-20 bg-soft-white min-h-screen">
       {/* ── HERO SECTION ── */}
-      <section className="relative bg-brand-black text-center overflow-hidden py-16 sm:py-20 lg:py-24 px-4 sm:px-6">
-        {/* Decorative Background */}
-        <div
-          className="absolute inset-0 opacity-5 flex gap-px"
-          aria-hidden="true"
-        >
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={`hero-bg-${i}`} className="flex-1 bg-soft-white" />
-          ))}
-        </div>
-
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-soft-white/5 backdrop-blur-sm text-warm-gold-beige font-bold text-[10px] sm:text-xs uppercase tracking-wider mb-6 border border-soft-white/10">
-              Hardware + Software · Integrated
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-soft-white mb-4 sm:mb-6 leading-[1.2]">
-              Technology That Powers Our <br className="hidden sm:block" />
-              <span className="text-warm-gold-beige">Smart Solutions</span>
-            </h1>
-
-            <p className="text-soft-white/60 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-              Our products are part of integrated smart systems designed to
-              deliver reliable, scalable, and efficient operational outcomes.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        titleLine1="Technology That Powers Our"
+        titleLine2="Smart Solutions"
+        descriptionLine1="Our products are part of integrated smart systems designed to deliver"
+        descriptionLine2="reliable, scalable, and efficient operational outcomes."
+      >
+        <Link to="/contact" className="px-8 py-3.5 bg-nx-navy text-nx-white rounded-full font-bold transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-lg text-sm whitespace-nowrap">
+          Request Demo
+        </Link>
+        <button className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy rounded-full font-bold hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 text-sm whitespace-nowrap">
+          Download Catalog
+        </button>
+      </PageHero>
 
       {/* ── PRODUCTS SECTION WITH CATEGORY FILTERS ── */}
       <section className="py-10 sm:py-16 bg-soft-white grow">
@@ -457,11 +438,10 @@ export default function Products() {
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm transition-all whitespace-nowrap snap-start touch-manipulation ${
-                      isActive
-                        ? "bg-brand-walnut text-soft-white shadow-lg shadow-brand-walnut/20 -translate-y-0.5"
-                        : "bg-white text-brand-black/60 hover:bg-soft-taupe/10 hover:text-brand-black border border-soft-taupe/20"
-                    }`}
+                    className={`flex items-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm transition-all whitespace-nowrap snap-start touch-manipulation ${isActive
+                      ? "bg-brand-walnut text-soft-white shadow-lg shadow-brand-walnut/20 -translate-y-0.5"
+                      : "bg-white text-brand-black/60 hover:bg-soft-taupe/10 hover:text-brand-black border border-soft-taupe/20"
+                      }`}
                   >
                     <Icon
                       size={16}

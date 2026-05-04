@@ -1,96 +1,76 @@
 @import "tailwindcss";
 
 :root {
-  /* Primary Colors */
-  --primary: #38BDF8; /* Light Sky Blue */
-  --primary-hover: #0EA5E9;
+  /* ── New 4-colour palette ── */
+  --nx-navy: #344E5C;
+  /* Slate Grey — primary, CTAs, dark sections */
+  --nx-steel: #7C7C7C;
+  /* Muted Grey — secondary text, borders       */
+  --nx-ice: #CDE4F9;
+  /* Sky Blue   — section backgrounds           */
+  --nx-white: #FFFEF5;
+  /* Cream      — cards, surfaces               */
+  /* Derived shades */
+  --nx-navy-hover: #2a3f4a;
+  --nx-steel-light: #9ea9ae;
+  --nx-ice-deep: #b5d1ed;
+  --nx-shadow: 0 4px 24px -2px rgba(52, 78, 92, 0.12);
 
-  /* Secondary */
-  --secondary: #FB923C; /* Soft Coral/Orange (Contrast) */
-  --secondary-dark: #EA580C;
-
-  /* Backgrounds */
-  --bg-main: #F8FAFC; /* Clean Slate 50 */
-  --bg-surface: #FFFFFF;
-  --bg-card: #FFFFFF;
-
-  /* Accent */
-  --accent: #E0F2FE; /* Sky 100 */
-  --accent-strong: #BAE6FD; /* Sky 200 */
-
-  /* Text Colors */
-  --text-dark: #0F172A; /* Slate 900 */
-  --text-body: #334155; /* Slate 700 */
-  --text-light: #64748B; /* Slate 500 */
-
-  /* Status Colors */
-  --success: #22C55E;
-  --error: #EF4444;
-
-  /* Borders & Shadows */
-  --border-light: #E2E8F0;
-  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 3px rgba(15, 23, 42, 0.02);
+  /* Legacy aliases — keep so existing var() references still resolve */
+  --primary: var(--nx-navy);
+  --primary-hover: var(--nx-navy-hover);
+  --secondary: var(--nx-navy);
+  --secondary-dark: var(--nx-navy-hover);
+  --bg-main: var(--nx-ice);
+  --bg-surface: var(--nx-white);
+  --bg-card: var(--nx-white);
+  --accent: var(--nx-ice-deep);
+  --text-dark: var(--nx-navy);
+  --text-body: var(--nx-steel);
+  --text-light: var(--nx-steel-light);
+  --border-light: #cddde4;
+  --shadow-soft: var(--nx-shadow);
 }
 
 @theme {
-  /* New Palette Utilities */
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-secondary: var(--secondary);
-  --color-secondary-dark: var(--secondary-dark);
-  --color-bg-main: var(--bg-main);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-card: var(--bg-card);
-  --color-accent: var(--accent);
-  --color-accent-strong: var(--accent-strong);
-  --color-text-dark: var(--text-dark);
-  --color-text-body: var(--text-body);
-  --color-text-light: var(--text-light);
-  --color-success: var(--success);
-  --color-error: var(--error);
-  --color-border-light: var(--border-light);
+  /* ── Tailwind colour tokens — remapped to new palette ── */
+  --color-brand-walnut: #344E5C;
+  /* Slate — primary CTA  */
+  --color-brand-black: #344E5C;
+  /* Slate — primary dark                 */
+  --color-accent-sky: #CDE4F9;
+  /* Sky   — accents                      */
+  --color-slate-blue: #344E5C;
+  /* Navy  — headings/CTAs                */
+  --color-soft-white: #CDE4F9;
+  /* Sky   — backgrounds                  */
+  --color-pure-white: #FFFEF5;
+  /* Cream — card surfaces                */
+  --color-warm-gold-beige: #b5d1ed;
+  /* Deeper Sky                           */
+  --color-soft-taupe: #7C7C7C;
+  /* Grey  — borders                      */
+  --color-light-gray: #CDE4F9;
+  /* Sky   — background alias             */
+  --color-light-cream: #FFFEF5;
+  /* Cream — background alias             */
+  --color-cool-gray: #7C7C7C;
+  /* Grey  — border alias                 */
+  --color-nx-navy: #344E5C;
+  --color-nx-steel: #7C7C7C;
+  --color-nx-ice: #CDE4F9;
+  --color-nx-white: #FFFEF5;
 
-  /* Legacy Aliases for Seamless Theme Transition */
-  --color-slate-blue: var(--text-dark);
-  --color-pure-white: var(--bg-card);
-  --color-light-cream: var(--bg-surface);
-  --color-accent-teal: var(--accent);
-  
-  /* Brand Palette - Light Theme */
-  --color-brand-walnut: var(--secondary-dark);
-  --color-brand-black: var(--text-dark);
-  --color-brand-cream: var(--bg-surface);
-  
-  --color-soft-white: var(--bg-main);
-  --color-warm-cream: var(--bg-surface);
-  --color-ivory-beige: var(--bg-surface);
-  --color-rich-black: var(--text-dark);
-  --color-charcoal: var(--text-body);
-  --color-walnut-brown: var(--secondary-dark);
-  --color-dark-coffee: var(--secondary-dark);
-  --color-warm-gold-beige: var(--accent);
-  --color-soft-taupe: var(--secondary);
-  --color-cool-gray: var(--border-light);
-  --color-light-gray: var(--bg-card);
-
-  /* Dark Theme Palette */
-  --color-matte-black: var(--text-dark);
-  --color-dark-slate: var(--text-body);
-  --color-dark-gray: var(--secondary-dark);
-
-  /* Accent Colors (Legacy compatibility where needed) */
-  --color-accent-sky: var(--primary);
-  --color-accent-gold: var(--accent-strong);
-  --color-accent-taupe: var(--secondary);
-
-  /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
 @layer base {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -105,7 +85,7 @@
   body {
     background: var(--bg-main);
     color: var(--text-body);
-    @apply font-sans;
+    font-family: var(--font-sans);
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -116,9 +96,16 @@
     margin: 0;
     padding: 0;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold tracking-tight;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
     color: var(--text-dark);
   }
 }
@@ -129,32 +116,34 @@
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--text-dark);
+  background: var(--nx-navy);
+  color: var(--nx-white);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: var(--nx-navy-hover);
 }
 
 .glass-morphism {
-  @apply bg-white/40 backdrop-blur-md border border-white/50;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .walnut-glow {
-  box-shadow: 0 0 20px rgba(234, 88, 12, 0.2);
+  box-shadow: 0 0 20px rgba(0, 4, 35, 0.25);
 }
 
 .brand-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--nx-navy) 0%, var(--nx-steel) 100%);
 }
 
 .dark-gradient {
-  background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--text-dark) 100%);
+  background: linear-gradient(135deg, var(--nx-navy-hover) 0%, var(--nx-navy) 100%);
 }
 
 .grid-bg {
-  background-image: 
+  background-image:
     linear-gradient(var(--border-light) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -164,24 +153,33 @@
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-secondary/30 rounded-full;
+  background-color: rgba(0, 4, 35, 0.25);
+  border-radius: 9999px;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {

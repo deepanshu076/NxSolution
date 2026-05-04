@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { Settings, Eye, Activity, Shield, Zap } from "lucide-react";
+import { Settings, Eye, Activity, Shield } from "lucide-react";
+import { Search, PenTool, Code2, Layout, Zap, MessageSquare, Check, Menu, Plus } from "lucide-react";
+
 
 import OperationalChallenges from "../components/home/OperationalChallenges";
 import DomainSection from "../components/home/DomainSection";
+import PageHero from "../components/ui/PageHero";
 
 // --- Static Data Definitions ---
 const partners = [
@@ -136,6 +139,57 @@ const testimonials = [
   },
 ];
 
+const HeroDecorations = () => (
+  <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden max-w-[1400px] mx-auto">
+    {/* Floating Label Chips */}
+    <div className="absolute top-[15%] left-[5%] xl:left-[10%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
+      Autonomous AI
+    </div>
+    <div className="absolute top-[12%] right-[5%] xl:right-[15%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
+      Workflow
+    </div>
+    <div className="absolute top-[50%] right-[3%] xl:right-[8%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
+      Autonomous AI
+    </div>
+    <div className="absolute bottom-[25%] right-[5%] xl:right-[12%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
+      AI Workflow
+    </div>
+    <div className="absolute bottom-[15%] left-[10%] xl:left-[18%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
+      Autonomous AI
+    </div>
+
+    {/* Avatar Cards (Hidden for now) */}
+    {/* 
+    <div className="absolute top-[18%] left-[30%] w-24 h-24 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
+      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
+    </div>
+    <div className="absolute bottom-[25%] left-[22%] w-20 h-20 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
+    </div>
+    <div className="absolute bottom-[12%] right-[32%] w-24 h-24 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
+      <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
+    </div>
+    */}
+
+    {/* Small Icon Badges */}
+    <div className="absolute top-[40%] left-[3%] xl:left-[8%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#2ecc71] hidden sm:flex">
+      <MessageSquare size={20} strokeWidth={2} />
+    </div>
+    <div className="absolute bottom-[40%] left-[6%] xl:left-[12%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#95a5a6] hidden sm:flex">
+      <Check size={20} strokeWidth={2} />
+    </div>
+    <div className="absolute bottom-[10%] left-[4%] xl:left-[8%] w-10 h-10 bg-[#f8f9fa] border border-[#e0e0e0] rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center text-[#34495e] hidden sm:flex">
+      <Menu size={20} strokeWidth={2} />
+    </div>
+    <div className="absolute top-[25%] right-[8%] xl:right-[15%] w-10 h-10 bg-[#eafaf1] rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center text-[#27ae60] hidden sm:flex">
+      <Plus size={20} strokeWidth={2} />
+    </div>
+    <div className="absolute bottom-[35%] right-[5%] xl:right-[10%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#7f8c8d] hidden sm:flex">
+      <Zap size={20} strokeWidth={2} />
+    </div>
+  </div>
+);
+
 export default function Home() {
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
 
@@ -143,85 +197,20 @@ export default function Home() {
     <div className="flex flex-col overflow-x-hidden w-full">
 
       {/* ─────────────────────────── HERO ─────────────────────────── */}
-      <section className="relative min-h-[58vh] sm:min-h-[62vh] md:min-h-[72vh] flex flex-col items-center justify-center py-14 sm:py-16 md:py-20 lg:py-24 bg-brand-black text-center overflow-hidden px-4 sm:px-6 lg:px-8">
-
-        {/* Decorative column grid */}
-        <div className="absolute inset-0 opacity-10 flex gap-px pointer-events-none" aria-hidden="true">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={`hero-bg-${i}`} className="flex-1 bg-soft-white" />
-          ))}
-        </div>
-
-        {/* Decorative geometric accents */}
-        <div
-          className="absolute -top-10 -right-10 w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 bg-brand-walnut opacity-10 rounded-xl rotate-45 pointer-events-none"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute -bottom-14 -left-6 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-warm-gold-beige opacity-5 rounded-xl rotate-45 pointer-events-none"
-          aria-hidden="true"
-        />
-
-        <div className="container mx-auto max-w-5xl relative z-10 flex flex-col items-center w-full">
-
-          {/* ── Hero Heading ──
-              Typography constraint: ALWAYS exactly 2 lines across every viewport.
-              Each line is isolated in its own <span class="block">, so they can
-              never merge. The fluid font-size (clamp) ensures neither line wraps
-              internally, from 320 px phones up to 4K displays.
-
-              Maths:
-                Longest line = "We Transform Traditional Operations to" (38 chars)
-                Bold display font avg char-width ratio ≈ 0.58
-                Formula: fontSize ≤ availableWidth / (chars × ratio)
-                • 320 px − 32 px padding = 288 px → max ≈ 13.1 px  → clamp min = 12.5 px
-                • 375 px − 32 px padding = 343 px → 3.5 vw = 13.1 px ✓
-                • 768 px − 48 px padding = 720 px → 3.5 vw = 26.9 px ✓
-                • 1280 px → 3.5 vw = 44.8 px; cap at 60 px ✓
-          -->*/}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full font-display font-bold text-soft-white mb-5 md:mb-7 leading-[1.25] tracking-tight"
-            style={{ fontSize: "clamp(12.5px, 3.5vw, 60px)" }}
-          >
-            <span className="block whitespace-nowrap">
-              We Transform Traditional Operations
-            </span>
-            <span className="block whitespace-nowrap text-warm-gold-beige">
-              to Smart Automated Ecosystems
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-soft-white/60 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-2 sm:px-0"
-          >
-            NX-Solutions transforms hidden daily operational challenges that go
-            unnoticed but create major disruption across industries.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col xs:flex-row sm:flex-row justify-center gap-3 w-full max-w-[280px] xs:max-w-none sm:max-w-none mx-auto"
-          >
-            <Link
-              to="/solutions"
-              className="px-6 py-3.5 md:px-8 md:py-4 bg-brand-walnut text-soft-white rounded-xl font-bold transition-all hover:bg-brand-black border border-brand-walnut shadow-xl text-center text-sm md:text-base whitespace-nowrap active:scale-95 touch-manipulation select-none"
-            >
-              Get Started
-            </Link>
-            <button className="px-6 py-3.5 md:px-8 md:py-4 border border-soft-white/20 text-soft-white rounded-xl font-bold hover:bg-soft-white/5 backdrop-blur-sm text-center text-sm md:text-base transition-colors whitespace-nowrap active:scale-95 touch-manipulation select-none">
-              Learn More
-            </button>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        titleLine1="We Transform Traditional Operations"
+        titleLine2="to Smart Automated Ecosystems"
+        descriptionLine1="NX-Solutions transforms hidden daily operational challenges that go"
+        descriptionLine2="unnoticed but create major disruption across industries."
+        floatingElements={<HeroDecorations />}
+      >
+        <Link
+          to="/solutions"
+          className="px-8 py-3.5 bg-[var(--nx-navy)] text-white rounded-full font-bold transition-all hover:bg-black hover:scale-105 shadow-lg text-center text-base whitespace-nowrap"
+        >
+          Get Started
+        </Link>
+      </PageHero>
 
       {/* ───────────────────────── PARTNERS STRIP ───────────────────────── */}
       <section className="py-8 md:py-14 lg:py-16 bg-[#111827] overflow-hidden w-full border-t border-white/5">
