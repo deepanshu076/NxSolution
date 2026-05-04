@@ -44,7 +44,15 @@ export default function UserDashboard() {
                     </div>
                     <div>
                        <div className="text-sm font-bold truncate">{user?.name}</div>
-                       <div className="text-[10px] text-pure-white/40 font-bold uppercase tracking-widest leading-none mt-1">Member Access</div>
+                       <div className="flex items-center gap-2 mt-1">
+                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
+                            user?.role === "admin" 
+                              ? "bg-yellow-400/20 text-yellow-300 border border-yellow-300/30" 
+                              : "bg-white/10 text-pure-white/60 border border-white/10"
+                          }`}>
+                             {user?.role === "admin" ? "⚡ Admin" : "Member"}
+                          </span>
+                       </div>
                     </div>
                  </div>
                  <button onClick={logout} className="text-xs text-pure-white/60 hover:text-red-400 transition-colors flex items-center gap-2">

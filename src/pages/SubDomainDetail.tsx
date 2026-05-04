@@ -1,525 +1,775 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { useParams, Link } from "react-router-dom";
-import { domains } from "../constants/domains";
-import {
-   Play,
-   ChevronRight,
-   ShieldCheck,
-   ArrowRight,
-   TrendingDown,
-   Activity,
-   Layers,
-   Monitor,
-   CheckCircle2,
-   XCircle,
-   Clock,
-   ArrowRightCircle,
-   Database,
-   Zap,
-   Lock,
-   Users,
-   Thermometer,
-   ShieldAlert,
-   Package,
-   BarChart3,
-   Cpu,
-   Wifi,
-   CircleDot
-} from "lucide-react";
-import { div } from "motion/react-client";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Play, ArrowRight, Cpu, Wifi, Monitor, Layers } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "motion/react";
+import type { Domain, Solution, Subdomain } from "@/src/types";
+import { getDomainBySlug } from "@/src/services/domains.service";
+import { listSubdomains } from "@/src/services/subdomains.service";
+import { listSolutionsBySubdomain } from "@/src/services/solutions.service";
+import { domains as constantDomains } from "@/src/constants/domains";
+import { solutionsData } from "@/src/constants/solutions";
 
-const solutions = [
-   {
-      id: "S01",
-      name: "Smart Access Control",
-      desc: "Automated entry with real-time logging.",
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=10",
-      challenges: [
-         { title: "Unauthorised Entry", desc: "Manual checkpoints fail to catch tailgating and badge cloning attempts.", icon: Lock, image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800" },
-         { title: "No Audit Trail", desc: "Paper-based logs are incomplete, delayed, and impossible to query at scale.", icon: Clock, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" },
-         { title: "Visitor Blind Spots", desc: "Guests move freely once inside with no real-time tracking or time-bound access.", icon: Users, image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" }
-      ],
-      layers: [
-         { title: "AI Vision Sentry", desc: "Automated detection of tailgating and unauthorised access in real time.", icon: ShieldCheck, image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800" },
-         { title: "Digital Credentials", desc: "Encrypted mobile-based access passes issued dynamically for all personnel.", icon: Lock, image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" },
-         { title: "Biometric Integration", desc: "Optional facial or fingerprint verification layer for high-security zones.", icon: Users, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" }
-      ]
-   },
-   {
-      id: "S02",
-      name: "Presence Analytics",
-      desc: "Know exactly who is in which zone.",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=400",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=30",
-      challenges: [
-         { title: "Zone Invisibility", desc: "No real-time data on occupancy leaves managers flying blind on utilization.", icon: TrendingDown, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-         { title: "Overcrowding", desc: "Peak-hour density in key zones creates safety and productivity risks.", icon: Users, image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" },
-         { title: "Wasted Space", desc: "Allocated desks and meeting rooms sit empty while teams scramble for space.", icon: Database, image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800" }
-      ],
-      layers: [
-         { title: "Live Heat Mapping", desc: "Real-time zone density overlays rendered on your floor plan dashboard.", icon: Activity, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
-         { title: "Capacity Alerts", desc: "Instant notifications when zones approach or exceed safe occupancy thresholds.", icon: TrendingDown, image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800" },
-         { title: "Space Optimizer", desc: "AI-driven recommendations to reallocate underused areas for maximum ROI.", icon: BarChart3, image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=800" }
-      ]
-   },
-   {
-      id: "S03",
-      name: "Environmental Control",
-      desc: "Smart lighting and climate management.",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=50",
-      challenges: [
-         { title: "Energy Waste", desc: "Lighting and HVAC run at full capacity in unoccupied areas, driving up costs.", icon: Zap, image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?auto=format&fit=crop&q=80&w=800" },
-         { title: "Comfort Complaints", desc: "Static schedules fail to adapt to actual occupancy, causing discomfort.", icon: Thermometer, image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" },
-         { title: "No Automation", desc: "Manual override of building systems is slow, inconsistent and error-prone.", icon: Monitor, image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800" }
-      ],
-      layers: [
-         { title: "Adaptive Climate Engine", desc: "HVAC and lighting auto-adjust based on live occupancy and time-of-day rules.", icon: Thermometer, image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?auto=format&fit=crop&q=80&w=800" },
-         { title: "Smart Scheduling", desc: "Pre-programme environment profiles for recurring events and peak hours.", icon: Clock, image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" },
-         { title: "Energy Dashboard", desc: "Granular per-zone consumption tracking with automated efficiency reports.", icon: Zap, image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800" }
-      ]
-   },
-   {
-      id: "S04",
-      name: "Safety Protocol Hub",
-      desc: "Emergency alerts and compliance tracking.",
-      image: "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?auto=format&fit=crop&q=80&w=400",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=70",
-      challenges: [
-         { title: "Delayed Response", desc: "Incidents go undetected for critical minutes due to manual patrol gaps.", icon: ShieldAlert, image: "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?auto=format&fit=crop&q=80&w=800" },
-         { title: "Compliance Gaps", desc: "Safety audits rely on self-reported data that is inconsistent and untimely.", icon: ShieldCheck, image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800" },
-         { title: "Chaotic Evacuation", desc: "No real-time headcount during emergencies makes safe evacuation impossible.", icon: Users, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" }
-      ],
-      layers: [
-         { title: "Instant Alert System", desc: "Automated incident broadcasts pushed simultaneously to all designated responders.", icon: ShieldAlert, image: "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?auto=format&fit=crop&q=80&w=800" },
-         { title: "Compliance Tracker", desc: "Digital audit trails auto-generated from sensor events, eliminating manual logs.", icon: ShieldCheck, image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800" },
-         { title: "Evacuation Roster", desc: "Live headcount per zone during emergencies, viewable from any device instantly.", icon: Users, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" }
-      ]
-   },
-   {
-      id: "S05",
-      name: "Resource Tracking",
-      desc: "Track equipment and facility usage instantly.",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=400",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?start=90",
-      challenges: [
-         { title: "Asset Loss", desc: "High-value equipment goes missing with no trail of movement or last location.", icon: Package, image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" },
-         { title: "Idle Inventory", desc: "Assets sit unused in one zone while requests go unfulfilled elsewhere.", icon: Database, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" },
-         { title: "Manual Counts", desc: "Periodic physical inventory checks are time-consuming and highly inaccurate.", icon: BarChart3, image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?auto=format&fit=crop&q=80&w=800" }
-      ],
-      layers: [
-         { title: "RFID Live Tracking", desc: "Every asset tagged and traceable on a live map with movement history logs.", icon: Package, image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800" },
-         { title: "Smart Inventory", desc: "Automated stock-level alerts when assets fall below configured thresholds.", icon: Database, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" },
-         { title: "Usage Analytics", desc: "Identify underutilised assets and reallocate intelligently across zones.", icon: BarChart3, image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?auto=format&fit=crop&q=80&w=800" }
-      ]
-   },
-];
+type DetailItem = {
+  title: string;
+  desc: string;
+  image: string;
+};
+
+type EnrichedSolution = Solution & {
+  localChallenges?: DetailItem[];
+  localLayers?: DetailItem[];
+};
+
+const defaultChallengeImage =
+  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1200";
+const defaultLayerImage =
+  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200";
+
+function toSlug(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function mapDomainToSolutionDomain(domainSlug: string) {
+  const key = toSlug(domainSlug);
+  const domainAliasMap: Record<string, string> = {
+    "schools": "education",
+    "colleges": "education",
+    "coaching-institutes": "education",
+    "hostels": "education",
+    "it-companies": "corporate",
+    "offices": "corporate",
+    "startups": "corporate",
+    "banks": "corporate",
+    "government-offices": "corporate",
+    "apartments": "corporate",
+    "housing-societies": "corporate",
+    "gated-communities": "corporate",
+    "pg-paying-guest": "corporate",
+    "rental-spaces": "corporate",
+    "hotels": "corporate",
+    "factories": "manufacturing",
+    "airports": "manufacturing",
+  };
+  return domainAliasMap[key] ?? key;
+}
+
+function mapSubdomainToSolutionSubdomain(subdomainSlug: string) {
+  const key = toSlug(subdomainSlug);
+  if (
+    key.includes("entry") ||
+    key.includes("gate") ||
+    key.includes("reception") ||
+    key.includes("visitor") ||
+    key.includes("security")
+  ) {
+    return "security";
+  }
+  if (
+    key.includes("transport") ||
+    key.includes("parking") ||
+    key.includes("canteen") ||
+    key.includes("cafeteria") ||
+    key.includes("campus")
+  ) {
+    return "campus";
+  }
+  return key;
+}
+
+function normalizeYoutubeUrl(url: string) {
+  if (!url) return "";
+  if (url.includes("embed/")) return url;
+  const short = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (short?.[1]) return `https://www.youtube.com/embed/${short[1]}`;
+  const watch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if (watch?.[1]) return `https://www.youtube.com/embed/${watch[1]}`;
+  return url;
+}
+
+function fallbackDetails(solution: EnrichedSolution) {
+  const title = solution.title;
+  return {
+    challenges: [
+      {
+        title: `${title}: Visibility Gap`,
+        desc: "Manual processes create blind spots and delayed decisions in this subdomain.",
+        image: defaultChallengeImage,
+      },
+      {
+        title: `${title}: Response Delay`,
+        desc: "Without automation, incident response and compliance handling become inconsistent.",
+        image: defaultChallengeImage,
+      },
+      {
+        title: `${title}: Data Fragmentation`,
+        desc: "Operational data remains siloed and difficult to act on in real-time.",
+        image: defaultChallengeImage,
+      },
+    ],
+    layers: [
+      {
+        title: "Live Monitoring Layer",
+        desc: "Central dashboard and event visibility for continuous operations.",
+        image: defaultLayerImage,
+      },
+      {
+        title: "Automation Layer",
+        desc: "Rule-based triggers for proactive actions and faster interventions.",
+        image: defaultLayerImage,
+      },
+      {
+        title: "Analytics Layer",
+        desc: "Actionable insights and optimization recommendations from captured events.",
+        image: defaultLayerImage,
+      },
+    ],
+  };
+}
 
 export default function SubDomainDetail() {
-   const { domain, subdomain } = useParams();
-   const [activeSolution, setActiveSolution] = useState(solutions[0]);
-   const [isPlaying, setIsPlaying] = useState(false);
-   const [activeChallenge, setActiveChallenge] = useState(0);
-   const [activeLayer, setActiveLayer] = useState(0);
-   const [activeTech, setActiveTech] = useState<number | null>(null);
-   const videoRef = useRef<HTMLElement>(null);
+  const { domain, subdomain } = useParams();
+  const [domainData, setDomainData] = useState<Domain | null>(null);
+  const [subdomainData, setSubdomainData] = useState<Subdomain | null>(null);
+  const [solutions, setSolutions] = useState<Solution[]>([]);
+  const [activeSolutionId, setActiveSolutionId] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [activeChallenge, setActiveChallenge] = useState(0);
+  const [activeLayer, setActiveLayer] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLElement>(null);
 
-   const domainData = domains.find(d => d.id === domain);
-   const domainName = domainData?.name || (domain ? domain.charAt(0).toUpperCase() + domain.slice(1) : "Domain");
-
-   const subdomainName = domainData?.subdomains?.find(sd =>
-      sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
-   ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
-
-   const getImageForSubdomain = (title: string) => {
-      const t = title.toLowerCase();
-      // Added better handling for college/hostel and generic fallbacks
-      if (t.includes('hostel') || t.includes('dormitory') || t.includes('resident')) return "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&q=80";
-      if (t.includes('college') || t.includes('university') || t.includes('campus')) return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80";
-
-      if (t.includes('gate') || t.includes('entry') || t.includes('entrance') || t.includes('access')) return "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80";
-      if (t.includes('reception') || t.includes('help desk') || t.includes('front desk') || t.includes('lobby') || t.includes('waiting')) return "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80";
-      if (t.includes('admin') || t.includes('office') || t.includes('management') || t.includes('hr') || t.includes('cabin')) return "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80";
-      if (t.includes('class') || t.includes('lecture')) return "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1200&q=80";
-      if (t.includes('lab') || t.includes('computer')) return "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80";
-      if (t.includes('library') || t.includes('study')) return "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80";
-      if (t.includes('auditorium') || t.includes('seminar') || t.includes('conference') || t.includes('meeting') || t.includes('hall')) return "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80";
-      if (t.includes('canteen') || t.includes('cafeteria') || t.includes('dining') || t.includes('pantry') || t.includes('kitchen') || t.includes('break')) return "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80";
-      if (t.includes('parking') || t.includes('transport') || t.includes('vehicle')) return "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200&q=80";
-      if (t.includes('workstation') || t.includes('pod') || t.includes('collaboration') || t.includes('team') || t.includes('open work')) return "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80";
-      if (t.includes('server') || t.includes('it room') || t.includes('network') || t.includes('control') || t.includes('security') || t.includes('guard')) return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80";
-      if (t.includes('gym') || t.includes('fitness') || t.includes('pool') || t.includes('club') || t.includes('activity')) return "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
-      if (t.includes('garden') || t.includes('open space') || t.includes('play') || t.includes('perimeter')) return "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?w=1200&q=80";
-      if (t.includes('corridor') || t.includes('stair') || t.includes('lift') || t.includes('common')) return "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80";
-      if (t.includes('storage') || t.includes('inventory') || t.includes('material') || t.includes('utility') || t.includes('maintenance')) return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80";
-
-      // Default premium building image
-      return "https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=1200&q=80";
-   };
-
-   const getSmartTitle = (title: string) => {
-      let t = title;
-      if (t.includes('/')) {
-         const parts = t.split('/').map(p => p.trim());
-         const singleWordPart = parts.find(p => !p.includes(' '));
-         t = singleWordPart || parts[1] || parts[0];
+  useEffect(() => {
+    const load = async () => {
+      if (!domain || !subdomain) {
+        setError("Subdomain not found.");
+        setIsLoading(false);
+        return;
       }
-      const boringWords = /\b(Area|Room|Block|Office|Desk|Hall|Cabins|Cabin|Cell|Zone|Center|Space|Hub|Unit|Units|Flats|Lounge|Floor)\b/gi;
-      t = t.replace(boringWords, '').trim();
-      const words = t.split(' ').filter(w => w.length > 0);
-      if (words.length > 1) {
-         if (t.toLowerCase().includes('entry') || t.toLowerCase().includes('gate')) return 'ENTRY';
-         if (t.toLowerCase().includes('admin')) return 'ADMIN';
-         if (t.toLowerCase().includes('staff') || t.toLowerCase().includes('faculty')) return 'STAFF';
-         if (t.toLowerCase().includes('computer') || t.toLowerCase().includes('lab')) return 'LABS';
-         if (t.toLowerCase().includes('meeting') || t.toLowerCase().includes('conference')) return 'MEETINGS';
-         if (t.toLowerCase().includes('parking') || t.toLowerCase().includes('transport')) return 'PARKING';
-         return words.reduce((a, b) => a.length > b.length ? a : b);
+
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const domainRow = await getDomainBySlug(domain);
+        const subdomainRows = await listSubdomains(domainRow.id, true);
+        const subdomainRow = subdomainRows.find(
+          (row) => (row.slug || "").toLowerCase() === subdomain.toLowerCase(),
+        );
+
+        if (!subdomainRow) {
+          throw new Error("Subdomain not found.");
+        }
+
+        const solutionRows = await listSolutionsBySubdomain(subdomainRow.id, true);
+        setDomainData(domainRow);
+        setSubdomainData(subdomainRow);
+        setSolutions(solutionRows);
+      } catch (err) {
+        const constantDomain = constantDomains.find((item) => item.id === domain);
+        const constantSubdomainName = (constantDomain?.subdomains ?? []).find(
+          (item) =>
+            item
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "") === subdomain,
+        );
+
+        if (constantDomain && constantSubdomainName) {
+          setDomainData({
+            id: constantDomain.id,
+            slug: constantDomain.id,
+            name: constantDomain.name,
+            description: constantDomain.description ?? null,
+            icon: null,
+            color: constantDomain.color ?? null,
+            image_url: constantDomain.image ?? null,
+            order_index: 0,
+            is_active: true,
+            created_at: null,
+            updated_at: null,
+          });
+          setSubdomainData({
+            id: `${constantDomain.id}-${subdomain}`,
+            domain_id: constantDomain.id,
+            name: constantSubdomainName,
+            slug: subdomain,
+            description: null,
+            icon: null,
+            order_index: 0,
+            is_active: true,
+            created_at: null,
+            updated_at: null,
+          });
+          setSolutions([]);
+        } else {
+          setError(
+            err instanceof Error ? err.message : "Unable to load subdomain page.",
+          );
+        }
+      } finally {
+        setIsLoading(false);
       }
-      return words[0] || t;
-   };
+    };
 
-   const heroImage = getImageForSubdomain(subdomainName);
-   const smartTitle = getSmartTitle(subdomainName);
+    void load();
+  }, [domain, subdomain]);
 
-   return (
-      <div className="flex flex-col pt-20">
-         {/* ── HERO ── */}
-         <section className="relative min-h-[400px] md:min-h-[500px] bg-brand-black overflow-hidden flex items-center justify-center">
-            <div className="absolute inset-0">
-               <img
-                  src={heroImage}
-                  alt={smartTitle}
-                  className="w-full h-full object-cover opacity-40 mix-blend-overlay"
-               />
-               <div className="absolute inset-0 bg-gradient-to-b from-brand-black/90 via-brand-black/80 to-brand-black" />
-               <div className="absolute inset-0 bg-gradient-to-r from-accent-sky/10 to-transparent mix-blend-overlay" />
-            </div>
+  const mergedSolutions = useMemo(() => {
+    const normalizedDomain = mapDomainToSolutionDomain(domain ?? "");
+    const normalizedSubdomain = mapSubdomainToSolutionSubdomain(subdomain ?? "");
+    const allDomainConstants = solutionsData.filter((item) => {
+      const itemDomain = toSlug(item.domainId);
+      return normalizedDomain ? itemDomain === normalizedDomain : true;
+    });
 
-            <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center py-12">
-               <div className="max-w-3xl flex flex-col items-center">
-                  <span className="text-[10px] md:text-xs font-bold text-accent-sky tracking-[.3em] uppercase mb-4 block">
-                     Sub-Domain Excellence
-                  </span>
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-pure-white mb-6 uppercase tracking-tight text-balance">
-                     {smartTitle}
-                  </h1>
-                  <p className="text-pure-white/70 text-sm md:text-lg font-normal mb-8 leading-relaxed text-balance max-w-2xl">
-                     Empowering the <span className="text-white font-medium">{subdomainName}</span> ecosystem with intelligent, responsive digital layers for superior operations.
-                  </p>
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
-                     <button className="w-full sm:w-auto px-8 py-3.5 bg-brand-walnut text-pure-white text-sm font-bold rounded-xl transition-all duration-300 hover:bg-brand-walnut/90 shadow-lg shadow-brand-walnut/20 hover:-translate-y-0.5">
-                        Explore Solutions
-                     </button>
-                     <button className="w-full sm:w-auto px-8 py-3.5 border border-pure-white/20 text-pure-white text-sm font-bold rounded-xl transition-all duration-300 hover:bg-white/5 hover:border-pure-white/40 backdrop-blur-sm">
-                        View Live Demo
-                     </button>
-                  </div>
-               </div>
-            </div>
-         </section>
+    const constantFallbackBySubdomain = allDomainConstants
+      .filter((item) => {
+        const itemSubdomain = toSlug(item.subdomainSlug);
+        if (!normalizedSubdomain) return false;
+        return itemSubdomain === normalizedSubdomain;
+      })
+      .map((item, index) => ({
+        id: `constant-${item.id}-${index}`,
+        domain_id: domainData?.id ?? null,
+        subdomain_id: subdomainData?.id ?? null,
+        title: item.name,
+        slug: item.slug,
+        description: item.description ?? null,
+        video_url: item.videoUrl ?? null,
+        thumbnail_url: null,
+        tags: item.features ?? null,
+        is_active: true,
+        order_index: index,
+        created_at: null,
+        updated_at: null,
+        localChallenges: [
+          {
+            title: "Access Bottlenecks",
+            desc: "Legacy processes slow down user movement and approvals.",
+            image: defaultChallengeImage,
+          },
+          {
+            title: "Security Blind Spots",
+            desc: "Limited observability increases operational risk.",
+            image: defaultChallengeImage,
+          },
+          {
+            title: "No Actionable Insights",
+            desc: "Data exists but does not support timely decisions.",
+            image: defaultChallengeImage,
+          },
+        ],
+        localLayers: [
+          {
+            title: "Sensing Layer",
+            desc: "Capture live data from entry points and movement events.",
+            image: defaultLayerImage,
+          },
+          {
+            title: "Control Layer",
+            desc: "Automated policies enforce security and workflow rules.",
+            image: defaultLayerImage,
+          },
+          {
+            title: "Intelligence Layer",
+            desc: "Operational insights help improve efficiency continuously.",
+            image: defaultLayerImage,
+          },
+        ],
+      })) as EnrichedSolution[];
 
-         {/* ── TARGETED SOLUTIONS ── */}
-         <section className="py-24 bg-pure-white">
-            <div className="w-full max-w-[90rem] mx-auto px-6 lg:px-12">
-               <div className="mb-16 text-center flex flex-col items-center">
-                  <h2 className="text-xl md:text-2xl font-display font-black text-brand-black uppercase tracking-wider mb-3 bg-gradient-to-b from-brand-black to-brand-black/60 bg-clip-text text-transparent">
-                     Targeted Solutions
-                  </h2>
-                  <div className="w-8 h-0.5 bg-accent-sky" />
-               </div>
-               <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 pt-2 scrollbar-hide snap-x">
-                  {solutions.map((sol, i) => (
-                     <div
-                        key={sol.id || i}
-                        onClick={() => {
-                           setActiveSolution(sol);
-                           setIsPlaying(false);
-                           setActiveChallenge(0);
-                           setActiveLayer(0);
-                           videoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }}
-                        className={`relative flex-shrink-0 w-72 md:w-80 bg-pure-white rounded-[1.5rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.03)] border snap-start transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] cursor-pointer hover:-translate-y-1 overflow-hidden ${activeSolution.id === sol.id
-                           ? 'border-blue-500 ring-2 ring-blue-500/20'
-                           : 'border-slate-100 hover:border-slate-200'
-                           }`}
-                     >
-                        <div className="w-full h-32 rounded-xl bg-slate-100 mb-6 overflow-hidden">
-                           <img
-                              src={sol.image}
-                              alt={sol.name}
-                              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                           />
-                        </div>
-                        <h3 className="text-lg font-black text-brand-black mb-2">{sol.name}</h3>
-                        <p className="text-sm text-brand-black/60 leading-relaxed">
-                           {sol.desc}
-                        </p>
-                     </div>
-                  ))}
-               </div>
-            </div>
-         </section>
+    const constantFallbackByDomain = allDomainConstants.map((item, index) => ({
+      id: `constant-domain-${item.id}-${index}`,
+      domain_id: domainData?.id ?? null,
+      subdomain_id: subdomainData?.id ?? null,
+      title: item.name,
+      slug: item.slug,
+      description: item.description ?? null,
+      video_url: item.videoUrl ?? null,
+      thumbnail_url: null,
+      tags: item.features ?? null,
+      is_active: true,
+      order_index: 500 + index,
+      created_at: null,
+      updated_at: null,
+      localChallenges: [
+        {
+          title: "Access Bottlenecks",
+          desc: "Legacy processes slow down user movement and approvals.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "Security Blind Spots",
+          desc: "Limited observability increases operational risk.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "No Actionable Insights",
+          desc: "Data exists but does not support timely decisions.",
+          image: defaultChallengeImage,
+        },
+      ],
+      localLayers: [
+        {
+          title: "Sensing Layer",
+          desc: "Capture live data from entry points and movement events.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Control Layer",
+          desc: "Automated policies enforce security and workflow rules.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Intelligence Layer",
+          desc: "Operational insights help improve efficiency continuously.",
+          image: defaultLayerImage,
+        },
+      ],
+    })) as EnrichedSolution[];
 
-         {/* ── VIDEO PROOF OF CONCEPT ── */}
-         <section ref={videoRef} className="pb-24 bg-pure-white flex flex-col items-center">
-            <div className="w-full max-w-4xl mx-auto px-6">
-               <div className="relative w-full aspect-video bg-brand-black rounded-[2rem] shadow-2xl overflow-hidden flex flex-col justify-end group border-[6px] border-pure-white shadow-[0_20px_60px_rgb(0,0,0,0.15)]">
-                  {isPlaying ? (
-                     <iframe
-                        src={`${activeSolution.videoUrl}&autoplay=1`}
-                        title={activeSolution.name}
-                        className="absolute inset-0 w-full h-full rounded-xl"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                     />
-                  ) : (
-                     <>
-                        <img
-                           src={activeSolution.image}
-                           alt={activeSolution.name}
-                           className="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/40 to-transparent" />
+    const constantFallback =
+      constantFallbackBySubdomain.length > 0
+        ? constantFallbackBySubdomain
+        : constantFallbackByDomain;
 
-                        <div className="absolute inset-0 flex items-center justify-center">
-                           <button
-                              onClick={() => setIsPlaying(true)}
-                              className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30 z-20"
-                           >
-                              <Play size={28} className="ml-1 fill-white" />
-                           </button>
-                        </div>
-                        <div className="relative z-10 p-6 md:p-8 pointer-events-none">
-                           <h3 className="text-white font-black text-xl md:text-2xl mb-2">{activeSolution.name}</h3>
-                           <p className="text-blue-400 font-bold text-[10px] md:text-xs uppercase tracking-widest">{activeSolution.desc}</p>
-                        </div>
-                     </>
-                  )}
-               </div>
-            </div>
-         </section>
+    const db = solutions.map((item) => item as EnrichedSolution);
+    const constantsBySlug = new Map(
+      constantFallback.map((item) => [item.slug, item] as const),
+    );
 
-         {/* ── THE CHALLENGES ── */}
-         <section className="py-20 bg-white">
-            <div className="container mx-auto px-6">
-               <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+    const map = new Map<string, EnrichedSolution>();
+    for (const item of constantFallback) map.set(item.slug, item);
+    for (const item of db) {
+      const constantMatch = constantsBySlug.get(item.slug);
+      map.set(item.slug, {
+        ...item,
+        video_url: item.video_url || constantMatch?.video_url || null,
+        thumbnail_url: item.thumbnail_url || constantMatch?.thumbnail_url || null,
+        description: item.description || constantMatch?.description || null,
+      });
+    }
+    return Array.from(map.values());
+  }, [domain, domainData?.id, solutions, subdomain, subdomainData?.id]);
 
-                  {/* Left: Image Container (White Box) */}
-                  <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0">
-                     <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
-                        <AnimatePresence mode="popLayout">
-                           <motion.img
-                              key={activeChallenge}
-                              initial={{ opacity: 0, scale: 1.05 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.6 }}
-                              src={activeSolution.challenges[activeChallenge].image}
-                              alt={activeSolution.challenges[activeChallenge].title}
-                              className="absolute inset-0 w-full h-full object-cover"
-                           />
-                        </AnimatePresence>
-                        {/* Subtle red tint overlay for "Challenges" */}
-                        <div className="absolute inset-0 bg-[#E5484D]/10 mix-blend-multiply transition-colors duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
+  useEffect(() => {
+    if (mergedSolutions.length === 0) {
+      setActiveSolutionId(null);
+      setActiveChallenge(0);
+      setActiveLayer(0);
+      return;
+    }
 
-                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
-                           <p className="text-white text-xs font-black uppercase tracking-widest mb-1">Impact Area</p>
-                           <p className="text-white/95 text-sm font-medium leading-tight">
-                              {activeSolution.challenges[activeChallenge].title}
-                           </p>
-                        </div>
-                     </div>
-                  </div>
+    const currentExists = mergedSolutions.some(
+      (solution) => solution.id === activeSolutionId,
+    );
 
-                  {/* Right: Title & Scrollable Cards */}
-                  <div className="flex flex-col h-full justify-center">
-                     <div className="mb-8">
-                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">The Problem</p>
-                        <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight uppercase">
-                           The Challenges
-                        </h2>
-                     </div>
+    if (!activeSolutionId || !currentExists) {
+      setActiveSolutionId(mergedSolutions[0].id);
+      setIsPlaying(false);
+      setActiveChallenge(0);
+      setActiveLayer(0);
+    }
+  }, [activeSolutionId, mergedSolutions]);
 
-                     {/* Scrollable list without scrollbar line */}
-                     <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
-                        {activeSolution.challenges.map((challenge, i) => {
-                           const isActive = activeChallenge === i;
-                           return (
-                              <motion.div
-                                 key={i}
-                                 onClick={() => setActiveChallenge(i)}
-                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
-                                    }`}
-                                 style={{
-                                    boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
-                                 }}
-                              >
-                                 {/* Shown Line Effect */}
-                                 {isActive && (
-                                    <motion.div
-                                       layoutId="activeChallengeLine"
-                                       className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
-                                    />
-                                 )}
+  const activeSolution = useMemo(
+    () =>
+      mergedSolutions.find((solution) => solution.id === activeSolutionId) ??
+      null,
+    [activeSolutionId, mergedSolutions],
+  );
 
-                                 <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
-                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
-                                       }`}>
-                                       <challenge.icon size={18} />
-                                    </div>
-                                    <div className="flex flex-col">
-                                       <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
-                                          {challenge.title}
-                                       </h3>
-                                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                                          {challenge.desc}
-                                       </p>
-                                    </div>
-                                 </div>
-                              </motion.div>
-                           );
-                        })}
-                     </div>
-                  </div>
+  const featuredSolution = activeSolution ?? mergedSolutions[0] ?? null;
+  const activeVideo = normalizeYoutubeUrl(featuredSolution?.video_url ?? "");
+  const activeDetails = featuredSolution
+    ? {
+        challenges:
+          featuredSolution.localChallenges ??
+          fallbackDetails(featuredSolution).challenges,
+        layers:
+          featuredSolution.localLayers ?? fallbackDetails(featuredSolution).layers,
+      }
+    : {
+        challenges: [
+          {
+            title: "No solution selected",
+            desc: "Pick a solution above to view the video, challenges, and implementation layers.",
+            image: defaultChallengeImage,
+          },
+          {
+            title: "Add a solution in DB",
+            desc: "A database row or solution constant will populate this area automatically.",
+            image: defaultChallengeImage,
+          },
+          {
+            title: "Fallback content ready",
+            desc: "The page still renders the complete UI so the subdomain never feels blank.",
+            image: defaultChallengeImage,
+          },
+        ],
+        layers: [
+          {
+            title: "Video Layer",
+            desc: "Shows the solution video from the database or solutions.ts.",
+            image: defaultLayerImage,
+          },
+          {
+            title: "Challenge Layer",
+            desc: "Explains the operational problem solved by the selected subdomain.",
+            image: defaultLayerImage,
+          },
+          {
+            title: "Insight Layer",
+            desc: "Summarizes the implementation and automation value.",
+            image: defaultLayerImage,
+          },
+        ],
+      };
 
-               </div>
-            </div>
-         </section>
-
-         {/* ── ENGINEERED INTELLIGENCE LAYER ── */}
-         <section className="py-10 pb-20 bg-white">
-            <div className="container mx-auto px-6">
-               <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
-
-                  {/* Left: Image Container (White Box) */}
-                  <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
-                     <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
-                        <AnimatePresence mode="popLayout">
-                           <motion.img
-                              key={`${activeSolution.id}-layer-${activeLayer}`}
-                              initial={{ opacity: 0, scale: 1.05 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.6 }}
-                              src={activeSolution.layers[activeLayer].image}
-                              alt={activeSolution.layers[activeLayer].title}
-                              className="absolute inset-0 w-full h-full object-cover"
-                           />
-                        </AnimatePresence>
-                        {/* Subtle accent tint overlay for "Layer" */}
-                        <div className="absolute inset-0 bg-accent-sky/10 mix-blend-multiply transition-colors duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
-
-                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
-                           <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Integrated Tech Layer</p>
-                           <p className="text-white font-medium text-sm leading-tight">
-                              {activeSolution.layers[activeLayer].title}
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-
-                  {/* Right: Title & Scrollable Cards */}
-                  <div className="flex flex-col h-full justify-center lg:order-2 order-1">
-                     <div className="mb-8">
-                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">The Solution</p>
-                        <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight uppercase">
-                           Engineered Intelligence Layer
-                        </h2>
-                     </div>
-
-                     {/* Scrollable list without scrollbar line */}
-                     <div className="flex flex-col gap-3 overflow-y-auto pr-2 scrollbar-hide max-h-[320px] lg:max-h-[380px]">
-                        {activeSolution.layers.map((layer, i) => {
-                           const isActive = activeLayer === i;
-                           return (
-                              <motion.div
-                                 key={i}
-                                 onClick={() => setActiveLayer(i)}
-                                 className={`relative p-5 rounded-2xl bg-white cursor-pointer transition-all duration-300 ${isActive ? "shadow-md border-transparent" : "shadow-sm border border-slate-200/60 hover:shadow-md"
-                                    }`}
-                                 style={{
-                                    boxShadow: isActive ? `0 4px 20px rgba(14,165,233,0.15)` : undefined,
-                                 }}
-                              >
-                                 {/* Shown Line Effect */}
-                                 {isActive && (
-                                    <motion.div
-                                       layoutId="activeLayerLine"
-                                       className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-accent-sky"
-                                    />
-                                 )}
-
-                                 <div className={`pl-2 transition-colors duration-300 flex items-start gap-4 ${isActive ? '' : 'opacity-80'}`}>
-                                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-colors ${isActive ? 'bg-accent-sky/10 text-accent-sky' : 'bg-slate-100 text-slate-400'
-                                       }`}>
-                                       <layer.icon size={18} />
-                                    </div>
-                                    <div className="flex flex-col">
-                                       <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
-                                          {layer.title}
-                                       </h3>
-                                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                                          {layer.desc}
-                                       </p>
-                                    </div>
-                                 </div>
-                              </motion.div>
-                           );
-                        })}
-                     </div>
-                  </div>
-
-               </div>
-            </div>
-         </section>
-
-         {/* ── TECH STACK (COMPACT MATTE BROWN) ── */}
-         <section className="py-20 bg-[#F5F2EE]">
-            <div className="w-full max-w-6xl mx-auto px-6 lg:px-12">
-               <div className="flex flex-col items-center text-center mb-12">
-                  <span className="text-[9px] md:text-xs font-black text-[#8D6E63] uppercase tracking-[0.3em] mb-3">
-                     Tech Stack
-                  </span>
-                  <h2 className="text-xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight">
-                     Core Hardware & Software
-                  </h2>
-               </div>
-
-               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
-                  {[
-                     { name: "Node-S Sensors", icon: Cpu },
-                     { name: "IQ Dashboard", icon: Monitor },
-                     { name: "Hub-Z Controller", icon: Layers },
-                     { name: "Comms-X Gateway", icon: Wifi }
-                  ].map((tech, i) => (
-                     <div
-                        key={i}
-                        className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:shadow-[#8D6E63]/5 hover:-translate-y-1"
-                     >
-                        <div className="w-12 h-12 rounded-full bg-[#F9F7F5] shadow-sm flex items-center justify-center mb-6 border border-[#E0Dcd5]">
-                           <tech.icon size={22} className="text-[#8D6E63]/60" />
-                        </div>
-                        <h4 className="text-sm md:text-base font-black text-brand-black mb-1">{tech.name}</h4>
-                        <span className="text-[8px] font-black text-[#8D6E63] uppercase tracking-widest">
-                           Enterprise
-                        </span>
-                     </div>
-                  ))}
-               </div>
-
-               <div className="flex justify-center">
-                  <button className="bg-brand-black text-white px-8 py-4 rounded-xl text-sm font-bold flex items-center gap-2.5 transition-all hover:bg-slate-800 hover:shadow-2xl hover:shadow-black/20 group">
-                     Consult with Solutions Architect
-                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </button>
-               </div>
-            </div>
-         </section>
+  if (isLoading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+        <p className="text-slate-blue/60">Loading subdomain...</p>
       </div>
-   );
+    );
+  }
+
+  if (error || !domainData || !subdomainData) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-slate-blue">Subdomain not found</h2>
+          <p className="mt-2 text-slate-blue/60">{error ?? "Please try again."}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col pt-20">
+      <section className="relative min-h-[400px] md:min-h-[500px] bg-brand-black overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/90 via-brand-black/80 to-brand-black" />
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <span className="text-[10px] md:text-xs font-bold text-accent-sky tracking-[.3em] uppercase">
+            {domainData.name}
+          </span>
+          <h1 className="mt-4 text-4xl md:text-6xl font-display font-bold text-pure-white uppercase tracking-tight">
+            {subdomainData.name}
+          </h1>
+          <p className="mt-4 mx-auto max-w-2xl text-pure-white/70 text-sm md:text-base">
+            {subdomainData.description ??
+              "Targeted solutions and media are managed from admin with DB + constants merged."}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 bg-pure-white">
+        <div className="w-full max-w-[90rem] mx-auto px-6 lg:px-12">
+          <div className="mb-12 text-center">
+            <h2 className="text-xl md:text-2xl font-display font-black text-brand-black uppercase tracking-wider">
+              Targeted Solutions
+            </h2>
+          </div>
+
+          {mergedSolutions.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-cool-gray/30 bg-light-gray/30 px-6 py-12 text-center text-slate-blue/55">
+              No targeted solutions available yet.
+            </div>
+          ) : (
+            <>
+              <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4">
+                {mergedSolutions.map((solution) => (
+                  <div
+                    key={solution.id}
+                    onClick={() => {
+                      setActiveSolutionId(solution.id);
+                      setIsPlaying(false);
+                      setActiveChallenge(0);
+                      setActiveLayer(0);
+                      videoRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
+                    }}
+                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all ${
+                      solution.id === activeSolutionId
+                        ? "border-blue-500 ring-2 ring-blue-500/20"
+                        : "border-slate-200 hover:border-slate-300"
+                    } cursor-pointer`}
+                  >
+                    <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
+                      {solution.thumbnail_url || solution.localChallenges?.[0]?.image ? (
+                        <img
+                          src={solution.thumbnail_url || solution.localChallenges?.[0]?.image}
+                          alt={solution.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs font-bold uppercase tracking-widest">
+                          No thumbnail
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-base font-bold text-brand-black leading-snug">
+                          {solution.title}
+                        </h3>
+                        {solution.id === activeSolutionId ? (
+                          <span className="shrink-0 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-blue-700">
+                            Active
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-2 text-sm text-slate-blue/60 line-clamp-2">
+                        {solution.description ?? "No description provided."}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsPlaying(false);
+                          setActiveSolutionId(solution.id);
+                          setActiveChallenge(0);
+                          setActiveLayer(0);
+                        }}
+                        className={`mt-4 w-full rounded-xl px-4 py-2 text-sm font-bold transition-colors ${
+                          solution.id === activeSolutionId
+                            ? "bg-blue-600 text-white"
+                            : "bg-slate-100 text-slate-blue hover:bg-slate-200"
+                        }`}
+                      >
+                        Use this solution
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <section ref={videoRef} className="pt-10">
+                <div className="relative w-full max-w-4xl mx-auto aspect-video bg-brand-black rounded-[2rem] overflow-hidden border-[6px] border-pure-white shadow-[0_20px_60px_rgb(0,0,0,0.15)]">
+                  {isPlaying && activeVideo && featuredSolution ? (
+                    <iframe
+                      src={`${activeVideo}${activeVideo.includes("?") ? "&" : "?"}autoplay=1`}
+                      title={featuredSolution.title}
+                      className="absolute inset-0 w-full h-full rounded-xl"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <>
+                      {featuredSolution?.thumbnail_url || featuredSolution?.localChallenges?.[0]?.image ? (
+                        <img
+                          src={featuredSolution?.thumbnail_url || featuredSolution?.localChallenges?.[0]?.image}
+                          alt={featuredSolution?.title || "Selected solution"}
+                          className="absolute inset-0 w-full h-full object-cover opacity-60"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-brand-black" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/40 to-transparent" />
+
+                      {activeVideo && featuredSolution ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setIsPlaying(true)}
+                            className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer shadow-lg shadow-blue-600/30 z-20"
+                          >
+                            <Play size={28} className="ml-1 fill-white" />
+                          </button>
+                        </div>
+                      ) : null}
+                      <div className="relative z-10 p-6 md:p-8 pointer-events-none">
+                        <h3 className="text-white font-black text-xl md:text-2xl mb-2">
+                          {featuredSolution?.title ?? "No solution selected"}
+                        </h3>
+                        <p className="text-blue-400 font-bold text-[10px] md:text-xs uppercase tracking-widest">
+                          {featuredSolution?.description ?? "Pick a solution to view the demo video."}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </section>
+            </>
+          )}
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="bg-white rounded-[2rem] p-3 shadow-sm h-[380px] lg:h-[460px]">
+              <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`challenge-${activeChallenge}`}
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    src={activeDetails.challenges[activeChallenge].image}
+                    alt={activeDetails.challenges[activeChallenge].title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                  <p className="text-white text-xs font-black uppercase tracking-widest mb-1">
+                    Impact Area
+                  </p>
+                  <p className="text-white/95 text-sm font-medium leading-tight">
+                    {activeDetails.challenges[activeChallenge].title}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">
+                The Problem
+              </p>
+              <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] uppercase mb-6">
+                The Challenges
+              </h2>
+              <div className="space-y-3">
+                {activeDetails.challenges.map((challenge, i) => (
+                  <button
+                    key={`${challenge.title}-${i}`}
+                    onClick={() => setActiveChallenge(i)}
+                    className={`w-full text-left p-5 rounded-2xl transition-all ${
+                      activeChallenge === i
+                        ? "bg-white shadow-md border-l-4 border-accent-sky"
+                        : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
+                    }`}
+                  >
+                    <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1">
+                      {challenge.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      {challenge.desc}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10 pb-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="bg-white rounded-[2rem] p-3 shadow-sm h-[380px] lg:h-[460px] order-2 lg:order-1">
+              <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`layer-${activeLayer}`}
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    src={activeDetails.layers[activeLayer].image}
+                    alt={activeDetails.layers[activeLayer].title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
+                  <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">
+                    Integrated Tech Layer
+                  </p>
+                  <p className="text-white font-medium text-sm leading-tight">
+                    {activeDetails.layers[activeLayer].title}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-accent-sky mb-3">
+                The Solution
+              </p>
+              <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] uppercase mb-6">
+                Engineered Intelligence Layer
+              </h2>
+              <div className="space-y-3">
+                {activeDetails.layers.map((layer, i) => (
+                  <button
+                    key={`${layer.title}-${i}`}
+                    onClick={() => setActiveLayer(i)}
+                    className={`w-full text-left p-5 rounded-2xl transition-all ${
+                      activeLayer === i
+                        ? "bg-white shadow-md border-l-4 border-accent-sky"
+                        : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
+                    }`}
+                  >
+                    <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1">
+                      {layer.title}
+                    </h3>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      {layer.desc}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-[#F5F2EE]">
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-12">
+          <div className="flex flex-col items-center text-center mb-12">
+            <span className="text-[9px] md:text-xs font-black text-[#8D6E63] uppercase tracking-[0.3em] mb-3">
+              Tech Stack
+            </span>
+            <h2 className="text-xl md:text-3xl font-display font-black text-brand-black uppercase tracking-tight">
+              Core Hardware & Software
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
+            {[
+              { name: "Node-S Sensors", icon: Cpu },
+              { name: "IQ Dashboard", icon: Monitor },
+              { name: "Hub-Z Controller", icon: Layers },
+              { name: "Comms-X Gateway", icon: Wifi },
+            ].map((tech, i) => (
+              <div
+                key={i}
+                className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:shadow-[#8D6E63]/5 hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 rounded-full bg-[#F9F7F5] shadow-sm flex items-center justify-center mb-6 border border-[#E0Dcd5]">
+                  <tech.icon size={22} className="text-[#8D6E63]/60" />
+                </div>
+                <h4 className="text-sm md:text-base font-black text-brand-black mb-1">
+                  {tech.name}
+                </h4>
+                <span className="text-[8px] font-black text-[#8D6E63] uppercase tracking-widest">
+                  Enterprise
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-center">
+            <button className="bg-brand-black text-white px-8 py-4 rounded-xl text-sm font-bold flex items-center gap-2.5 transition-all hover:bg-slate-800 hover:shadow-2xl hover:shadow-black/20 group">
+              Consult with Solutions Architect
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

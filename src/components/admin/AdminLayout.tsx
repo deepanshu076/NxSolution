@@ -39,7 +39,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const location = useLocation();
 
   return (
-    <div className="flex h-screen bg-light-gray overflow-hidden font-sans">
+    <div className="flex min-h-[calc(100vh-64px)] bg-light-gray overflow-hidden font-sans">
       {/* ── SIDEBAR ── */}
       <aside className={`bg-brand-black text-pure-white transition-all duration-500 ease-in-out flex flex-col z-50 ${isSidebarOpen ? "w-72" : "w-20"}`}>
         <div className="p-8 flex items-center justify-between border-b border-white/5 h-24">

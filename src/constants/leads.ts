@@ -1,0 +1,32 @@
+export const leadsData = [
+  {
+    id: "1",
+    name: "Acme Corporation",
+    email: "contact@acme.com",
+    phone: "+1 (555) 123-4567",
+    company: "Acme Corporation",
+    message: "Interested in our security solutions",
+    status: "new",
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "2",
+    name: "Tech Industries",
+    email: "info@techindustries.com",
+    phone: "+1 (555) 234-5678",
+    company: "Tech Industries",
+    message: "Looking for campus management solutions",
+    status: "contacted",
+    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: "3",
+    name: "Healthcare Plus",
+    email: "hello@healthcareplus.com",
+    phone: "+1 (555) 345-6789",
+    company: "Healthcare Plus",
+    message: "Interested in patient monitoring systems",
+    status: "qualified",
+    created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
