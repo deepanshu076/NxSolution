@@ -365,7 +365,7 @@ function ProductCard({
       </div>
 
       {/* Content Container */}
-      <div className="p-4 sm:p-5 flex flex-col grow">
+      <div className="p-3 sm:p-5 flex flex-col grow">
         <h4 className="text-sm sm:text-base font-bold text-brand-black mb-2 leading-tight group-hover:text-brand-walnut transition-colors line-clamp-2">
           {prod.name}
         </h4>
@@ -412,20 +412,24 @@ export default function Products() {
     <div className="flex flex-col overflow-hidden bg-nx-white">
       {/* ── HERO SECTION ── */}
       <PageHero
-        titleLine1="Technology That Powers Our"
-        titleLine2="Smart Solutions"
-        descriptionLine1="Our products are part of integrated smart systems designed to deliver"
-        descriptionLine2="reliable, scalable, and efficient operational outcomes."
+        titleLine1="Engineering Premium"
+        titleLine2="Ecosystem Hardware"
+        descriptionLine1="Deploy production-grade hardware designed for deterministic"
+        descriptionLine2="performance and seamless facility integration."
       >
         <Link
-          to="/contact"
-          className="px-10 py-4 bg-black text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-xs uppercase tracking-widest whitespace-nowrap"
+          to="/projects"
+          className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap"
         >
           Request Demo
         </Link>
-        <button className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-xs uppercase tracking-widest whitespace-nowrap">
+        <a
+          href="/images/cyber-security roadmap.pdf"
+          download="cyber-security roadmap.pdf"
+          className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap"
+        >
           Download Catalog
-        </button>
+        </a>
       </PageHero>
 
       {/* ── PRODUCTS SECTION WITH CATEGORY FILTERS ── */}
@@ -475,7 +479,7 @@ export default function Products() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-8"
+              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8"
             >
               {filteredProducts.map((prod, i) => (
                 <ProductCard key={`${prod.name}-${i}`} prod={prod} i={i} />
@@ -504,7 +508,16 @@ export default function Products() {
       {/* ── CTA STRIP ── */}
       <section className="py-16 sm:py-20 lg:py-24 bg-brand-black text-center relative overflow-hidden px-4 sm:px-6">
         <div
-          className="absolute inset-0 opacity-5 flex gap-px"
+          className="absolute inset-ata
+
+Final workflow
+distrobox enter devbox
+start server
+psql -h 127.0.0.1 -U postgres -d postgres
+password
+1234
+
+python manage.py createsuperuser0 opacity-5 flex gap-px"
           aria-hidden="true"
         >
           {Array.from({ length: 6 }).map((_, i) => (

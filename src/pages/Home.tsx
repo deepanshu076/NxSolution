@@ -154,7 +154,7 @@ export default function Home() {
         descriptionLine2="unnoticed but create major disruption across industries."
       >
         <Link
-          to="/solutions"
+          to="/login"
           className="px-8 py-3.5 bg-white text-black rounded-full font-bold transition-all duration-300 hover:bg-gray-200 hover:scale-105 shadow-lg text-center text-base w-full sm:w-auto whitespace-nowrap"
         >
           Get Started

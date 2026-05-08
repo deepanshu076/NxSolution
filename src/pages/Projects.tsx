@@ -125,24 +125,34 @@ export default function Projects() {
         descriptionLine1="Explore how our solutions are applied across industries to solve"
         descriptionLine2="real operational challenges."
       >
-        <button className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap">
+        <Link
+          to="/domains"
+          className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap"
+        >
           Explore Domains
-        </button>
-        <button className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap">
+        </Link>
+        <Link
+          to="/about"
+          className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap"
+        >
           Talk to Expert
-        </button>
+        </Link>
       </PageHero>
 
       {/* ── PROJECTS FILTER & SEARCH ── */}
-      <section className="py-12 bg-nx-ice/30 border-b border-nx-steel/10">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+      <section className="py-6 md:py-8 bg-nx-ice/30 border-b border-nx-steel/10">
+        <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+
           {/* Tabs */}
-          <div className="bg-nx-white p-1.5 rounded-2xl flex items-center gap-1 border border-nx-steel/5 shadow-sm overflow-x-auto max-w-full scrollbar-hide">
+          <div className="bg-nx-white p-1 rounded-xl flex items-center gap-1 border border-nx-steel/5 shadow-sm overflow-x-auto max-w-full w-full md:w-auto scrollbar-hide">
             {["All Projects", "Complete Projects", "Ongoing Projects"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab ? "bg-nx-navy text-nx-white shadow-lg shadow-nx-navy/20" : "text-nx-navy/40 hover:text-nx-navy"}`}
+                className={`px-4 sm:px-5 py-2 md:py-2.5 rounded-lg text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap flex-1 md:flex-none text-center ${activeTab === tab
+                    ? "bg-nx-navy text-nx-white shadow-md shadow-nx-navy/20"
+                    : "text-nx-navy/40 hover:text-nx-navy"
+                  }`}
               >
                 {tab}
               </button>
@@ -150,30 +160,30 @@ export default function Projects() {
           </div>
 
           {/* Search */}
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <div className="relative w-full md:max-w-xs lg:max-w-sm">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 md:w-[18px] md:h-[18px]" />
             <input
               type="text"
               placeholder="Search by title or domain..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+              className="w-full bg-slate-50 border border-slate-100 rounded-xl py-2 md:py-2.5 pl-10 pr-4 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
             />
           </div>
+
         </div>
       </section>
-
       {/* ── PROJECTS GRID ── */}
       <section className="py-16 bg-pure-white">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8 md:gap-10">
             {filteredProjects.map((project, i) => (
               <Link key={project.slug} to={`/projects/${project.slug}`} className="group block">
                 <motion.div
                   layout
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative aspect-[4/3] rounded-[2rem] md:rounded-[3rem] overflow-hidden group cursor-pointer shadow-xl"
+                  className="relative aspect-[4/3] rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] overflow-hidden group cursor-pointer shadow-xl"
                 >
                   {/* Background Image */}
                   <img
@@ -183,23 +193,23 @@ export default function Projects() {
                   />
 
                   {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
 
                   {/* Content Overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:scale-110 transition-transform duration-500">
-                      <project.icon size={18} />
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 flex items-center gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:scale-110 transition-transform duration-500 shrink-0">
+                      <project.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                     </div>
-                    <div className="flex flex-col">
-                      <h3 className="text-white font-bold text-sm md:text-base leading-tight">
+                    <div className="flex flex-col overflow-hidden">
+                      <h3 className="text-white font-bold text-xs sm:text-sm md:text-base leading-tight truncate w-full">
                         {project.title}
                       </h3>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-white/40 text-[10px] font-black uppercase tracking-wider">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5 sm:mt-1">
+                        <span className="text-white/50 text-[8px] sm:text-[10px] font-black uppercase tracking-wider truncate">
                           {project.category}
                         </span>
-                        <div className="w-1 h-1 rounded-full bg-white/20" />
-                        <span className="text-white/40 text-[10px] font-black uppercase tracking-wider">
+                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-white/30 shrink-0" />
+                        <span className="text-white/50 text-[8px] sm:text-[10px] font-black uppercase tracking-wider shrink-0">
                           {project.year}
                         </span>
                       </div>
@@ -207,15 +217,15 @@ export default function Projects() {
                   </div>
 
                   {/* Top Badges */}
-                  <div className="absolute top-6 left-6 flex items-center gap-2">
-                    <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-white ${project.status === "COMPLETED" ? "bg-green-500/80" : "bg-blue-600/80"} backdrop-blur-md`}>
+                  <div className="absolute top-3 left-3 sm:top-6 sm:left-6 flex items-center gap-2">
+                    <div className={`px-2 py-1 sm:px-4 sm:py-1.5 rounded-full text-[7px] sm:text-[9px] font-black uppercase tracking-widest text-white ${project.status === "COMPLETED" ? "bg-green-500/80" : "bg-blue-600/80"} backdrop-blur-md`}>
                       {project.status}
                     </div>
                   </div>
 
                   {/* Corner Arrow */}
-                  <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ArrowUpRight size={16} />
+                  <div className="absolute top-3 right-3 sm:top-6 sm:right-6 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </motion.div>
               </Link>

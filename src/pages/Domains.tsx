@@ -108,6 +108,10 @@ export default function Domains() {
   for (const item of dbDomains) domainMap.set(item.id, item);
   const uiDomains = Array.from(domainMap.values());
 
+  const scrollToFooter = () => {
+    document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="flex flex-col overflow-hidden bg-nx-white">
       {/* ── HERO SECTION ── */}
@@ -118,12 +122,15 @@ export default function Domains() {
         descriptionLine2="operational challenges across diverse environments."
       >
         <Link
-          to="/solutions"
+          to="/about"
           className="px-10 py-4 bg-black text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap"
         >
           Explore Solutions
         </Link>
-        <button className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap">
+        <button
+          onClick={scrollToFooter}
+          className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap"
+        >
           Talk to Expert
         </button>
       </PageHero>
@@ -133,13 +140,13 @@ export default function Domains() {
       {/* ── DOMAINS GRID ── */}
       <section className="pt-0 pb-0 bg-nx-white">
         <div className="px-2 md:px-4">
-          <div className="bg-[#f2f2f2] rounded-[3rem] p-10 md:p-16 border border-black/5 shadow-inner relative overflow-hidden">
+          <div className="bg-[#f2f2f2] rounded-[3rem] p-6 sm:p-10 md:p-16 border border-black/5 shadow-inner relative overflow-hidden">
             {/* Subtle background decoration */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-nx-navy/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-nx-steel/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
             <div className="relative z-10">
-              <div className="flex flex-col items-center mb-12 text-center">
+              <div className="flex flex-col items-center mb-8 md:mb-12 text-center">
                 <span className="text-[10px] font-black text-nx-navy/30 tracking-[0.5em] uppercase mb-4 block">Select Domain</span>
                 <h2 className="text-3xl md:text-5xl font-display font-black text-nx-navy uppercase tracking-tight">
                   Explore <span className="text-nx-steel">Domains</span>
@@ -176,14 +183,14 @@ export default function Domains() {
 
               {/* Domains Grid with Data from Backend */}
               {!isLoadingDomains && !error && uiDomains?.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 md:gap-10">
                   {uiDomains.map((dom) => (
                     <Link
                       key={dom.id}
                       to={`/domains/${dom.id}`}
                       className="group block flex-col items-center text-center transition-all"
                     >
-                      <div className="aspect-video w-full rounded-2xl overflow-hidden bg-nx-white mb-6 border border-nx-steel/10 transition-all duration-500 group-hover:shadow-2xl group-hover:border-nx-navy/20 relative shadow-md">
+                      <div className="aspect-video w-full rounded-xl sm:rounded-2xl overflow-hidden bg-nx-white mb-3 sm:mb-6 border border-nx-steel/10 transition-all duration-500 group-hover:shadow-2xl group-hover:border-nx-navy/20 relative shadow-md">
                         <img
                           src={dom.image}
                           alt={dom.name}
@@ -193,7 +200,7 @@ export default function Domains() {
                         />
                         <div className="absolute inset-0 bg-nx-navy/0 group-hover:bg-nx-navy/5 transition-colors duration-300" />
                       </div>
-                      <h3 className="text-sm md:text-lg font-black text-nx-navy group-hover:text-nx-navy transition-colors leading-tight px-1 uppercase tracking-wider">
+                      <h3 className="text-xs sm:text-sm md:text-lg font-black text-nx-navy group-hover:text-nx-navy transition-colors leading-tight px-1 uppercase tracking-wider">
                         {dom.name}
                       </h3>
                     </Link>

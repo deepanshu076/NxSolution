@@ -152,7 +152,7 @@ export default function Navbar() {
                     Login
                   </Link>
                   <Link
-                    to="/contact"
+                    to="/domains"
                     className="group relative overflow-hidden flex items-center gap-2 px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest text-nx-white transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl active:scale-[0.98]"
                     style={{ backgroundColor: NAVY, boxShadow: `0 12px 24px -10px rgba(0,28,61,0.5)` }}
                   >
@@ -301,7 +301,7 @@ export default function Navbar() {
                       Login
                     </Link>
                     <Link
-                      to="/contact"
+                      to="/domains"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center justify-center gap-3 py-4 rounded-2xl text-[13px] font-bold uppercase tracking-widest text-white transition-all active:scale-95"
                       style={{ backgroundColor: NAVY, boxShadow: `0 10px 20px -5px rgba(0,28,61,0.3)` }}

@@ -6,8 +6,13 @@ export default function Footer() {
 
   return (
     <footer
+      id="footer"
       className="pt-16 pb-12 overflow-hidden relative bg-nx-navy"
-      style={{ background: "linear-gradient(180deg, var(--nx-navy) 0%, var(--nx-navy-hover) 100%)", color: "black" }}
+      style={{
+        background:
+          "linear-gradient(180deg, var(--nx-navy) 0%, var(--nx-navy-hover) 100%)",
+        color: "black",
+      }}
     >
       {/* Subtle grid texture */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none grid-bg" />

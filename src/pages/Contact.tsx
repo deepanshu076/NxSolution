@@ -19,28 +19,32 @@ import { Link } from "react-router-dom";
 import PageHero from "@/src/components/ui/PageHero";
 
 export default function Contact() {
-   return (
-      <div className="flex flex-col bg-nx-white selection:bg-nx-navy/30 overflow-hidden">
-         {/* ── HERO ── */}
-         <PageHero
-            titleLine1="Let's Connect & Build"
-            titleLine2="Something Smart"
-            descriptionLine1="Tell us your requirement and we'll guide you to the right"
-            descriptionLine2="solution — enquiry, quote, demo, or custom project."
-         >
-            <Link
-               to="/enquiry"
-               className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-sm uppercase tracking-widest whitespace-nowrap text-center"
-            >
-               Send Enquiry
-            </Link>
-            <Link
-               to="/get-quote"
-               className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-sm whitespace-nowrap text-center"
-            >
-               Get Quote
-            </Link>
-         </PageHero>
+  const scrollToFooter = () => {
+    document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <div className="flex flex-col bg-nx-white selection:bg-nx-navy/30 overflow-hidden">
+      {/* ── HERO ── */}
+      <PageHero
+        titleLine1="Let's Connect & Build"
+        titleLine2="Something Smart"
+        descriptionLine1="Tell us your requirement and we'll guide you to the right"
+        descriptionLine2="solution — enquiry, quote, demo, or custom project."
+      >
+        <button
+          onClick={scrollToFooter}
+          className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-sm uppercase tracking-widest whitespace-nowrap text-center"
+        >
+          Send Enquiry
+        </button>
+        <Link
+          to="/login"
+          className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-sm whitespace-nowrap text-center"
+        >
+          Get Quote
+        </Link>
+      </PageHero>
 
          {/* ── OPTIONS GRID ── */}
          <section className="py-24 bg-nx-ice">

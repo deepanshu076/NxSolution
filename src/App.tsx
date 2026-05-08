@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
 import Home from "@/src/pages/Home";
@@ -52,133 +52,142 @@ export default function App() {
     <Router>
       <ToastProvider>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
-            <Routes>
-              {/* Admin Routes with nested layout */}
-              <Route
-                path="/admin/*"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <>
-                      <Navbar />
-                      <main className="grow pt-[var(--navbar-height)]">
-                        <AdminLayout>
-                          <Routes>
-                            <Route index element={<AdminDashboard />} />
-                            <Route
-                              path="cms"
-                              element={<ComingSoon title="CMS Engine" />}
-                            />
-                            <Route path="domains" element={<DomainsAdmin />} />
-                            <Route path="solutions" element={<SolutionsAdmin />} />
-                            <Route path="projects" element={<ProjectsAdmin />} />
-                            <Route path="products" element={<ProductsAdmin />} />
-                            <Route path="leads" element={<LeadsAdmin />} />
-                            <Route
-                              path="media"
-                              element={<ComingSoon title="Media Manager" />}
-                            />
-                            <Route path="users" element={<UsersAdmin />} />
-                            <Route path="settings" element={<SettingsAdmin />} />
-                          </Routes>
-                        </AdminLayout>
-                      </main>
-                      <Footer />
-                    </>
-                  </ProtectedRoute>
-                }
-              />
-
-              {/* Public/Member Routes with standard layout */}
-              <Route
-                path="/*"
-                element={
-                  <>
-                    <Navbar />
-                    <main className="grow">
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-
-                        {/* Phase 2 Routes */}
-                        <Route path="/domains" element={<Domains />} />
-                        <Route
-                          path="/domains/:domain"
-                          element={<DomainDetail />}
-                        />
-                        <Route
-                          path="/domains/:domain/:subdomain"
-                          element={<SubDomainDetail />}
-                        />
-
-                        {/* Phase 3 Routes */}
-                        <Route path="/projects" element={<Projects />} />
-                        <Route
-                          path="/projects/:slug"
-                          element={<ProjectDetail />}
-                        />
-                        <Route path="/products" element={<Products />} />
-                        <Route
-                          path="/domains/:domain/:subdomain/:project"
-                          element={<ProjectDetail />}
-                        />
-
-                        {/* Phase 4 Routes */}
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/contact" element={<Contact />} />
-
-                        {/* Member Protected Routes */}
-                        <Route
-                          path="/dashboard"
-                          element={
-                            <ProtectedRoute>
-                              <Dashboard />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/enquiry"
-                          element={
-                            <ProtectedRoute>
-                              <EnquiryForm />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/get-quote"
-                          element={
-                            <ProtectedRoute>
-                              <EnquiryForm />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/book-demo"
-                          element={
-                            <ProtectedRoute>
-                              <ComingSoon title="Book Demo" />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/consultation"
-                          element={
-                            <ProtectedRoute>
-                              <ComingSoon title="Consultation" />
-                            </ProtectedRoute>
-                          }
-                        />
-                      </Routes>
-                    </main>
-                    <Footer />
-                  </>
-                }
-              />
-            </Routes>
-          </div>
+          <AppContent />
         </AuthProvider>
       </ToastProvider>
     </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+
+  return (
+    <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
+      <Routes>
+        {/* Admin Routes with nested layout */}
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <>
+                <Navbar />
+                <main className="grow pt-[var(--navbar-height)]">
+                  <AdminLayout>
+                    <Routes>
+                      <Route index element={<AdminDashboard />} />
+                      <Route
+                        path="cms"
+                        element={<ComingSoon title="CMS Engine" />}
+                      />
+                      <Route path="domains" element={<DomainsAdmin />} />
+                      <Route path="solutions" element={<SolutionsAdmin />} />
+                      <Route path="projects" element={<ProjectsAdmin />} />
+                      <Route path="products" element={<ProductsAdmin />} />
+                      <Route path="leads" element={<LeadsAdmin />} />
+                      <Route
+                        path="media"
+                        element={<ComingSoon title="Media Manager" />}
+                      />
+                      <Route path="users" element={<UsersAdmin />} />
+                      <Route path="settings" element={<SettingsAdmin />} />
+                    </Routes>
+                  </AdminLayout>
+                </main>
+                <Footer />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Public/Member Routes with standard layout */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <Navbar />
+              <main className="grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+
+                  {/* Phase 2 Routes */}
+                  <Route path="/domains" element={<Domains />} />
+                  <Route
+                    path="/domains/:domain"
+                    element={<DomainDetail />}
+                  />
+                  <Route
+                    path="/domains/:domain/:subdomain"
+                    element={<SubDomainDetail />}
+                  />
+
+                  {/* Phase 3 Routes */}
+                  <Route path="/projects" element={<Projects />} />
+                  <Route
+                    path="/projects/:slug"
+                    element={<ProjectDetail />}
+                  />
+                  <Route path="/products" element={<Products />} />
+                  <Route
+                    path="/domains/:domain/:subdomain/:project"
+                    element={<ProjectDetail />}
+                  />
+
+                  {/* Phase 4 Routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/contact" element={<Contact />} />
+
+                  {/* Member Protected Routes */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/enquiry"
+                    element={
+                      <ProtectedRoute>
+                        <EnquiryForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/get-quote"
+                    element={
+                      <ProtectedRoute>
+                        <EnquiryForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/book-demo"
+                    element={
+                      <ProtectedRoute>
+                        <ComingSoon title="Book Demo" />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/consultation"
+                    element={
+                      <ProtectedRoute>
+                        <ComingSoon title="Consultation" />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </main>
+              {!isLoginPage && <Footer />}
+            </>
+          }
+        />
+      </Routes>
+    </div>
   );
 }
