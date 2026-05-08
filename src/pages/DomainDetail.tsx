@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowUpRight, Building2 } from "lucide-react";
+import { ArrowUpRight, Building2, ArrowRight } from "lucide-react";
 import type { Domain, Subdomain } from "@/src/types";
 import { getDomainBySlug } from "@/src/services/domains.service";
 import { listSubdomains } from "@/src/services/subdomains.service";
 import { domains as constantDomains } from "@/src/constants/domains";
+import PageHero from "@/src/components/ui/PageHero";
+
 
 function toSlug(value: string) {
   return value
@@ -125,7 +127,7 @@ export default function DomainDetail() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+      <div className="flex min-h-[60vh] items-center justify-center pt-[var(--navbar-height)]">
         <p className="text-slate-blue/60">Loading domain...</p>
       </div>
     );
@@ -133,7 +135,7 @@ export default function DomainDetail() {
 
   if (error || !domainData) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+      <div className="flex min-h-[60vh] items-center justify-center pt-[var(--navbar-height)]">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-blue">Domain not found</h2>
           <p className="mt-2 text-slate-blue/60">{error ?? "Please try again."}</p>
@@ -149,21 +151,22 @@ export default function DomainDetail() {
   }
 
   return (
-    <div className="flex flex-col pt-20">
-      <section className="relative min-h-[420px] flex items-center justify-center bg-brand-black overflow-hidden pt-12 pb-16">
-        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-size-[48px_48px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.04] text-accent-sky">
-          <Building2 size={360} strokeWidth={1} />
-        </div>
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <h1 className="text-3xl md:text-5xl font-display font-bold text-pure-white">
-            Smart Systems for <span className="text-accent-sky">{formattedDomain}</span>
-          </h1>
-          <p className="mt-4 mx-auto max-w-2xl text-pure-white/65 text-sm md:text-base">
-            {domainData.description ?? "Explore implementation-ready subdomains configured by your admin team."}
-          </p>
-        </div>
-      </section>
+    <div className="flex flex-col overflow-hidden">
+      {/* ── HERO ── */}
+      <PageHero
+        titleLine1="Smart Systems for"
+        titleLine2={`${formattedDomain} Operations`}
+        descriptionLine1="Deploy intelligent automation, real-time analytics, and secure"
+        descriptionLine2="access systems tailored specifically for your operational environment."
+      >
+        <button className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 group w-full sm:w-auto uppercase text-xs tracking-widest">
+          Explore Sub-Domains
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+        <button className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl w-full sm:w-auto uppercase text-xs tracking-widest">
+          Talk to Expert
+        </button>
+      </PageHero>
 
       <section className="py-20 bg-pure-white">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-12">

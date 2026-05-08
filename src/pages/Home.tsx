@@ -7,7 +7,7 @@ import { Search, PenTool, Code2, Layout, Zap, MessageSquare, Check, Menu, Plus }
 
 import OperationalChallenges from "../components/home/OperationalChallenges";
 import DomainSection from "../components/home/DomainSection";
-import PageHero from "../components/ui/PageHero";
+import HomePageHero from "../components/ui/home_PageHero";
 
 // --- Static Data Definitions ---
 const partners = [
@@ -139,56 +139,6 @@ const testimonials = [
   },
 ];
 
-const HeroDecorations = () => (
-  <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden max-w-[1400px] mx-auto">
-    {/* Floating Label Chips */}
-    <div className="absolute top-[15%] left-[5%] xl:left-[10%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
-      Autonomous AI
-    </div>
-    <div className="absolute top-[12%] right-[5%] xl:right-[15%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
-      Workflow
-    </div>
-    <div className="absolute top-[50%] right-[3%] xl:right-[8%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
-      Autonomous AI
-    </div>
-    <div className="absolute bottom-[25%] right-[5%] xl:right-[12%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
-      AI Workflow
-    </div>
-    <div className="absolute bottom-[15%] left-[10%] xl:left-[18%] bg-nx-white border border-[#e0e0e0] rounded-full px-3.5 py-1.5 text-xs text-[#333] shadow-[0_2px_8px_rgba(0,0,0,0.06)] bg-opacity-90 backdrop-blur-sm hidden md:block">
-      Autonomous AI
-    </div>
-
-    {/* Avatar Cards (Hidden for now) */}
-    {/* 
-    <div className="absolute top-[18%] left-[30%] w-24 h-24 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
-      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
-    </div>
-    <div className="absolute bottom-[25%] left-[22%] w-20 h-20 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
-      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
-    </div>
-    <div className="absolute bottom-[12%] right-[32%] w-24 h-24 rounded-2xl overflow-hidden shadow-xl hidden lg:block">
-      <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200" alt="Avatar" className="w-full h-full object-cover" />
-    </div>
-    */}
-
-    {/* Small Icon Badges */}
-    <div className="absolute top-[40%] left-[3%] xl:left-[8%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#2ecc71] hidden sm:flex">
-      <MessageSquare size={20} strokeWidth={2} />
-    </div>
-    <div className="absolute bottom-[40%] left-[6%] xl:left-[12%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#95a5a6] hidden sm:flex">
-      <Check size={20} strokeWidth={2} />
-    </div>
-    <div className="absolute bottom-[10%] left-[4%] xl:left-[8%] w-10 h-10 bg-[#f8f9fa] border border-[#e0e0e0] rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center text-[#34495e] hidden sm:flex">
-      <Menu size={20} strokeWidth={2} />
-    </div>
-    <div className="absolute top-[25%] right-[8%] xl:right-[15%] w-10 h-10 bg-[#eafaf1] rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-center justify-center text-[#27ae60] hidden sm:flex">
-      <Plus size={20} strokeWidth={2} />
-    </div>
-    <div className="absolute bottom-[35%] right-[5%] xl:right-[10%] w-10 h-10 bg-nx-white rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center justify-center text-[#7f8c8d] hidden sm:flex">
-      <Zap size={20} strokeWidth={2} />
-    </div>
-  </div>
-);
 
 export default function Home() {
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
@@ -197,60 +147,76 @@ export default function Home() {
     <div className="flex flex-col overflow-x-hidden w-full">
 
       {/* ─────────────────────────── HERO ─────────────────────────── */}
-      <PageHero
+      <HomePageHero
         titleLine1="We Transform Traditional Operations"
         titleLine2="to Smart Automated Ecosystems"
         descriptionLine1="NX-Solutions transforms hidden daily operational challenges that go"
         descriptionLine2="unnoticed but create major disruption across industries."
-        floatingElements={<HeroDecorations />}
       >
         <Link
           to="/solutions"
-          className="px-8 py-3.5 bg-[var(--nx-navy)] text-white rounded-full font-bold transition-all hover:bg-black hover:scale-105 shadow-lg text-center text-base whitespace-nowrap"
+          className="px-8 py-3.5 bg-white text-black rounded-full font-bold transition-all duration-300 hover:bg-gray-200 hover:scale-105 shadow-lg text-center text-base w-full sm:w-auto whitespace-nowrap"
         >
           Get Started
         </Link>
-      </PageHero>
+      </HomePageHero>
 
       {/* ───────────────────────── PARTNERS STRIP ───────────────────────── */}
-      <section className="py-8 md:py-14 lg:py-16 bg-[#111827] overflow-hidden w-full border-t border-white/5">
-        <div className="container mx-auto px-4 md:px-6 mb-6 md:mb-10 text-center">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-display font-medium italic text-white/90 mb-3 tracking-tight">
-            Our Partners and Recognitions
+      <section className="py-5 sm:py-7 md:py-10 bg-[#111827] overflow-hidden w-full border-t border-white/5">
+        <div className="container mx-auto px-4 text-center mb-4 md:mb-6">
+          <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-display font-medium italic text-white/90 mb-2 tracking-tight">
+            Our Partners & Recognitions
           </h2>
+
           <div
-            className="w-12 sm:w-20 md:w-32 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto"
+            className="w-12 sm:w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto"
             aria-hidden="true"
           />
         </div>
 
         <div className="relative">
-          <div className="flex overflow-hidden relative w-full mask-edges-partners">
+          <div className="flex overflow-hidden w-full mask-edges-partners">
             <style>{`
-              @keyframes scrollDark {
-                0%   { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
-              }
-              .scroll-track-dark {
-                display: flex;
-                width: max-content;
-                animation: scrollDark 40s linear infinite;
-              }
-              .mask-edges-partners {
-                -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-                mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-              }
-            `}</style>
-            <div className="scroll-track-dark gap-8 sm:gap-12 md:gap-16 lg:gap-24 items-center px-4 hover:[animation-play-state:paused]">
+        @keyframes scrollDark {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        .scroll-track-dark {
+          display: flex;
+          width: max-content;
+          animation: scrollDark 30s linear infinite;
+        }
+
+        .mask-edges-partners {
+          -webkit-mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 8%,
+            black 92%,
+            transparent
+          );
+          mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 8%,
+            black 92%,
+            transparent
+          );
+        }
+      `}</style>
+
+            <div className="scroll-track-dark gap-5 sm:gap-8 md:gap-12 items-center px-3">
               {[...partners, ...partners].map((partner, i) => (
                 <div
                   key={`partner-${i}-${partner.name}`}
-                  className="flex items-center space-x-2.5 md:space-x-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default group/p shrink-0"
+                  className="flex items-center space-x-2 md:space-x-3 shrink-0"
                 >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl bg-white/5 flex items-center justify-center font-black text-white/20 text-lg sm:text-xl md:text-2xl group-hover/p:text-blue-400 group-hover/p:bg-white/10 transition-colors shadow-sm">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-lg bg-white/10 flex items-center justify-center font-black text-blue-400 text-sm sm:text-base md:text-lg">
                     {partner.name.charAt(0)}
                   </div>
-                  <span className="font-display font-bold text-sm sm:text-base md:text-lg lg:text-xl text-white/80 tracking-tight whitespace-nowrap">
+
+                  <span className="font-display font-semibold text-xs sm:text-sm md:text-base text-white tracking-tight whitespace-nowrap">
                     {partner.name}
                   </span>
                 </div>

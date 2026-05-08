@@ -111,7 +111,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-pure-white pt-20 pb-0">
+    <div className="min-h-screen flex flex-col md:flex-row bg-pure-white pt-[var(--navbar-height)] pb-0">
       {/* ── LEFT PANEL ── */}
       <div className="hidden md:flex md:w-1/2 bg-brand-black relative p-16 flex-col justify-end overflow-hidden">
         <div className="absolute inset-0 opacity-20 grid-bg" />

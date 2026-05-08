@@ -8,6 +8,8 @@ import { listSubdomains } from "@/src/services/subdomains.service";
 import { listSolutionsBySubdomain } from "@/src/services/solutions.service";
 import { domains as constantDomains } from "@/src/constants/domains";
 import { solutionsData } from "@/src/constants/solutions";
+import PageHero from "@/src/components/ui/PageHero";
+
 
 type DetailItem = {
   title: string;
@@ -143,7 +145,62 @@ export default function SubDomainDetail() {
   const [error, setError] = useState<string | null>(null);
   const videoRef = useRef<HTMLElement>(null);
 
+  const subdomainName = domainData?.subdomains?.find(sd =>
+    sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
+  ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
+
+  const getImageForSubdomain = (title: string) => {
+    const t = title.toLowerCase();
+    // Added better handling for college/hostel and generic fallbacks
+    if (t.includes('hostel') || t.includes('dormitory') || t.includes('resident')) return "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1200&q=80";
+    if (t.includes('college') || t.includes('university') || t.includes('campus')) return "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80";
+
+    if (t.includes('gate') || t.includes('entry') || t.includes('entrance') || t.includes('access')) return "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80";
+    if (t.includes('reception') || t.includes('help desk') || t.includes('front desk') || t.includes('lobby') || t.includes('waiting')) return "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80";
+    if (t.includes('admin') || t.includes('office') || t.includes('management') || t.includes('hr') || t.includes('cabin')) return "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80";
+    if (t.includes('class') || t.includes('lecture')) return "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1200&q=80";
+    if (t.includes('lab') || t.includes('computer')) return "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80";
+    if (t.includes('library') || t.includes('study')) return "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80";
+    if (t.includes('auditorium') || t.includes('seminar') || t.includes('conference') || t.includes('meeting') || t.includes('hall')) return "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80";
+    if (t.includes('canteen') || t.includes('cafeteria') || t.includes('dining') || t.includes('pantry') || t.includes('kitchen') || t.includes('break')) return "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80";
+    if (t.includes('parking') || t.includes('transport') || t.includes('vehicle')) return "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200&q=80";
+    if (t.includes('workstation') || t.includes('pod') || t.includes('collaboration') || t.includes('team') || t.includes('open work')) return "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80";
+    if (t.includes('server') || t.includes('it room') || t.includes('network') || t.includes('control') || t.includes('security') || t.includes('guard')) return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&q=80";
+    if (t.includes('gym') || t.includes('fitness') || t.includes('pool') || t.includes('club') || t.includes('activity')) return "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
+    if (t.includes('garden') || t.includes('open space') || t.includes('play') || t.includes('perimeter')) return "https://images.unsplash.com/photo-1584485592882-7ea9e1a3bc86?w=1200&q=80";
+    if (t.includes('corridor') || t.includes('stair') || t.includes('lift') || t.includes('common')) return "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&q=80";
+    if (t.includes('storage') || t.includes('inventory') || t.includes('material') || t.includes('utility') || t.includes('maintenance')) return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80";
+
+    // Default premium building image
+    return "https://images.unsplash.com/photo-1497215844834-3151b1fba50d?w=1200&q=80";
+  };
+
+  const getSmartTitle = (title: string) => {
+    let t = title;
+    if (t.includes('/')) {
+      const parts = t.split('/').map(p => p.trim());
+      const singleWordPart = parts.find(p => !p.includes(' '));
+      t = singleWordPart || parts[1] || parts[0];
+    }
+    const boringWords = /\b(Area|Room|Block|Office|Desk|Hall|Cabins|Cabin|Cell|Zone|Center|Space|Hub|Unit|Units|Flats|Lounge|Floor)\b/gi;
+    t = t.replace(boringWords, '').trim();
+    const words = t.split(' ').filter(w => w.length > 0);
+    if (words.length > 1) {
+      if (t.toLowerCase().includes('entry') || t.toLowerCase().includes('gate')) return 'ENTRY';
+      if (t.toLowerCase().includes('admin')) return 'ADMIN';
+      if (t.toLowerCase().includes('staff') || t.toLowerCase().includes('faculty')) return 'STAFF';
+      if (t.toLowerCase().includes('computer') || t.toLowerCase().includes('lab')) return 'LABS';
+      if (t.toLowerCase().includes('meeting') || t.toLowerCase().includes('conference')) return 'MEETINGS';
+      if (t.toLowerCase().includes('parking') || t.toLowerCase().includes('transport')) return 'PARKING';
+      return words.reduce((a, b) => a.length > b.length ? a : b);
+    }
+    return words[0] || t;
+  };
+
   useEffect(() => {
+    const subdomainName = domainData?.subdomains?.find(sd =>
+      sd.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === subdomain
+    ) || (subdomain ? subdomain.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : "Sub-Domain");
     const load = async () => {
       if (!domain || !subdomain) {
         setError("Subdomain not found.");
@@ -388,52 +445,52 @@ export default function SubDomainDetail() {
   const activeVideo = normalizeYoutubeUrl(featuredSolution?.video_url ?? "");
   const activeDetails = featuredSolution
     ? {
-        challenges:
-          featuredSolution.localChallenges ??
-          fallbackDetails(featuredSolution).challenges,
-        layers:
-          featuredSolution.localLayers ?? fallbackDetails(featuredSolution).layers,
-      }
+      challenges:
+        featuredSolution.localChallenges ??
+        fallbackDetails(featuredSolution).challenges,
+      layers:
+        featuredSolution.localLayers ?? fallbackDetails(featuredSolution).layers,
+    }
     : {
-        challenges: [
-          {
-            title: "No solution selected",
-            desc: "Pick a solution above to view the video, challenges, and implementation layers.",
-            image: defaultChallengeImage,
-          },
-          {
-            title: "Add a solution in DB",
-            desc: "A database row or solution constant will populate this area automatically.",
-            image: defaultChallengeImage,
-          },
-          {
-            title: "Fallback content ready",
-            desc: "The page still renders the complete UI so the subdomain never feels blank.",
-            image: defaultChallengeImage,
-          },
-        ],
-        layers: [
-          {
-            title: "Video Layer",
-            desc: "Shows the solution video from the database or solutions.ts.",
-            image: defaultLayerImage,
-          },
-          {
-            title: "Challenge Layer",
-            desc: "Explains the operational problem solved by the selected subdomain.",
-            image: defaultLayerImage,
-          },
-          {
-            title: "Insight Layer",
-            desc: "Summarizes the implementation and automation value.",
-            image: defaultLayerImage,
-          },
-        ],
-      };
+      challenges: [
+        {
+          title: "No solution selected",
+          desc: "Pick a solution above to view the video, challenges, and implementation layers.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "Add a solution in DB",
+          desc: "A database row or solution constant will populate this area automatically.",
+          image: defaultChallengeImage,
+        },
+        {
+          title: "Fallback content ready",
+          desc: "The page still renders the complete UI so the subdomain never feels blank.",
+          image: defaultChallengeImage,
+        },
+      ],
+      layers: [
+        {
+          title: "Video Layer",
+          desc: "Shows the solution video from the database or solutions.ts.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Challenge Layer",
+          desc: "Explains the operational problem solved by the selected subdomain.",
+          image: defaultLayerImage,
+        },
+        {
+          title: "Insight Layer",
+          desc: "Summarizes the implementation and automation value.",
+          image: defaultLayerImage,
+        },
+      ],
+    };
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+      <div className="flex min-h-[60vh] items-center justify-center pt-[var(--navbar-height)]">
         <p className="text-slate-blue/60">Loading subdomain...</p>
       </div>
     );
@@ -441,7 +498,7 @@ export default function SubDomainDetail() {
 
   if (error || !domainData || !subdomainData) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center pt-20">
+      <div className="flex min-h-[60vh] items-center justify-center pt-[var(--navbar-height)]">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-blue">Subdomain not found</h2>
           <p className="mt-2 text-slate-blue/60">{error ?? "Please try again."}</p>
@@ -450,23 +507,27 @@ export default function SubDomainDetail() {
     );
   }
 
+  const heroImage = getImageForSubdomain(subdomainName);
+  const smartTitle = getSmartTitle(subdomainName);
+
+
   return (
-    <div className="flex flex-col pt-20">
-      <section className="relative min-h-[400px] md:min-h-[500px] bg-brand-black overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-black/90 via-brand-black/80 to-brand-black" />
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <span className="text-[10px] md:text-xs font-bold text-accent-sky tracking-[.3em] uppercase">
-            {domainData.name}
-          </span>
-          <h1 className="mt-4 text-4xl md:text-6xl font-display font-bold text-pure-white uppercase tracking-tight">
-            {subdomainData.name}
-          </h1>
-          <p className="mt-4 mx-auto max-w-2xl text-pure-white/70 text-sm md:text-base">
-            {subdomainData.description ??
-              "Targeted solutions and media are managed from admin with DB + constants merged."}
-          </p>
-        </div>
-      </section>
+    <div className="flex flex-col bg-nx-navy overflow-hidden">
+      {/* ── HERO ── */}
+      <PageHero
+        titleLine1="Sub-Domain"
+        titleLine2={smartTitle}
+        descriptionLine1={`Empowering the ${subdomainName} ecosystem with intelligent,`}
+        descriptionLine2="responsive digital layers for superior operations."
+      >
+        <button className="w-full sm:w-auto px-10 py-4 bg-black text-white text-xs font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 uppercase tracking-widest">
+          Explore Solutions
+        </button>
+        <button className="w-full sm:w-auto px-10 py-4 bg-white text-black text-xs font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl uppercase tracking-widest">
+          View Live Demo
+        </button>
+      </PageHero>
+
 
       <section className="py-20 bg-pure-white">
         <div className="w-full max-w-[90rem] mx-auto px-6 lg:px-12">
@@ -496,11 +557,10 @@ export default function SubDomainDetail() {
                         block: "center",
                       });
                     }}
-                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all ${
-                      solution.id === activeSolutionId
-                        ? "border-blue-500 ring-2 ring-blue-500/20"
-                        : "border-slate-200 hover:border-slate-300"
-                    } cursor-pointer`}
+                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all ${solution.id === activeSolutionId
+                      ? "border-blue-500 ring-2 ring-blue-500/20"
+                      : "border-slate-200 hover:border-slate-300"
+                      } cursor-pointer`}
                   >
                     <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
                       {solution.thumbnail_url || solution.localChallenges?.[0]?.image ? (
@@ -538,11 +598,10 @@ export default function SubDomainDetail() {
                           setActiveChallenge(0);
                           setActiveLayer(0);
                         }}
-                        className={`mt-4 w-full rounded-xl px-4 py-2 text-sm font-bold transition-colors ${
-                          solution.id === activeSolutionId
-                            ? "bg-blue-600 text-white"
-                            : "bg-slate-100 text-slate-blue hover:bg-slate-200"
-                        }`}
+                        className={`mt-4 w-full rounded-xl px-4 py-2 text-sm font-bold transition-colors ${solution.id === activeSolutionId
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 text-slate-blue hover:bg-slate-200"
+                          }`}
                       >
                         Use this solution
                       </button>
@@ -643,11 +702,10 @@ export default function SubDomainDetail() {
                   <button
                     key={`${challenge.title}-${i}`}
                     onClick={() => setActiveChallenge(i)}
-                    className={`w-full text-left p-5 rounded-2xl transition-all ${
-                      activeChallenge === i
-                        ? "bg-white shadow-md border-l-4 border-accent-sky"
-                        : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
-                    }`}
+                    className={`w-full text-left p-5 rounded-2xl transition-all ${activeChallenge === i
+                      ? "bg-white shadow-md border-l-4 border-accent-sky"
+                      : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
+                      }`}
                   >
                     <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1">
                       {challenge.title}
@@ -704,11 +762,10 @@ export default function SubDomainDetail() {
                   <button
                     key={`${layer.title}-${i}`}
                     onClick={() => setActiveLayer(i)}
-                    className={`w-full text-left p-5 rounded-2xl transition-all ${
-                      activeLayer === i
-                        ? "bg-white shadow-md border-l-4 border-accent-sky"
-                        : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
-                    }`}
+                    className={`w-full text-left p-5 rounded-2xl transition-all ${activeLayer === i
+                      ? "bg-white shadow-md border-l-4 border-accent-sky"
+                      : "bg-white/70 border border-slate-200/60 hover:shadow-sm"
+                      }`}
                   >
                     <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1">
                       {layer.title}

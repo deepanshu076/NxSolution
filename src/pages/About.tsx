@@ -2,21 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Target, Zap, Globe, Users, Linkedin, ArrowUpRight, Shield, Activity, Brain } from 'lucide-react';
-import PageHero from "../components/ui/PageHero";
-
-const AboutDecorations = () => (
-  <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden max-w-[1400px] mx-auto">
-    <div className="absolute top-[18%] left-[8%] bg-nx-white border border-nx-steel/10 rounded-full px-4 py-2 text-[10px] font-bold text-nx-navy shadow-sm bg-opacity-90 backdrop-blur-sm hidden md:flex items-center gap-2">
-      <Shield size={12} /> DETERMINISTIC
-    </div>
-    <div className="absolute top-[15%] right-[10%] bg-nx-white border border-nx-steel/10 rounded-full px-4 py-2 text-[10px] font-bold text-nx-navy shadow-sm bg-opacity-90 backdrop-blur-sm hidden md:flex items-center gap-2">
-      <Activity size={12} /> HIGH PERFORMANCE
-    </div>
-    <div className="absolute bottom-[25%] left-[5%] bg-nx-white border border-nx-steel/10 rounded-full px-4 py-2 text-[10px] font-bold text-nx-navy shadow-sm bg-opacity-90 backdrop-blur-sm hidden md:flex items-center gap-2">
-      <Brain size={12} /> AI INFRASTRUCTURE
-    </div>
-  </div>
-);
+import PageHero from "@/src/components/ui/PageHero";
 
 const values = [
   {
@@ -89,12 +75,17 @@ export default function About() {
         titleLine2="Operational Intelligence"
         descriptionLine1="We build deterministic, production-grade smart facility infrastructure."
         descriptionLine2="No wrappers, no latency — just absolute reliability at scale."
-        floatingElements={<AboutDecorations />}
       >
-        <Link to="/contact" className="px-8 py-3.5 bg-nx-navy text-nx-white rounded-full font-bold transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-lg text-sm whitespace-nowrap">
+        <Link
+          to="/contact"
+          className="px-10 py-4 bg-black text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-sm uppercase tracking-widest whitespace-nowrap"
+        >
           Work With Us
         </Link>
-        <Link to="/projects" className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy rounded-full font-bold hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 text-sm whitespace-nowrap">
+        <Link
+          to="/projects"
+          className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-sm uppercase tracking-widest whitespace-nowrap"
+        >
           View Projects
         </Link>
       </PageHero>

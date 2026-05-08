@@ -20,7 +20,7 @@ import {
   Bot,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageHero from "../components/ui/PageHero";
+import PageHero from "@/src/components/ui/PageHero";
 
 // ── DATA DEFINITIONS ──
 
@@ -409,7 +409,7 @@ export default function Products() {
   }, [activeCategory]);
 
   return (
-    <div className="flex flex-col pt-16 lg:pt-20 bg-soft-white min-h-screen">
+    <div className="flex flex-col overflow-hidden bg-nx-white">
       {/* ── HERO SECTION ── */}
       <PageHero
         titleLine1="Technology That Powers Our"
@@ -417,10 +417,13 @@ export default function Products() {
         descriptionLine1="Our products are part of integrated smart systems designed to deliver"
         descriptionLine2="reliable, scalable, and efficient operational outcomes."
       >
-        <Link to="/contact" className="px-8 py-3.5 bg-nx-navy text-nx-white rounded-full font-bold transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-lg text-sm whitespace-nowrap">
+        <Link
+          to="/contact"
+          className="px-10 py-4 bg-black text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-xs uppercase tracking-widest whitespace-nowrap"
+        >
           Request Demo
         </Link>
-        <button className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy rounded-full font-bold hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 text-sm whitespace-nowrap">
+        <button className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-xs uppercase tracking-widest whitespace-nowrap">
           Download Catalog
         </button>
       </PageHero>

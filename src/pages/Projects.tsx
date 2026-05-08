@@ -22,7 +22,7 @@ import {
   Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageHero from "../components/ui/PageHero";
+import PageHero from "@/src/components/ui/PageHero";
 
 
 const domainProjects = [
@@ -117,7 +117,7 @@ export default function Projects() {
   });
 
   return (
-    <div className="flex flex-col pt-20">
+    <div className="flex flex-col overflow-hidden bg-nx-white">
       {/* ── HERO SECTION ── */}
       <PageHero
         titleLine1="Smart Systems"
@@ -125,8 +125,12 @@ export default function Projects() {
         descriptionLine1="Explore how our solutions are applied across industries to solve"
         descriptionLine2="real operational challenges."
       >
-        <button className="px-8 py-3.5 bg-nx-navy text-white font-bold rounded-full transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-lg text-sm whitespace-nowrap">Explore Domains</button>
-        <button className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy font-bold rounded-full hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 text-sm whitespace-nowrap">Talk to Expert</button>
+        <button className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap">
+          Explore Domains
+        </button>
+        <button className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap">
+          Talk to Expert
+        </button>
       </PageHero>
 
       {/* ── PROJECTS FILTER & SEARCH ── */}
@@ -229,17 +233,20 @@ export default function Projects() {
 
 
       {/* ── VISION CTA SECTION ── */}
-      <section className="py-32 bg-nx-ice border-t border-nx-steel/5">
+      <section className="py-32 bg-black border-t border-white/10">
         <div className="container mx-auto px-6 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-7xl font-display font-black text-nx-navy mb-12 max-w-4xl mx-auto uppercase tracking-tighter leading-[0.9]"
+            className="text-4xl md:text-7xl font-display font-black text-white mb-12 max-w-4xl mx-auto uppercase tracking-tighter leading-[0.9]"
           >
-            Have a Vision <br /> <span className="text-nx-steel/40">For Your Space?</span>
+            Have a Vision <br /> <span className="text-white/40">For Your Space?</span>
           </motion.h2>
-          <Link to="/contact" className="inline-flex items-center gap-4 px-12 py-6 bg-nx-navy text-nx-white text-xs font-black rounded-2xl transition-all hover:scale-105 shadow-2xl shadow-nx-navy/30 uppercase tracking-[0.2em] group">
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-4 px-12 py-6 bg-white text-black text-xs font-black rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-gray-200 shadow-2xl shadow-white/20 uppercase tracking-[0.2em] group"
+          >
             Initiate Project Discussion
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>

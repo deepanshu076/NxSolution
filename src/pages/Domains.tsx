@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { domains } from "../constants/domains";
 import type { Domain } from "@/src/types";
 import { listDomains } from "@/src/services/domains.service";
-import PageHero from "../components/ui/PageHero";
+import PageHero from "@/src/components/ui/PageHero";
 
 const solutions = [
   {
@@ -109,7 +109,7 @@ export default function Domains() {
   const uiDomains = Array.from(domainMap.values());
 
   return (
-    <div className="flex flex-col pt-16 md:pt-20">
+    <div className="flex flex-col overflow-hidden bg-nx-white">
       {/* ── HERO SECTION ── */}
       <PageHero
         titleLine1="Domains We Power with"
@@ -117,10 +117,13 @@ export default function Domains() {
         descriptionLine1="Intelligent systems tailored for different industries — solving real"
         descriptionLine2="operational challenges across diverse environments."
       >
-        <Link to="/solutions" className="px-10 py-4 bg-nx-navy text-nx-white rounded-full font-black transition-all hover:bg-nx-navy-hover hover:scale-105 shadow-xl w-full sm:w-auto text-center text-[10px] uppercase tracking-widest whitespace-nowrap">
+        <Link
+          to="/solutions"
+          className="px-10 py-4 bg-black text-white rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-[11px] uppercase tracking-widest whitespace-nowrap"
+        >
           Explore Solutions
         </Link>
-        <button className="px-10 py-4 border border-nx-navy/20 text-nx-navy rounded-full font-black hover:bg-nx-navy/5 backdrop-blur-sm transition-all hover:scale-105 w-full sm:w-auto text-center text-[10px] uppercase tracking-widest whitespace-nowrap">
+        <button className="px-10 py-4 bg-white text-black rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-xl text-[11px] uppercase tracking-widest whitespace-nowrap">
           Talk to Expert
         </button>
       </PageHero>

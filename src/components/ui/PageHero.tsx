@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import React from "react";
-import HeroGrid from "../home/HeroGrid";
 
 interface PageHeroProps {
     titleLine1: string;
@@ -22,21 +21,28 @@ export default function PageHero({
     children,
 }: PageHeroProps) {
     return (
-        <section className="relative h-screen flex flex-col items-center justify-center pt-[64px] bg-[var(--nx-white)] text-center overflow-hidden w-full">
-            {/* Animated Background Grid */}
-            <HeroGrid />
+        <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[85vh] flex flex-col items-center justify-center pt-[var(--navbar-height)] text-center overflow-hidden w-full px-4 sm:px-6 lg:px-8">
+            {/* Background Image */}
+            <img
+                src="/images/wallpapersden.com_demon-slayer-kimetsu-no-yaiba-4k-characters-key-art_3840x2160.jpg"
+                alt="Background"
+                className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+            />
+
+            {/* Subtle Contrast Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none"></div>
 
             {/* Floating Elements (Background/Sides) */}
             {floatingElements && (
-                <div className="absolute inset-0 pointer-events-none z-10">
+                <div className="absolute inset-0 pointer-events-none z-20">
                     {floatingElements}
                 </div>
             )}
 
-            {/* Content */}
-            <div className="container mx-auto max-w-[1200px] relative z-20 flex flex-col items-center justify-center text-center w-full pointer-events-none">
+            {/* Content Container */}
+            <div className="container mx-auto max-w-[1200px] relative z-30 flex flex-col items-center justify-center text-center w-full pointer-events-none py-10 sm:py-12 md:py-20">
                 {topContent && (
-                    <div className="mb-6 w-full flex justify-center pointer-events-auto">
+                    <div className="mb-4 md:mb-6 w-full flex justify-center pointer-events-auto">
                         {topContent}
                     </div>
                 )}
@@ -45,8 +51,7 @@ export default function PageHero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="w-full max-w-[850px] mx-auto text-center font-display font-[800] text-[var(--nx-navy)] mb-4 leading-[1.2] tracking-tight pointer-events-auto"
-                    style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
+                    className="w-full max-w-[95%] md:max-w-[1000px] mx-auto text-center font-display font-[900] text-white mb-4 md:mb-6 leading-[1.1] tracking-tight pointer-events-auto drop-shadow-2xl text-[34px]"
                 >
                     <span className="block">{titleLine1}</span>
                     {titleLine2 && (
@@ -58,7 +63,7 @@ export default function PageHero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="text-[var(--nx-steel)] text-base max-w-[650px] mx-auto mb-6 md:mb-8 leading-relaxed px-4 sm:px-0 text-balance pointer-events-auto"
+                    className="text-white/90 text-base sm:text-lg md:text-xl max-w-[90%] md:max-w-[800px] mx-auto mb-8 md:mb-10 leading-relaxed text-balance pointer-events-auto drop-shadow-lg"
                 >
                     <span className="block">{descriptionLine1}</span>
                     {descriptionLine2 && <span className="block">{descriptionLine2}</span>}
@@ -68,8 +73,8 @@ export default function PageHero({
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
-                        className="flex flex-wrap items-center justify-center gap-5 relative z-20 mt-10 pointer-events-auto"
+                        transition={{ delay: 0.4, duration: 0.5 }}
+                        className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-5 relative z-30 mt-4 md:mt-8 pointer-events-auto w-full"
                     >
                         {children}
                     </motion.div>

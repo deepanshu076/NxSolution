@@ -52,7 +52,7 @@ export default function App() {
     <Router>
       <ToastProvider>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
             <Routes>
               {/* Admin Routes with nested layout */}
               <Route
@@ -61,7 +61,7 @@ export default function App() {
                   <ProtectedRoute requiredRole="admin">
                     <>
                       <Navbar />
-                      <main className="grow pt-[64px]">
+                      <main className="grow pt-[var(--navbar-height)]">
                         <AdminLayout>
                           <Routes>
                             <Route index element={<AdminDashboard />} />

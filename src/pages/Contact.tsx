@@ -16,7 +16,7 @@ import {
    ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageHero from "../components/ui/PageHero";
+import PageHero from "@/src/components/ui/PageHero";
 
 export default function Contact() {
    return (
@@ -28,8 +28,18 @@ export default function Contact() {
             descriptionLine1="Tell us your requirement and we'll guide you to the right"
             descriptionLine2="solution — enquiry, quote, demo, or custom project."
          >
-            <Link to="/enquiry" className="px-8 py-3.5 bg-nx-navy text-nx-white font-bold rounded-full transition-all hover:scale-105 shadow-lg text-sm whitespace-nowrap text-center">Send Enquiry</Link>
-            <Link to="/get-quote" className="px-8 py-3.5 border border-nx-navy/20 text-nx-navy font-bold rounded-full hover:bg-nx-navy/5 text-sm whitespace-nowrap text-center transition-all hover:scale-105">Get Quote</Link>
+            <Link
+               to="/enquiry"
+               className="px-10 py-4 bg-black text-white font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-2xl shadow-black/20 text-sm uppercase tracking-widest whitespace-nowrap text-center"
+            >
+               Send Enquiry
+            </Link>
+            <Link
+               to="/get-quote"
+               className="px-10 py-4 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-xl text-sm whitespace-nowrap text-center"
+            >
+               Get Quote
+            </Link>
          </PageHero>
 
          {/* ── OPTIONS GRID ── */}
