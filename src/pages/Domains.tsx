@@ -118,6 +118,7 @@ export default function Domains() {
       <PageHero
         titleLine1="Domains We Power with"
         titleLine2="Smart Ecosystems"
+        backgroundImage="/images/manufacturing-bg.png"
         descriptionLine1="Intelligent systems tailored for different industries — solving real"
         descriptionLine2="operational challenges across diverse environments."
       >

@@ -122,6 +122,7 @@ export default function Projects() {
       <PageHero
         titleLine1="Smart Systems"
         titleLine2="Across Domains"
+        backgroundImage="/images/retail-bg.png"
         descriptionLine1="Explore how our solutions are applied across industries to solve"
         descriptionLine2="real operational challenges."
       >

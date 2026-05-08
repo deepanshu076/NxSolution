@@ -414,6 +414,7 @@ export default function Products() {
       <PageHero
         titleLine1="Engineering Premium"
         titleLine2="Ecosystem Hardware"
+        backgroundImage="/images/logistics-bg.png"
         descriptionLine1="Deploy production-grade hardware designed for deterministic"
         descriptionLine2="performance and seamless facility integration."
       >

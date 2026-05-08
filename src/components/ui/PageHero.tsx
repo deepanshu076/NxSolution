@@ -6,6 +6,7 @@ interface PageHeroProps {
     titleLine2?: string;
     descriptionLine1: string;
     descriptionLine2?: string;
+    backgroundImage?: string;
     topContent?: React.ReactNode;
     floatingElements?: React.ReactNode;
     children?: React.ReactNode;
@@ -16,6 +17,7 @@ export default function PageHero({
     titleLine2,
     descriptionLine1,
     descriptionLine2,
+    backgroundImage = "/images/photo1.jpeg",
     topContent,
     floatingElements,
     children,
@@ -24,7 +26,7 @@ export default function PageHero({
         <section className="relative min-h-[60vh] md:min-h-[70vh] lg:min-h-[85vh] flex flex-col items-center justify-center pt-[var(--navbar-height)] text-center overflow-hidden w-full px-4 sm:px-6 lg:px-8">
             {/* Background Image */}
             <img
-                src="/images/wallpapersden.com_demon-slayer-kimetsu-no-yaiba-4k-characters-key-art_3840x2160.jpg"
+                src={backgroundImage}
                 alt="Background"
                 className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
             />
@@ -51,7 +53,7 @@ export default function PageHero({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="w-full max-w-[95%] md:max-w-[1000px] mx-auto text-center font-display font-[900] text-white mb-4 md:mb-6 leading-[1.1] tracking-tight pointer-events-auto drop-shadow-2xl text-[34px]"
+                    className="w-full max-w-[95%] md:max-w-[1200px] mx-auto text-center font-display font-[900] text-white mb-4 md:mb-6 leading-[1.1] tracking-tight pointer-events-auto drop-shadow-2xl text-[30px] sm:text-[32px] md:text-[38px] lg:text-[42px] xl:text-[48px]"
                 >
                     <span className="block">{titleLine1}</span>
                     {titleLine2 && (

@@ -517,6 +517,7 @@ export default function SubDomainDetail() {
       <PageHero
         titleLine1="Sub-Domain"
         titleLine2={smartTitle}
+        backgroundImage={heroImage}
         descriptionLine1={`Empowering the ${subdomainName} ecosystem with intelligent,`}
         descriptionLine2="responsive digital layers for superior operations."
       >

@@ -31,7 +31,7 @@ export default function PageHero({
                 className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
             >
                 <source
-                    src="/images/vidssave.com%20Demon%20Slayer_%20Kimetsu%20no%20Yaiba%20Infinity%20Castle%20_%20OFFICIAL%20HINDI%20TRAILER%201080P.mp4"
+                    src="/images/video1.mp4"
                     type="video/mp4"
                 />
             </video>

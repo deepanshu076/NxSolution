@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import PageHero from "@/src/components/ui/PageHero";
 
 const domainList = [
   { id: "education", name: "Education", icon: Building2, image: "/images/education-bg.png" },
@@ -92,19 +93,13 @@ export default function Solutions() {
   return (
     <div className="flex flex-col pt-24 min-h-screen bg-gray-50">
       {/* ── HERO SECTION ── */}
-      <section className="relative py-20 md:py-32 bg-brand-black overflow-hidden">
-        <div className="absolute inset-0 opacity-10 grid-bg" />
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-[clamp(32px,6vw,72px)] font-display font-bold text-soft-white mb-8 leading-[1.1]">
-              Integrated Smart Solutions for <span className="text-warm-gold-beige">Modern Operations</span>
-            </h1>
-            <p className="text-soft-white/50 text-lg md:text-xl mb-10 leading-relaxed max-w-2xl mx-auto">
-              Intelligent systems designed to simplify operations, improve control, and optimize performance across industries.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        titleLine1="Integrated Smart Solutions"
+        titleLine2="for Modern Operations"
+        backgroundImage="/images/healthcare-bg.png"
+        descriptionLine1="Intelligent systems designed to simplify operations, improve control,"
+        descriptionLine2="and optimize performance across industries."
+      />
 
       {/* ── INTERACTIVE DOMAIN SELECTOR ── */}
       <section className="py-16 md:py-24 bg-gray-50 border-b border-gray-200">

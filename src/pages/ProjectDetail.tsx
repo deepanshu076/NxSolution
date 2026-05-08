@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { projectsData } from "@/src/constants/projects";
+import PageHero from "@/src/components/ui/PageHero";
 import {
   Play, ArrowRight, Target, Zap, Cpu, Layout, Settings, Share2,
   CheckCircle2, XCircle, Shield, BarChart3, Wifi, Lock, Activity,
@@ -11,14 +12,14 @@ import { useState, useRef } from "react";
 
 /* ─── per-domain colour accent ─── */
 const ACCENTS: Record<string, { border: string; glow: string; cls: string; dot: string }> = {
-  education: { border: "#F97316", glow: "rgba(249,115,22,.25)", cls: "text-orange-500", dot: "bg-orange-400" },
-  healthcare: { border: "#22D3EE", glow: "rgba(34,211,238,.20)", cls: "text-cyan-400", dot: "bg-cyan-400" },
-  manufacturing: { border: "#A3E635", glow: "rgba(163,230,53,.20)", cls: "text-lime-400", dot: "bg-lime-400" },
-  corporate: { border: "#818CF8", glow: "rgba(129,140,248,.20)", cls: "text-indigo-400", dot: "bg-indigo-400" },
-  retail: { border: "#FB923C", glow: "rgba(251,146,60,.20)", cls: "text-orange-400", dot: "bg-orange-400" },
-  logistics: { border: "#34D399", glow: "rgba(52,211,153,.20)", cls: "text-emerald-400", dot: "bg-emerald-400" },
-  government: { border: "#60A5FA", glow: "rgba(96,165,250,.20)", cls: "text-blue-400", dot: "bg-blue-400" },
-  residential: { border: "#F472B6", glow: "rgba(244,114,182,.20)", cls: "text-pink-400", dot: "bg-pink-400" },
+  education: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  healthcare: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  manufacturing: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  corporate: { border: "var(--nx-steel)", glow: "rgba(71,85,105,.15)", cls: "text-nx-steel", dot: "bg-nx-steel" },
+  retail: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  logistics: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  government: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
+  residential: { border: "var(--nx-navy)", glow: "rgba(0,28,61,.15)", cls: "text-nx-navy", dot: "bg-nx-navy" },
 };
 
 /* ─── domain icons ─── */
@@ -205,7 +206,7 @@ export default function ProjectDetail() {
   };
 
   return (
-    <div className="flex flex-col pt-20 bg-pure-white">
+    <div className="flex flex-col bg-nx-white">
       <style>{`
         .custom-scroll-${project.slug}::-webkit-scrollbar { width: 5px; }
         .custom-scroll-${project.slug}::-webkit-scrollbar-track { background: transparent; }
@@ -214,52 +215,34 @@ export default function ProjectDetail() {
 
 
       {/* ── 1. HERO ── */}
-      <section className="relative min-h-[480px] bg-[#0B1221] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <img src={project.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221] via-[#0B1221]/70 to-transparent" />
-        <div className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className={`text-[10px] font-black uppercase tracking-[0.4em] mb-5 ${accent.cls}`}
-          >
+      <PageHero
+        titleLine1={project.title}
+        backgroundImage={project.image}
+        descriptionLine1={project.overview.split(".")[0] + "."}
+        topContent={
+          <div className={`text-[11px] font-black uppercase tracking-[0.4em] ${accent.cls === 'text-nx-navy' ? 'text-nx-steel-light' : accent.cls}`}>
             {project.domainId} • {project.type}
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-white uppercase tracking-tight leading-[1.05] mb-6 max-w-4xl"
-          >
-            {project.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="text-white/50 text-base md:text-lg max-w-2xl leading-relaxed"
-          >
-            {project.overview.split(".")[0]}.
-          </motion.p>
-          {/* Metrics strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-            className="flex flex-wrap justify-center gap-6 mt-10"
-          >
-            {project.metrics.map((m, i) => (
-              <div key={i} className="text-center">
-                <p className="font-display font-black text-2xl md:text-3xl text-white leading-none">{m.value}</p>
-                <p className="text-white/40 text-[9px] font-black uppercase tracking-widest mt-1">{m.label}</p>
-              </div>
-            ))}
-          </motion.div>
+          </div>
+        }
+      >
+        <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-4">
+          {project.metrics.map((m, i) => (
+            <div key={i} className="text-center">
+              <p className="font-display font-[800] text-3xl md:text-5xl text-white leading-none drop-shadow-md">{m.value}</p>
+              <p className="text-white/50 text-[10px] font-bold uppercase tracking-[0.3em] mt-3">{m.label}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </PageHero>
 
-      <section className="py-12 bg-[#F8F9FB] relative overflow-hidden">
+      <section className="py-12 bg-nx-ice relative overflow-hidden">
         {/* Subtle background texture */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-8">
-            <h2 className="text-xl md:text-2xl font-display font-black text-brand-black uppercase tracking-tight" style={{ color: accent.border }}>
-              Sub-Domain <span className="text-brand-black">Coverage</span>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-display font-black text-nx-navy uppercase tracking-tight">
+              Sub-Domain <span className="text-nx-steel">Coverage</span>
             </h2>
           </div>
           <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x justify-start">
@@ -273,14 +256,10 @@ export default function ProjectDetail() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                   onClick={() => { setActiveSubDomain(i); setActiveSolCard(0); setIsPlaying(false); }}
-                  className="relative flex-shrink-0 w-[220px] h-[155px] rounded-[1.75rem] overflow-hidden snap-start cursor-pointer transition-all duration-300 hover:-translate-y-1"
-                  style={{
-                    border: isActive ? `3px solid ${accent.border}` : "3px solid transparent",
-                    boxShadow: isActive ? `0 0 28px ${accent.glow}` : "0 4px 20px rgba(0,0,0,0.10)",
-                  }}
+                  className={`relative flex-shrink-0 w-[240px] h-[160px] rounded-[2rem] overflow-hidden snap-start cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-[var(--shadow-soft)] border-2 ${isActive ? 'border-nx-navy' : 'border-transparent'}`}
                 >
                   <img src={card.image} alt={card.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/90 via-nx-navy/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center shrink-0">
                       <DomainIcon size={16} className="text-white" strokeWidth={1.8} />
@@ -302,19 +281,19 @@ export default function ProjectDetail() {
         const solutions = (SUB_DOMAIN_SOLUTIONS[project.slug]?.[activeSubDomain]) ?? FALLBACK_SOLUTIONS;
         const activeSolution = solutions[activeSolCard] ?? solutions[0];
         return (
-          <section className="pb-20 bg-[#F8F9FB] relative z-10">
+          <section className="pb-20 bg-nx-ice relative z-10">
             <div className="container mx-auto px-6">
 
-              {/* ── Unified grey frame wrapping both cards + video ── */}
-              <div className="bg-[#E8EAED] rounded-[2.5rem] p-8 md:p-12 flex flex-col gap-10 border border-slate-200/60 shadow-[inset_0_2px_12px_rgba(0,0,0,0.05)]">
+              {/* ── Unified frame wrapping both cards + video ── */}
+              <div className="bg-nx-white/50 backdrop-blur-sm rounded-[2.5rem] p-8 md:p-12 flex flex-col gap-10 border border-nx-steel/10 shadow-sm">
 
                 {/* Top: section title + solution cards */}
                 <div>
-                  <div className="mb-6">
-                    <h2 className="text-xl md:text-2xl font-display font-black text-[#1A1F2B] uppercase tracking-tight">
-                      Targeted <span style={{ color: accent.border }}>Solutions</span>
+                  <div className="mb-8">
+                    <h2 className="text-2xl md:text-3xl font-display font-black text-nx-navy uppercase tracking-tight">
+                      Targeted <span className="text-nx-steel">Solutions</span>
                     </h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary mt-1">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-nx-steel-light mt-2">
                       Focused on {subCards[activeSubDomain]?.label}
                     </p>
                   </div>
@@ -334,12 +313,7 @@ export default function ProjectDetail() {
                             setIsPlaying(false);
                             setTimeout(() => videoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
                           }}
-                          className="relative flex-shrink-0 w-[220px] h-[150px] rounded-[1.5rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
-                          style={{
-                            border: isSolActive ? `3px solid ${accent.border}` : "3px solid rgba(255,255,255,0.6)",
-                            boxShadow: isSolActive ? `0 0 24px ${accent.glow}` : "0 4px 16px rgba(0,0,0,0.08)",
-                            opacity: isSolActive ? 1 : 0.6,
-                          }}
+                          className={`relative flex-shrink-0 w-[220px] h-[150px] rounded-[1.5rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-[var(--shadow-soft)] border-2 ${isSolActive ? 'border-nx-navy opacity-100' : 'border-white/60 opacity-60'}`}
                         >
                           <img src={sol.image} alt={sol.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -365,8 +339,7 @@ export default function ProjectDetail() {
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.35 }}
-                    className="relative w-full max-w-3xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl group"
-                    style={{ border: `4px solid ${accent.border}`, boxShadow: `0 0 60px ${accent.glow}` }}
+                    className="relative w-full max-w-3xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl group border-4 border-nx-navy/20"
                   >
                     {isPlaying ? (
                       <iframe
@@ -378,7 +351,7 @@ export default function ProjectDetail() {
                     ) : (
                       <>
                         <img src={activeSolution.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/80 to-transparent" />
                         <button onClick={() => setIsPlaying(true)} className="absolute inset-0 flex items-center justify-center">
                           <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110" style={{ background: accent.border }}>
                             <Play size={26} fill="white" className="text-white ml-1" />
@@ -400,13 +373,13 @@ export default function ProjectDetail() {
         );
       })()}
 
-      {/* ── 4. PROBLEM SECTION: Content Left, Image Right inside Grey Frame ── */}
-      <section className="py-20 bg-white">
+      {/* ── 4. PROBLEM SECTION ── */}
+      <section className="py-20 bg-nx-white">
         <div className="container mx-auto px-6">
-          <div className="bg-[#F4F5F7] rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-nx-ice rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 lg:gap-16 items-center border border-nx-steel/5">
 
             {/* Left: Image Container (White Box) - NOW MOVED TO RIGHT VISUALLY */}
-            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-2 order-1">
+            <div className="bg-nx-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-2 order-1">
               <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   <motion.img
@@ -420,9 +393,9 @@ export default function ProjectDetail() {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </AnimatePresence>
-                {/* Subtle red tint overlay for "Problem" */}
-                <div className="absolute inset-0 bg-[#E5484D]/10 mix-blend-multiply transition-colors duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-[#0B1221]/20 to-transparent" />
+                {/* Subtle tint overlay for "Problem" */}
+                <div className="absolute inset-0 bg-nx-steel/10 mix-blend-multiply transition-colors duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/80 via-nx-navy/20 to-transparent" />
 
                 <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
                   <p className="text-white text-xs font-black uppercase tracking-widest mb-1">Impact Area</p>
@@ -436,8 +409,8 @@ export default function ProjectDetail() {
             {/* Right: Title & Scrollable Cards - NOW MOVED TO LEFT VISUALLY */}
             <div className="flex flex-col h-full justify-center lg:order-1 order-2">
               <div className="mb-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-secondary mb-3">The Problem</p>
-                <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight">
+                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-nx-steel-light mb-3">The Problem</p>
+                <h2 className="text-3xl md:text-4xl font-display font-black text-nx-navy leading-tight">
                   Operational Challenges
                 </h2>
               </div>
@@ -451,12 +424,12 @@ export default function ProjectDetail() {
                     <motion.div
                       key={i}
                       onClick={() => setActiveReq(i)}
-                      className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isActive ? "bg-[#FDF2F8] shadow-lg border border-[#FBCFE8] scale-105 z-10" : "bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:border-slate-300"
+                      className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 ${isActive ? "bg-nx-white shadow-xl border border-nx-navy/10 scale-[1.02] z-10" : "bg-nx-white/40 border border-nx-steel/10 hover:border-nx-navy/20"
                         }`}
                     >
 
                       <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
-                        <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
+                        <h3 className="text-sm md:text-base font-bold text-nx-navy mb-1 leading-snug">
                           {title}
                         </h3>
                         {subtitle && (
@@ -475,13 +448,13 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* ── 5. SOLUTION SECTION: Image Left, List Right inside Grey Frame ── */}
-      <section className="py-10 pb-20 bg-white">
+      {/* ── 5. SOLUTION SECTION ── */}
+      <section className="py-10 pb-20 bg-nx-white">
         <div className="container mx-auto px-6">
-          <div className="bg-[#F8F9FB] border border-slate-100 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center shadow-[inset_0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-nx-ice border border-nx-steel/5 rounded-[2.5rem] p-8 md:p-12 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center shadow-sm">
 
             {/* Left: Image Container (White Box) */}
-            <div className="bg-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
+            <div className="bg-nx-white rounded-[2rem] p-3 shadow-sm relative h-[380px] lg:h-[460px] w-full flex-shrink-0 lg:order-1 order-2">
               <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden">
                 <AnimatePresence mode="popLayout">
                   <motion.img
@@ -497,7 +470,7 @@ export default function ProjectDetail() {
                 </AnimatePresence>
                 {/* Subtle accent tint overlay for "Solution" */}
                 <div className="absolute inset-0 opacity-15 mix-blend-multiply transition-colors duration-500" style={{ backgroundColor: accent.border }} />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1221]/80 via-[#0B1221]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/80 via-nx-navy/20 to-transparent" />
 
                 <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-xl px-5 py-4 border border-white/20">
                   <p className="text-white/80 text-[9px] font-black uppercase tracking-[0.3em] mb-1">Architecture</p>
@@ -511,8 +484,8 @@ export default function ProjectDetail() {
             {/* Right: Title & Scrollable Cards */}
             <div className="flex flex-col h-full justify-center lg:order-2 order-1">
               <div className="mb-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-secondary mb-3">The Solution</p>
-                <h2 className="text-3xl md:text-4xl font-display font-black text-[#1A1F2B] leading-tight">
+                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-nx-steel-light mb-3">The Solution</p>
+                <h2 className="text-3xl md:text-4xl font-display font-black text-nx-navy leading-tight">
                   Solution Architecture
                 </h2>
               </div>
@@ -526,12 +499,12 @@ export default function ProjectDetail() {
                     <motion.div
                       key={i}
                       onClick={() => setActiveImp(i)}
-                      className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isActive ? "bg-[#FDF2F8] shadow-lg border border-[#FBCFE8] scale-105 z-10" : "bg-white shadow-sm border border-slate-200/60 hover:shadow-md hover:border-slate-300"
+                      className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 ${isActive ? "bg-nx-white shadow-xl border border-nx-navy/10 scale-[1.02] z-10" : "bg-nx-white/40 border border-nx-steel/10 hover:border-nx-navy/20"
                         }`}
                     >
 
                       <div className={`pl-2 transition-colors duration-300 ${isActive ? '' : 'opacity-80'}`}>
-                        <h3 className="text-sm md:text-base font-bold text-[#1A1F2B] mb-1 leading-snug">
+                        <h3 className="text-sm md:text-base font-bold text-nx-navy mb-1 leading-snug">
                           {title}
                         </h3>
                         {subtitle && (
@@ -550,14 +523,14 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-nx-white relative overflow-hidden">
         {/* Decorative background elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-[#E3F2E1]/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#E3F2E1]/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+        <div className="absolute top-0 left-0 w-64 h-64 bg-nx-navy/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-nx-steel/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
 
         <div className="container mx-auto px-6 text-center relative z-10">
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary mb-4">Hardware & Infrastructure</p>
-          <h2 className="text-3xl md:text-4xl font-display font-black text-brand-black uppercase tracking-tight mb-16">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-nx-steel-light mb-4">Hardware & Infrastructure</p>
+          <h2 className="text-3xl md:text-4xl font-display font-black text-nx-navy uppercase tracking-tight mb-16">
             Core Products Leveraged
           </h2>
 
@@ -577,26 +550,26 @@ export default function ProjectDetail() {
                 className="relative group cursor-pointer"
               >
                 {/* Main Card */}
-                <div className="h-full bg-gradient-to-br from-white to-[#E3F2E1] p-8 rounded-[2.5rem] border border-[#E3F2E1] shadow-[0_10px_30px_-10px_rgba(227,242,225,0.5)] flex flex-col items-center transition-all duration-500 group-hover:shadow-[0_25px_50px_-12px_rgba(227,242,225,0.8)] group-hover:border-[#C5E1C1]">
+                <div className="h-full bg-nx-ice p-8 rounded-[2.5rem] border border-nx-steel/10 shadow-sm flex flex-col items-center transition-all duration-500 group-hover:shadow-xl group-hover:border-nx-navy/20">
 
                   {/* Icon Container with dynamic glow */}
                   <div className="relative mb-6">
-                    <div className="absolute inset-0 bg-[#C5E1C1] rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
-                    <div className="relative w-14 h-14 rounded-2xl bg-white border border-[#E3F2E1] flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-500">
-                      <prod.icon size={22} className="text-[#4F774F] transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-nx-navy/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-nx-white border border-nx-steel/10 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-500">
+                      <prod.icon size={22} className="text-nx-navy transition-transform duration-500 group-hover:scale-110" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <p className="text-base font-black text-[#2D442D] leading-tight">{prod.name}</p>
+                    <p className="text-base font-black text-nx-navy leading-tight">{prod.name}</p>
                     <div className="flex items-center justify-center gap-1.5">
-                      <span className="w-1 h-1 rounded-full bg-[#C5E1C1]" />
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#4F774F]/60">{prod.sub}</p>
+                      <span className="w-1 h-1 rounded-full bg-nx-steel-light" />
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-nx-steel/60">{prod.sub}</p>
                     </div>
                   </div>
 
                   {/* Corner indicator */}
-                  <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-[#C5E1C1] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-nx-steel-light opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </motion.div>
             ))}
@@ -605,11 +578,11 @@ export default function ProjectDetail() {
       </section>
 
       {/* ── 7. SOFT FEATURES — Large Icon Cards ── */}
-      <section className="py-32 bg-[#F8F9FB] border-t border-slate-100">
+      <section className="py-32 bg-nx-ice border-t border-nx-steel/10">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-secondary mb-4">Ecosystem Intelligence</p>
-            <h2 className="text-3xl md:text-4xl font-display font-black text-brand-black uppercase tracking-tight">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-nx-steel-light mb-4">Ecosystem Intelligence</p>
+            <h2 className="text-3xl md:text-4xl font-display font-black text-nx-navy uppercase tracking-tight">
               Integrated Soft Features
             </h2>
           </div>
@@ -629,17 +602,17 @@ export default function ProjectDetail() {
                 className="group relative"
               >
                 {/* Feature Card */}
-                <div className="h-full bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:shadow-xl group-hover:border-brand-walnut/20">
+                <div className="h-full bg-nx-white p-6 rounded-3xl border border-nx-steel/10 shadow-sm flex flex-col items-center justify-center text-center transition-all duration-500 group-hover:shadow-xl group-hover:border-nx-navy/20">
 
                   {/* Big Icon with dynamic background */}
                   <div className="relative mb-5">
-                    <div className="absolute inset-0 bg-brand-walnut/5 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500" />
-                    <div className="relative w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center transition-colors duration-500 group-hover:bg-brand-walnut/10">
-                      <feat.icon size={24} className="text-slate-400 transition-colors duration-500 group-hover:text-brand-walnut" strokeWidth={1.5} />
+                    <div className="absolute inset-0 bg-nx-navy/5 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-nx-ice flex items-center justify-center transition-colors duration-500 group-hover:bg-nx-navy/10">
+                      <feat.icon size={24} className="text-nx-steel/40 transition-colors duration-500 group-hover:text-nx-navy" strokeWidth={1.5} />
                     </div>
                   </div>
 
-                  <span className="text-[10px] md:text-[11px] font-black text-slate-600 uppercase tracking-[0.15em] leading-tight">
+                  <span className="text-[10px] md:text-[11px] font-black text-nx-steel uppercase tracking-[0.15em] leading-tight">
                     {feat.label}
                   </span>
 
@@ -653,16 +626,15 @@ export default function ProjectDetail() {
       </section>
 
       {/* ── 8. CTA ── */}
-      <section className="py-12 bg-brand-black">
+      <section className="py-12 bg-nx-navy">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-secondary text-[10px] font-black uppercase tracking-[0.3em]">
+          <p className="text-nx-steel-light text-[10px] font-black uppercase tracking-[0.3em]">
             Scale your ecosystem with Nx-Core™
           </p>
           <Link to="/contact">
             <motion.button
               whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 text-brand-black text-xs font-black rounded-2xl uppercase tracking-widest shadow-xl flex items-center gap-2"
-              style={{ background: accent.border }}
+              className="px-10 py-4 bg-nx-white text-nx-navy text-[11px] font-bold rounded-full uppercase tracking-widest shadow-xl flex items-center gap-2 hover:bg-nx-ice transition-colors"
             >
               Initiate Discussion <ArrowRight size={16} />
             </motion.button>

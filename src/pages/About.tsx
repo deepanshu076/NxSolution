@@ -73,6 +73,7 @@ export default function About() {
       <PageHero
         titleLine1="Engineering Uncompromising"
         titleLine2="Operational Intelligence"
+        backgroundImage="/images/corporate-bg.png"
         descriptionLine1="We build deterministic, production-grade smart facility infrastructure."
         descriptionLine2="No wrappers, no latency — just absolute reliability at scale."
       >

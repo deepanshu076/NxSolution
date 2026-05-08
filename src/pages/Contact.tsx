@@ -29,6 +29,7 @@ export default function Contact() {
       <PageHero
         titleLine1="Let's Connect & Build"
         titleLine2="Something Smart"
+        backgroundImage="/images/photo1.jpeg"
         descriptionLine1="Tell us your requirement and we'll guide you to the right"
         descriptionLine2="solution — enquiry, quote, demo, or custom project."
       >
