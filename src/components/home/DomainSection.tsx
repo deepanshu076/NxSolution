@@ -25,7 +25,7 @@ export default function DomainSection() {
             <Link
               key={domain.id}
               to={`/domains/${domain.id}`}
-              className="min-w-[280px] h-[360px] relative rounded-3xl overflow-hidden border border-gray-200 snap-center shadow-lg"
+              className="min-w-[280px] h-[360px] relative rounded-3xl overflow-hidden border border-gray-200 snap-center shadow-lg transition-all duration-300 hover:-translate-y-2"
             >
               <div className="absolute inset-0">
                 <img
@@ -52,7 +52,7 @@ export default function DomainSection() {
           {/* View All Card for Mobile Slider */}
           <Link
             to="/domains"
-            className="min-w-[280px] h-[360px] relative rounded-3xl overflow-hidden bg-brand-walnut snap-center shadow-lg flex flex-col items-center justify-center p-8 text-center"
+            className="min-w-[280px] h-[360px] relative rounded-3xl overflow-hidden bg-brand-walnut snap-center shadow-lg flex flex-col items-center justify-center p-8 text-center transition-all duration-300 hover:-translate-y-2"
           >
             <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6">
               <Grid className="text-white" size={32} />
@@ -70,21 +70,21 @@ export default function DomainSection() {
             <Link
               key={domain.id}
               to={`/domains/${domain.id}`}
-              className="relative h-[380px] rounded-2xl overflow-hidden border border-gray-200 group transition-all duration-500 hover:shadow-2xl hover:border-brand-walnut"
+              className="relative h-[380px] rounded-2xl overflow-hidden border border-gray-200 group transition-all duration-300 hover:-translate-y-2"
             >
               <div className="absolute inset-0">
                 <img
                   src={domain.image}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700"
                   alt={domain.name}
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/60 transition-colors duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-black/30 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 transition-opacity" />
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-6 z-10 flex flex-col justify-end min-h-[140px]">
-                <h4 className="font-display font-bold text-xl leading-tight text-white group-hover:text-warm-gold-beige transition-colors duration-300">
+                <h4 className="font-display font-bold text-xl leading-tight text-white transition-colors duration-300">
                   {domain.name}
                 </h4>
                 <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
@@ -106,9 +106,9 @@ export default function DomainSection() {
           {/* LAST CARD: View All Domains (Desktop) */}
           <Link
             to="/domains"
-            className="relative h-[380px] rounded-2xl overflow-hidden bg-brand-walnut group transition-all duration-500 hover:shadow-2xl flex flex-col items-center justify-center p-8 text-center"
+            className="relative h-[380px] rounded-2xl overflow-hidden bg-brand-walnut group transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-center p-8 text-center"
           >
-            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110">
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6 transition-transform duration-500">
               <Grid className="text-white" size={32} />
             </div>
             <h4 className="text-2xl font-display font-bold text-white mb-2">View All Domains</h4>

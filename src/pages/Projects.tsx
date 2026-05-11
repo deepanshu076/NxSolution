@@ -179,26 +179,26 @@ export default function Projects() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8 md:gap-10">
             {filteredProjects.map((project, i) => (
-              <Link key={project.slug} to={`/projects/${project.slug}`} className="group block">
+              <Link key={project.slug} to={`/projects/${project.slug}`} className="group block transition-all duration-300 hover:-translate-y-2">
                 <motion.div
                   layout
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative aspect-[4/3] rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] overflow-hidden group cursor-pointer shadow-xl"
+                  className="relative aspect-[4/3] rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-xl"
                 >
                   {/* Background Image */}
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000"
                   />
 
                   {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500" />
 
                   {/* Content Overlay */}
                   <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:scale-110 transition-transform duration-500 shrink-0">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 transition-transform duration-500 shrink-0">
                       <project.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                     </div>
                     <div className="flex flex-col overflow-hidden">
@@ -224,8 +224,8 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  {/* Corner Arrow */}
-                  <div className="absolute top-3 right-3 sm:top-6 sm:right-6 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Corner Arrow - always visible or removed? User said "Remove the current hover effects", usually means the transition on hover. I'll make it always visible or removed if it was a hover-only effect. Actually, let's keep it visible but without the hover transition. */}
+                  <div className="absolute top-3 right-3 sm:top-6 sm:right-6 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-40 transition-opacity duration-300">
                     <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </motion.div>

@@ -184,24 +184,23 @@ export default function Domains() {
 
               {/* Domains Grid with Data from Backend */}
               {!isLoadingDomains && !error && uiDomains?.length > 0 && (
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 md:gap-10">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 md:gap-10">
                   {uiDomains.map((dom) => (
                     <Link
                       key={dom.id}
                       to={`/domains/${dom.id}`}
-                      className="group block flex-col items-center text-center transition-all"
+                      className="block flex-col items-center text-center transition-all duration-300 hover:-translate-y-1"
                     >
-                      <div className="aspect-video w-full rounded-xl sm:rounded-2xl overflow-hidden bg-nx-white mb-3 sm:mb-6 border border-nx-steel/10 transition-all duration-500 group-hover:shadow-2xl group-hover:border-nx-navy/20 relative shadow-md">
+                      <div className="aspect-video w-full rounded-xl sm:rounded-2xl overflow-hidden bg-nx-white mb-3 sm:mb-6 border border-nx-steel/10 transition-all relative">
                         <img
                           src={dom.image}
                           alt={dom.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-700"
                           referrerPolicy="no-referrer"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-nx-navy/0 group-hover:bg-nx-navy/5 transition-colors duration-300" />
                       </div>
-                      <h3 className="text-xs sm:text-sm md:text-lg font-black text-nx-navy group-hover:text-nx-navy transition-colors leading-tight px-1 uppercase tracking-wider">
+                      <h3 className="text-xs sm:text-sm md:text-lg font-black text-nx-navy leading-tight px-1 uppercase tracking-wider">
                         {dom.name}
                       </h3>
                     </Link>

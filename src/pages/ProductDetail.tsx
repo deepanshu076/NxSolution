@@ -157,14 +157,14 @@ export default function ProductDetail() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="group relative aspect-[4/3] rounded-[3rem] overflow-hidden bg-nx-navy shadow-2xl border border-nx-navy/10"
+                                className="group relative aspect-[4/3] rounded-[3rem] overflow-hidden bg-nx-navy shadow-md border border-nx-navy/10 transition-all duration-300 hover:-translate-y-2"
                             >
                                 <img
                                     src={view.image}
                                     alt={view.label}
-                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 transition-opacity" />
 
                                 <div className="absolute bottom-8 left-8 right-8 flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shrink-0">

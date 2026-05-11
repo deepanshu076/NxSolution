@@ -339,13 +339,13 @@ function ProductCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, delay: i * 0.05 }}
-      className="group bg-white flex flex-col h-full rounded-2xl border border-soft-taupe/10 overflow-hidden hover:shadow-xl hover:-translate-y-1 hover:border-brand-walnut/20 transition-all duration-300 cursor-pointer"
+      className="group bg-white flex flex-col h-full rounded-2xl border border-soft-taupe/10 overflow-hidden hover:-translate-y-1 transition-all duration-300 cursor-pointer"
     >
       {/* Image Container */}
       <div className="aspect-16/10 sm:aspect-4/3 overflow-hidden relative shrink-0">
         <img
           src={prod.image}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700"
           alt={prod.name}
           loading="lazy"
         />
@@ -366,7 +366,7 @@ function ProductCard({
 
       {/* Content Container */}
       <div className="p-3 sm:p-5 flex flex-col grow">
-        <h4 className="text-sm sm:text-base font-bold text-brand-black mb-2 leading-tight group-hover:text-brand-walnut transition-colors line-clamp-2">
+        <h4 className="text-sm sm:text-base font-bold text-brand-black mb-2 leading-tight transition-colors line-clamp-2">
           {prod.name}
         </h4>
         <p className="text-brand-black/60 text-[12px] sm:text-[13px] leading-relaxed mb-4 line-clamp-2 grow">
@@ -385,7 +385,7 @@ function ProductCard({
               {isHardware ? "Edge Device" : "Cloud Ready"}
             </span>
           </div>
-          <div className="w-7 h-7 rounded-full border border-soft-taupe/30 flex items-center justify-center text-brand-black/40 group-hover:bg-brand-walnut group-hover:text-soft-white group-hover:border-brand-walnut transition-all duration-300">
+          <div className="w-7 h-7 rounded-full border border-soft-taupe/30 flex items-center justify-center text-brand-black/40 transition-all duration-300">
             <ArrowUpRight size={14} />
           </div>
         </div>

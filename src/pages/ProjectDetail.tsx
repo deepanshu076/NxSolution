@@ -256,9 +256,9 @@ export default function ProjectDetail() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                   onClick={() => { setActiveSubDomain(i); setActiveSolCard(0); setIsPlaying(false); }}
-                  className={`relative flex-shrink-0 w-[240px] h-[160px] rounded-[2rem] overflow-hidden snap-start cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-[var(--shadow-soft)] border-2 ${isActive ? 'border-nx-navy' : 'border-transparent'}`}
+                  className={`relative flex-shrink-0 w-[240px] h-[160px] rounded-[2rem] overflow-hidden snap-start cursor-pointer transition-all duration-300 hover:-translate-y-2 shadow-md border-2 ${isActive ? 'border-nx-navy' : 'border-transparent'}`}
                 >
-                  <img src={card.image} alt={card.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                  <img src={card.image} alt={card.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/90 via-nx-navy/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
                     <div className="w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center shrink-0">
@@ -313,9 +313,9 @@ export default function ProjectDetail() {
                             setIsPlaying(false);
                             setTimeout(() => videoRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
                           }}
-                          className={`relative flex-shrink-0 w-[220px] h-[150px] rounded-[1.5rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-[var(--shadow-soft)] border-2 ${isSolActive ? 'border-nx-navy opacity-100' : 'border-white/60 opacity-60'}`}
+                          className={`relative flex-shrink-0 w-[220px] h-[150px] rounded-[1.5rem] overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-2 shadow-md border-2 ${isSolActive ? 'border-nx-navy opacity-100' : 'border-white/60 opacity-60'}`}
                         >
-                          <img src={sol.image} alt={sol.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+                          <img src={sol.image} alt={sol.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                           <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end gap-3">
                             <div className="w-8 h-8 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center shrink-0">
@@ -350,7 +350,7 @@ export default function ProjectDetail() {
                       />
                     ) : (
                       <>
-                        <img src={activeSolution.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" />
+                        <img src={activeSolution.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70 transition-transform duration-700" />
                         <div className="absolute inset-0 bg-gradient-to-t from-nx-navy/80 to-transparent" />
                         <button onClick={() => setIsPlaying(true)} className="absolute inset-0 flex items-center justify-center">
                           <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl transition-transform hover:scale-110" style={{ background: accent.border }}>
@@ -542,21 +542,20 @@ export default function ProjectDetail() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 whileHover={{
-                  y: -10,
-                  scale: 1.02,
+                  y: -8,
                   transition: { duration: 0.3, ease: "easeOut" }
                 }}
                 transition={{ delay: i * 0.08, duration: 0.6 }}
                 className="relative group cursor-pointer"
               >
                 {/* Main Card */}
-                <div className="h-full bg-nx-ice p-8 rounded-[2.5rem] border border-nx-steel/10 shadow-sm flex flex-col items-center transition-all duration-500 group-hover:shadow-xl group-hover:border-nx-navy/20">
+                <div className="h-full bg-nx-ice p-8 rounded-[2.5rem] border border-nx-steel/10 shadow-sm flex flex-col items-center transition-all duration-500">
 
                   {/* Icon Container with dynamic glow */}
                   <div className="relative mb-6">
-                    <div className="absolute inset-0 bg-nx-navy/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative w-14 h-14 rounded-2xl bg-nx-white border border-nx-steel/10 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-500">
-                      <prod.icon size={22} className="text-nx-navy transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-nx-navy/10 rounded-2xl blur-lg opacity-0 transition-opacity duration-500" />
+                    <div className="relative w-14 h-14 rounded-2xl bg-nx-white border border-nx-steel/10 flex items-center justify-center shadow-sm transition-all duration-500">
+                      <prod.icon size={22} className="text-nx-navy transition-transform duration-500" />
                     </div>
                   </div>
 

@@ -558,10 +558,10 @@ export default function SubDomainDetail() {
                         block: "center",
                       });
                     }}
-                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all ${solution.id === activeSolutionId
+                    className={`relative flex-shrink-0 w-80 md:w-[26rem] rounded-2xl p-4 border bg-white transition-all duration-300 ${solution.id === activeSolutionId
                       ? "border-blue-500 ring-2 ring-blue-500/20"
-                      : "border-slate-200 hover:border-slate-300"
-                      } cursor-pointer`}
+                      : "border-slate-200"
+                      } cursor-pointer hover:-translate-y-1`}
                   >
                     <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100">
                       {solution.thumbnail_url || solution.localChallenges?.[0]?.image ? (
@@ -802,7 +802,7 @@ export default function SubDomainDetail() {
             ].map((tech, i) => (
               <div
                 key={i}
-                className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:shadow-[#8D6E63]/5 hover:-translate-y-1"
+                className="bg-white border border-[#E0Dcd5] p-6 md:p-8 rounded-2xl flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="w-12 h-12 rounded-full bg-[#F9F7F5] shadow-sm flex items-center justify-center mb-6 border border-[#E0Dcd5]">
                   <tech.icon size={22} className="text-[#8D6E63]/60" />
