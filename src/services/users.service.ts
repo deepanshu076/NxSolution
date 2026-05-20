@@ -17,11 +17,12 @@ async function parseResponse<T>(response: Response): Promise<T> {
 
   try {
     body = JSON.parse(raw) as T & { error?: string };
-  } catch {
+  } catch (err) {
+    console.error("[parseResponse] Failed to parse API response. Raw response:", raw, err);
     body = {
-      error: raw.startsWith("<!DOCTYPE")
+      error: raw.trim().startsWith("<!DOCTYPE") || raw.trim().startsWith("<html")
         ? "API returned HTML instead of JSON. Check backend URL/server."
-        : "Invalid API response.",
+        : `Invalid API response: ${raw.slice(0, 150) || "(empty response)"}`,
     } as T & { error?: string };
   }
 

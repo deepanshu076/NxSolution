@@ -59,10 +59,11 @@ async function parseApiResponse<T>(
   const raw = await response.text();
   try {
     return JSON.parse(raw) as T & { error?: string };
-  } catch {
-    const fallbackMessage = raw.startsWith("<!DOCTYPE")
+  } catch (err) {
+    console.error("[parseApiResponse] Failed to parse API response. Raw response:", raw, err);
+    const fallbackMessage = raw.trim().startsWith("<!DOCTYPE") || raw.trim().startsWith("<html")
       ? "API returned HTML instead of JSON. Check backend URL/server."
-      : "Invalid API response.";
+      : `Invalid API response: ${raw.slice(0, 150) || "(empty response)"}`;
     return { error: fallbackMessage } as T & { error?: string };
   }
 }
