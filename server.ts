@@ -26,8 +26,9 @@ type JwtPayload = {
   role: "user" | "admin";
 };
 
+const app = express();
+
 async function startServer() {
-  const app = express();
   const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
   const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
@@ -372,9 +373,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`NX-Solution Server running on http://localhost:${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`NX-Solution Server running on port ${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
