@@ -33,23 +33,32 @@ async function startServer() {
   const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 
+  let supabase: any = null;
+  let initError: string | null = null;
+
   if (!supabaseUrl || !supabaseServiceRoleKey) {
-    throw new Error(
-      "Missing Supabase server credentials. Set VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
-    );
+    initError = "Missing Supabase server credentials. Please configure VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your deployment environment variables.";
+  } else if (!supabaseServiceRoleKey.startsWith("eyJ")) {
+    initError = "SUPABASE_SERVICE_ROLE_KEY looks invalid. Copy the service_role key from Supabase Settings > API.";
+  } else {
+    try {
+      supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
+        auth: { persistSession: false },
+      });
+    } catch (e: any) {
+      initError = `Failed to initialize Supabase client: ${e.message}`;
+    }
   }
-
-  if (!supabaseServiceRoleKey.startsWith("eyJ")) {
-    throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY looks invalid. Copy the service_role key from Supabase Settings > API.",
-    );
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-    auth: { persistSession: false },
-  });
 
   app.use(express.json());
+
+  app.use((req, res, next) => {
+    if (initError) {
+      res.status(500).json({ error: initError });
+      return;
+    }
+    next();
+  });
 
   app.use((error: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (

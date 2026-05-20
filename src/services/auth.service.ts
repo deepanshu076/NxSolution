@@ -15,7 +15,7 @@ const API_BASE =
 
 async function parseResponse<T>(response: Response): Promise<T> {
   const raw = await response.text();
-  let body: (T & { error?: string }) | null = null;
+  let body: T & { error?: string };
   try {
     body = JSON.parse(raw) as T & { error?: string };
   } catch (err) {
