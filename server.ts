@@ -7,7 +7,17 @@ import { createClient } from "@supabase/supabase-js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const getDirname = () => {
+  try {
+    if (typeof __dirname !== "undefined") {
+      return __dirname;
+    }
+    return path.dirname(fileURLToPath(import.meta.url));
+  } catch {
+    return process.cwd();
+  }
+};
+const dirName = getDirname();
 const JWT_SECRET = process.env.JWT_SECRET || "dev-jwt-secret-change-me";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 const IS_PROD = process.env.NODE_ENV === "production";
@@ -27,29 +37,28 @@ type JwtPayload = {
 
 const app = express();
 
-async function startServer() {
-  const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-  const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 
-  let supabase: any = null;
-  let initError: string | null = null;
+let supabase: any = null;
+let initError: string | null = null;
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
-    initError = "Missing Supabase server credentials. Please configure VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your deployment environment variables.";
-  } else if (!supabaseServiceRoleKey.startsWith("eyJ")) {
-    initError = "SUPABASE_SERVICE_ROLE_KEY looks invalid. Copy the service_role key from Supabase Settings > API.";
-  } else {
-    try {
-      supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-        auth: { persistSession: false },
-      });
-    } catch (e: any) {
-      initError = `Failed to initialize Supabase client: ${e.message}`;
-    }
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  initError = "Missing Supabase server credentials. Please configure VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your deployment environment variables.";
+} else if (!supabaseServiceRoleKey.startsWith("eyJ")) {
+  initError = "SUPABASE_SERVICE_ROLE_KEY looks invalid. Copy the service_role key from Supabase Settings > API.";
+} else {
+  try {
+    supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: { persistSession: false },
+    });
+  } catch (e: any) {
+    initError = `Failed to initialize Supabase client: ${e.message}`;
   }
+}
 
-  app.use(express.json());
+app.use(express.json());
 
   app.use((req, res, next) => {
     if (initError) {
@@ -346,7 +355,7 @@ async function startServer() {
   });
 
   // Vite middleware for development (disabled on Vercel production hosting)
-  if (!process.env.VERCEL) {
+  async function startLocalServer() {
     if (process.env.NODE_ENV !== "production") {
       const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
@@ -354,7 +363,7 @@ async function startServer() {
         appType: "custom", // Changed to custom to handle HTML manually
       });
 
-      app.use(express.static(path.resolve(__dirname, "public")));
+      app.use(express.static(path.resolve(dirName, "public")));
       app.use(vite.middlewares);
 
       app.get("*", async (req, res, next) => {
@@ -365,7 +374,7 @@ async function startServer() {
 
         try {
           let template = await fs.readFileSync(
-            path.resolve(__dirname, "index.html"),
+            path.resolve(dirName, "index.html"),
             "utf-8",
           );
           template = await vite.transformIndexHtml(url, template);
@@ -376,21 +385,22 @@ async function startServer() {
         }
       });
     } else {
-      const distPath = path.join(__dirname, "dist");
+      const distPath = path.join(dirName, "dist");
       app.use(express.static(distPath));
       app.get("*", (req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
       });
     }
-  }
 
-  if (!process.env.VERCEL) {
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`NX-Solution Server running on port ${PORT}`);
     });
   }
-}
 
-startServer();
+  if (!process.env.VERCEL) {
+    startLocalServer().catch((err) => {
+      console.error("Failed to start local server:", err);
+    });
+  }
 
 export default app;
