@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import path from "path";
 import fs from "fs";
@@ -12,10 +11,12 @@ const getDirname = () => {
     if (typeof __dirname !== "undefined") {
       return __dirname;
     }
-    return path.dirname(fileURLToPath(import.meta.url));
-  } catch {
-    return process.cwd();
-  }
+    const metaUrl = (import.meta as any)?.url;
+    if (metaUrl) {
+      return path.dirname(fileURLToPath(metaUrl));
+    }
+  } catch {}
+  return process.cwd();
 };
 const dirName = getDirname();
 const JWT_SECRET = process.env.JWT_SECRET || "dev-jwt-secret-change-me";
@@ -356,6 +357,12 @@ app.use(express.json());
 
   // Vite middleware for development (disabled on Vercel production hosting)
   async function startLocalServer() {
+    try {
+      await import("dotenv/config");
+    } catch (e) {
+      console.warn("Failed to load dotenv locally:", e);
+    }
+
     if (process.env.NODE_ENV !== "production") {
       const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
