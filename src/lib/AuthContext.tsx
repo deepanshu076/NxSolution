@@ -29,8 +29,7 @@ type AuthResponse = {
 
 const TOKEN_KEY = "nxsolution_jwt";
 const API_BASE =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
-  `${window.location.protocol}//${window.location.hostname}:3000`;
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") || "";
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function getStoredToken() {

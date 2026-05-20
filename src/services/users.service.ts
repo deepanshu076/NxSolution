@@ -9,8 +9,7 @@ export type UserRecord = {
 };
 
 const API_BASE =
-  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ||
-  `${window.location.protocol}//${window.location.hostname}:3000`;
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") || "";
 
 async function parseResponse<T>(response: Response): Promise<T> {
   const raw = await response.text();

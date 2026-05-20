@@ -18,6 +18,8 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
   const toast = useToast();
   const [role, setRole] = useState<string>(user?.role ?? "");
   const [fullName, setFullName] = useState<string>(user?.full_name ?? "");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setRole(user?.role ?? "");
     setFullName(user?.full_name ?? "");
@@ -26,6 +28,7 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
   if (!open || !user) return null;
 
   const save = async () => {
+    setLoading(true);
     try {
       const updated = await updateUser(user.id, { role, full_name: fullName });
       toast.success("User updated");
@@ -33,6 +36,8 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
       onClose();
     } catch (err: any) {
       toast.error(err.message || "Failed to update user");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,6 +53,7 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
               className="mt-1 block w-full border rounded p-2"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              disabled={loading}
             />
           </div>
           <div>
@@ -56,6 +62,7 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
               className="mt-1 block w-full border rounded p-2"
               value={role}
               onChange={(e) => setRole(e.target.value)}
+              disabled={loading}
             >
               <option value="user">User</option>
               <option value="admin">Admin</option>
@@ -65,15 +72,17 @@ export default function UserModal({ open, onClose, user, onUpdated }: Props) {
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="rounded-2xl border border-cool-gray/40 px-4 py-2 text-sm font-bold text-slate-blue transition-colors hover:bg-light-gray"
+            disabled={loading}
+            className="rounded-2xl border border-cool-gray/40 px-4 py-2 text-sm font-bold text-slate-blue transition-colors hover:bg-light-gray disabled:opacity-60 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
           <button
             onClick={save}
-            className="rounded-2xl bg-brand-walnut px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-black"
+            disabled={loading}
+            className="rounded-2xl bg-brand-walnut px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-black disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Save
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>
